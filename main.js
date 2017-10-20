@@ -13,9 +13,9 @@ var questions = {
 	}
 };
 
-var inputEl= $('#option')[0]
 
 var occured_questions_id=[],
+	inputEl= $('#option')[0],
 	q_len = Object.keys(questions).length,
 	count_rep=0,
 	count_success=0,
@@ -23,6 +23,12 @@ var occured_questions_id=[],
 	current_question_id,
 	current_question,
 	options
+
+
+// Sets the input field to Hiragana
+//**********************************
+wanakana.bind(inputEl); 
+
 
 // Creates question's ID
 //***********************
