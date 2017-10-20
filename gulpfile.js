@@ -2,7 +2,7 @@ var gulp = require('gulp'),
 	sass = require('gulp-sass'), 
 	livereload = require('gulp-livereload')
 
-var glob = ['js/*.js','*.html','css/*.sass','css/*.css'];
+var glob = ['*.js','*.html','css/*.sass','css/*.css'];
 
 gulp.task('livereload', function() {
 	return gulp.src(glob).pipe(livereload());

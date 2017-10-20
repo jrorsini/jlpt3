@@ -8,7 +8,7 @@ var questions = {
 		'a':[['うちに',false],['はじめに',false],['たびに',true],['だけに',false]]
 	},
 	3:{
-		'q':['3. 本を読んでいたら','五時間も経ってしまった。'],
+		'q':['本を読んでいたら','五時間も経ってしまった。'],
 		'a':[['そろそろ',false],['だんだん',false],['ようやく',false],['いつの間にか',true]]
 	}
 };
@@ -16,52 +16,64 @@ var questions = {
 var inputEl= $('#option')[0]
 
 var occured_questions_id=[],
-	questionId,
+	q_len = Object.keys(questions).length,
 	count_rep=0,
 	count_success=0,
-	count_fail=0
+	count_fail=0,
+	current_question_id,
+	current_question,
+	options
 
-var qLen = function(){ // Function that returns the number of sentences
-	var questionsLen=Object.keys(questions);
-
-	return questionsLen
-}
-
-var genQuestionId = function() { // Function that create a snetence id that get throughs the array.
+// Creates question's ID
+//***********************
+var create_question_id = function() { 
 	return Math.floor(Math.random()*Object.keys(questions).length)+1
 }
 
-var showSentence = function() { // Dispkay sentence and add sentence in the occurred array.
-	var obj=questions[questionId]
+
+// Displays question question and fill in occured sentences array
+//****************************************************************
+var show_question = function() { // Dispkay sentence and add sentence in the occurred array.
+	current_question=questions[current_question_id]
 	inputEl.value=''
-	if(occured_questions_id.length<qLen())
+	if(occured_questions_id.length<q_len)
 	{
-		if(occured_questions_id.indexOf(questionId.join(''))===-1)
+		if(occured_questions_id.indexOf(current_question_id)===-1)
 		{
-			occured_questions_id.push(questionId.join(''))
-			$('#sentence_prt_1').html(obj.s[0])
-			$('#sentence_prt_2').html(obj.sentence[1])
-			$('#aimed_context').html(obj.context)
+			occured_questions_id.push(current_question_id)
+			$('#sentence_prt_1').text(current_question.q[0])
+			$('#sentence_prt_2').text(current_question.q[1])
 		} else {
-			questionId=genQuestionId()
-			showSentence(questionId)
+			current_question_id=create_question_id()
+			show_question(current_question_id)
 		}
 	} else {
 		occured_questions_id=[] // Empty object.
 	}
+	return q_len
 }
 
-var wrongAnswer = function(pv, m) {// PhrasalVerb and Meaning being passed to the function.
-	if($('.wrong_answer:visible').length===0){
-		var rightAnswerClasses='s5 offset-s1'
-		$('#definition').removeClass('s6 offset-s3').addClass(rightAnswerClasses)
-		setTimeout(function(){$('.wrong_answer').fadeIn()},200)
-	}
-	$('.wrong_answer span').text(pv)
-	$('.wrong_answer h5').text(m)
+// Sets the 'options' variable and displays options 
+//**************************************************
+var show_options = function() {
+	options=questions[current_question_id].a.map(e=>e[0])
+	$('.assignment').html('<u>Choose between</u><br><b>'+options.join('</b> - <b>')+'</b>')
 }
 
-var prepositionInputted = function(prep){ // Checks the input value, sees if it match any of the prepostions.
+// var wrongAnswer = function(pv, m) {// PhrasalVerb and Meaning being passed to the function.
+// 	if($('.wrong_answer:visible').length===0){
+// 		var rightAnswerClasses='s5 offset-s1'
+// 		$('#definition').removeClass('s6 offset-s3').addClass(rightAnswerClasses)
+// 		setTimeout(function(){$('.wrong_answer').fadeIn()},200)
+// 	}
+// 	$('.wrong_answer span').text(pv)
+// 	$('.wrong_answer h5').text(m)
+// }
+
+
+// Checks if the input matches with any options 
+//**********************************************
+var option_match = function(prep){ // Checks the input value, sees if it match any of the prepostions.
 	var preps=['across','along','around','away','back','into','on','out','over','with','through','up','off']
 	if(prep==='')
 	{
@@ -79,10 +91,10 @@ var prepositionInputted = function(prep){ // Checks the input value, sees if it 
 }
 
 var checkAnswer = function(e,inputVal=inputEl.value) { // Checks input value to the answer.
-	var ps=questions[questionId] // ps stands for Phrasal Verbs
+	var ps=questions[current_question_id] // ps stands for Phrasal Verbs
 		successMsg='Right on!', //success message
 		errorMsg='Try again!' //fail message
-	if(prepositionInputted(inputVal)) // Check if preposition correctly inputted
+	if(option_match(inputVal)) // Check if preposition correctly inputted
 	{
 		count_rep++
 		// Order of actions
@@ -109,7 +121,7 @@ var checkAnswer = function(e,inputVal=inputEl.value) { // Checks input value to 
 			$('#definition h5').text($('#definition h5')[0].innerHTML.replace('???',inputVal))
 
 			// Re generateId
-			questionId=genQuestionId()
+			current_question_id=create_question_id()
 
 			// Play audio 
 			var audioSrc=$('#sentence_prt_1').text()+inputVal+$('#sentence_prt_2').text();
@@ -118,7 +130,7 @@ var checkAnswer = function(e,inputVal=inputEl.value) { // Checks input value to 
 			$('.audio').trigger("play")
 
 			// Add success class to the sentence.
-			setTimeout(showSentence,2000)
+			setTimeout(show_question,2000)
 
 			if($('.wrong_answer:visible').length===1){
 				$('.wrong_answer').fadeOut(200)
@@ -140,9 +152,9 @@ var checkAnswer = function(e,inputVal=inputEl.value) { // Checks input value to 
 
 			inputEl.value=''
 
-			if(sentences[ps.verb][inputVal]!==undefined){
-				wrongAnswer(ps.verb+' '+inputVal,sentences[ps.verb][inputVal][1]['m'])
-			}
+			// if(sentences[ps.verb][inputVal]!==undefined){
+			// 	// wrongAnswer(ps.verb+' '+inputVal,sentences[ps.verb][inputVal][1]['m'])
+			// }
 		}
 		showRepetition()
 	}
@@ -154,6 +166,7 @@ var showRepetition = function() {
 	$('#failure').text(' '+count_fail)
 }
 
-questionId=genQuestionId()
-showSentence(questionId)
+current_question_id=create_question_id()
+show_question()
+show_options()
 showRepetition()
