@@ -43,8 +43,9 @@ var show_question = function() { // Dispkay sentence and add sentence in the occ
 // Sets the 'options' variable and displays options 
 //**************************************************
 var show_options = function() {
-	options=jlpt3[current_question_id].options.map(e=>e[0])
-	$('.assignment').html('<u>Choose between</u><br><b>'+options.join('</b> - <b>')+'</b>')
+	options=jlpt3[current_question_id].options
+	options_to_show=options.map(e=>e[0])
+	$('.assignment').html('<u>Choose between</u><br><b>'+options_to_show.join('</b> - <b>')+'</b>')
 }
 
 // var wrongAnswer = function(pv, m) {// PhrasalVerb and Meaning being passed to the function.
@@ -65,7 +66,7 @@ var option_match = function(option){ // Checks the input value, sees if it match
 		return false
 	} else {
 		for(var i=0,len=options.length;i<len;i++){
-			if(option.trim()===options[i]) { return true }
+			if(option.trim()===options[i][0]) { return true }
 		}
 	}
 	return false
@@ -77,10 +78,12 @@ var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to
 		errorMsg='Try again!' //fail message
 	if(option_match(inputVal)) // Check if preposition correctly inputted
 	{
+		var option_id=options.map(e=>e[0]).indexOf(inputVal)
+		var answer=options.map(e=>(e[1]===true)?e[0]:'').join('')
 		count_rep++
 		// Order of actions
 		// = crosslines missed preposition
-		if(q.answer===inputVal)
+		if(inputVal===answer)
 		{
 			// = Counter iteration
 			count_success++
@@ -94,31 +97,12 @@ var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to
 			$('.sentence').addClass('sentence--success')
 			$('#definition').addClass('definition--success')
 
-			setTimeout(function(){$('.sentence').removeClass('sentence--success'),$('#definition').removeClass('definition--success')},2000)
-	
-			// Fills question marks with the right preposition
-			$('#definition span').text($('#definition span')[0].innerHTML.replace('???',inputVal))
-			
-			$('#definition h5').text($('#definition h5')[0].innerHTML.replace('???',inputVal))
-
+			setTimeout(function(){$('.sentence').removeClass('sentence--success')},500)
+				
 			// Re generateId
 			current_question_id=create_question_id()
-
-			// Play audio 
-			var audioSrc=$('#sentence_prt_1').text()+inputVal+$('#sentence_prt_2').text();
-			audioSrc=audioSrc.replace(/\s/g,'_');
-			$('.audio').attr('src','audio/'+audioSrc+'.mp3')
-			$('.audio').trigger("play")
-
 			// Add success class to the sentence.
-			setTimeout(show_question,2000)
-
-			if($('.wrong_answer:visible').length===1){
-				$('.wrong_answer').fadeOut(200)
-				setTimeout(function(){
-					$('#definition').removeClass('s5 offset-s1').addClass('s6 offset-s3')
-				},200)
-			}
+			setTimeout(show_question,500)
 		} else {
 			// = Counter iteration
 			count_fail++
@@ -126,7 +110,7 @@ var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to
 			// = notification
 			Materialize.toast(errorMsg, 4000)
 
-			$('.assignment b').eq(options.indexOf(inputVal)).removeClass('prep--missed').addClass('prep--missed')
+			$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
 
 			// Highlights the sentence
 			$('.sentence').addClass('shaky'),setTimeout(function(){$('.sentence').removeClass('shaky')},820);
