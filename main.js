@@ -80,7 +80,7 @@ var option_match = function(prep){ // Checks the input value, sees if it match a
 	return false
 }
 
-var checkAnswer = function(e,inputVal=inputEl.value) { // Checks input value to the answer.
+var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to the answer.
 	var ps=jlpt3[current_question_id] // ps stands for Phrasal Verbs
 		successMsg='Right on!', //success message
 		errorMsg='Try again!' //fail message
