@@ -1,0 +1,24 @@
+{
+  "name": "jlpt3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "materialize-css": "^0.100.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrorsini/jlpt3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrorsini/jlpt3/issues"
+  },
+  "homepage": "https://github.com/jrorsini/jlpt3#readme"
+}

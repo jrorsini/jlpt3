@@ -31,8 +31,8 @@ var show_question = function() { // Dispkay sentence and add sentence in the occ
 		if(occured_questions_id.indexOf(current_question_id)===-1)
 		{
 			occured_questions_id.push(current_question_id)
-			$('#sentence_prt_1').text(current_question.q[0])
-			$('#sentence_prt_2').text(current_question.q[1])
+			$('#sentence_prt_1').text(current_question.question[0])
+			$('#sentence_prt_2').text(current_question.question[1])
 		} else {
 			current_question_id=create_question_id()
 			show_question(current_question_id)
