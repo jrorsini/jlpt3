@@ -16,10 +16,7 @@ wanakana.bind(inputEl);
 
 // Creates question's ID
 //***********************
-var create_question_id = function() { 
-	return Math.floor(Math.random()*Object.keys(jlpt3).length)+1
-}
-
+var create_question_id = () => Math.floor(Math.random()*Object.keys(jlpt3).length)+1
 
 // Displays question question and fill in occured sentences array
 //****************************************************************
@@ -63,25 +60,19 @@ var show_options = function() {
 
 // Checks if the input matches with any options 
 //**********************************************
-var option_match = function(prep){ // Checks the input value, sees if it match any of the prepostions.
-	var preps=['across','along','around','away','back','into','on','out','over','with','through','up','off']
-	if(prep==='')
-	{
+var option_match = function(option){ // Checks the input value, sees if it match any of the prepostions.
+	if(option===''){
 		return false
-	} else{
-		for(var i=0,len=preps.length;i<len;i++)
-		{
-			if(prep.toLowerCase().trim()===preps[i])
-			{
-				return true
-			}
+	} else {
+		for(var i=0,len=options.length;i<len;i++){
+			if(option.trim()===options[i]) { return true }
 		}
 	}
 	return false
 }
 
 var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to the answer.
-	var ps=jlpt3[current_question_id] // ps stands for Phrasal Verbs
+	var q=jlpt3[current_question_id] // ps stands for Phrasal Verbs
 		successMsg='Right on!', //success message
 		errorMsg='Try again!' //fail message
 	if(option_match(inputVal)) // Check if preposition correctly inputted
@@ -89,7 +80,7 @@ var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to
 		count_rep++
 		// Order of actions
 		// = crosslines missed preposition
-		if(ps.answer===inputVal)
+		if(q.answer===inputVal)
 		{
 			// = Counter iteration
 			count_success++
@@ -135,8 +126,8 @@ var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to
 			// = notification
 			Materialize.toast(errorMsg, 4000)
 
-			$('#prep_'+inputVal).removeClass('prep--missed').addClass('prep--missed')
-			
+			$('.assignment b').eq(options.indexOf(inputVal)).removeClass('prep--missed').addClass('prep--missed')
+
 			// Highlights the sentence
 			$('.sentence').addClass('shaky'),setTimeout(function(){$('.sentence').removeClass('shaky')},820);
 
@@ -146,11 +137,11 @@ var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to
 			// 	// wrongAnswer(ps.verb+' '+inputVal,sentences[ps.verb][inputVal][1]['m'])
 			// }
 		}
-		showRepetition()
+		show_repetitions()
 	}
 }
 
-var showRepetition = function() {
+var show_repetitions = function() {
 	$('#repetition').text(' '+count_rep)
 	$('#success').text(' '+count_success)
 	$('#failure').text(' '+count_fail)
@@ -159,4 +150,4 @@ var showRepetition = function() {
 current_question_id=create_question_id()
 show_question()
 show_options()
-showRepetition()
+show_repetitions()
