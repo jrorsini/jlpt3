@@ -1,22 +1,6 @@
-var questions = {
-	1:{
-		'q':['二度とあの部屋に入らないと約束しろ','言われたけど、僕は約束しなかった。'],
-		'a':[['を',false],['って',true],['のを',false],['だ',false]]
-	},
-	2:{
-		'q':['私は何百回もこの手紙を読み返した。そして読み返す','たまらなく哀しい気持になった。'],
-		'a':[['うちに',false],['はじめに',false],['たびに',true],['だけに',false]]
-	},
-	3:{
-		'q':['本を読んでいたら','五時間も経ってしまった。'],
-		'a':[['そろそろ',false],['だんだん',false],['ようやく',false],['いつの間にか',true]]
-	}
-};
-
-
 var occured_questions_id=[],
 	inputEl= $('#option')[0],
-	q_len = Object.keys(questions).length,
+	q_len = Object.keys(jlpt3).length,
 	count_rep=0,
 	count_success=0,
 	count_fail=0,
@@ -33,14 +17,14 @@ wanakana.bind(inputEl);
 // Creates question's ID
 //***********************
 var create_question_id = function() { 
-	return Math.floor(Math.random()*Object.keys(questions).length)+1
+	return Math.floor(Math.random()*Object.keys(jlpt3).length)+1
 }
 
 
 // Displays question question and fill in occured sentences array
 //****************************************************************
 var show_question = function() { // Dispkay sentence and add sentence in the occurred array.
-	current_question=questions[current_question_id]
+	current_question=jlpt3[current_question_id]
 	inputEl.value=''
 	if(occured_questions_id.length<q_len)
 	{
@@ -62,7 +46,7 @@ var show_question = function() { // Dispkay sentence and add sentence in the occ
 // Sets the 'options' variable and displays options 
 //**************************************************
 var show_options = function() {
-	options=questions[current_question_id].a.map(e=>e[0])
+	options=jlpt3[current_question_id].a.map(e=>e[0])
 	$('.assignment').html('<u>Choose between</u><br><b>'+options.join('</b> - <b>')+'</b>')
 }
 
@@ -97,7 +81,7 @@ var option_match = function(prep){ // Checks the input value, sees if it match a
 }
 
 var checkAnswer = function(e,inputVal=inputEl.value) { // Checks input value to the answer.
-	var ps=questions[current_question_id] // ps stands for Phrasal Verbs
+	var ps=jlpt3[current_question_id] // ps stands for Phrasal Verbs
 		successMsg='Right on!', //success message
 		errorMsg='Try again!' //fail message
 	if(option_match(inputVal)) // Check if preposition correctly inputted
