@@ -46,7 +46,7 @@ var show_question = function() { // Dispkay sentence and add sentence in the occ
 // Sets the 'options' variable and displays options 
 //**************************************************
 var show_options = function() {
-	options=jlpt3[current_question_id].a.map(e=>e[0])
+	options=jlpt3[current_question_id].options.map(e=>e[0])
 	$('.assignment').html('<u>Choose between</u><br><b>'+options.join('</b> - <b>')+'</b>')
 }
 
