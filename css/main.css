@@ -38,12 +38,20 @@
   40%, 60% {
     transform: translate3d(8px, 0, 0); } }
 
+.assignment u {
+  display: inline-block;
+  margin-bottom: 10px; }
+
+.assignment b {
+  padding: 0 10px; }
+
 .sentence {
   margin-top: 50px;
   position: relative;
   transition: all 0.05s ease;
   text-align: center;
-  font-size: 20px; }
+  padding: 0 10px;
+  font-size: 40px; }
   .sentence b {
     transition: all 0.05s ease;
     font-size: 30px; }

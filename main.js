@@ -30,6 +30,7 @@ var show_question = function() { // Dispkay sentence and add sentence in the occ
 			occured_questions_id.push(current_question_id)
 			$('#sentence_prt_1').text(current_question.question[0])
 			$('#sentence_prt_2').text(current_question.question[1])
+			show_options()
 		} else {
 			current_question_id=create_question_id()
 			show_question(current_question_id)
@@ -74,58 +75,45 @@ var option_match = function(option){ // Checks the input value, sees if it match
 
 var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to the answer.
 	var q=jlpt3[current_question_id] // ps stands for Phrasal Verbs
-		successMsg='Right on!', //success message
-		errorMsg='Try again!' //fail message
+		
 	if(option_match(inputVal)) // Check if preposition correctly inputted
 	{
-		var option_id=options.map(e=>e[0]).indexOf(inputVal)
 		var answer=options.map(e=>(e[1]===true)?e[0]:'').join('')
 		count_rep++
 		// Order of actions
 		// = crosslines missed preposition
-		if(inputVal===answer)
-		{
-			// = Counter iteration
-			count_success++
-
-			// = notification
-			Materialize.toast(successMsg, 4000)
-
-			$('.assignment b').removeClass('prep--missed')
-			
-			// Highlights the sentence
-			$('.sentence').addClass('sentence--success')
-			$('#definition').addClass('definition--success')
-
-			setTimeout(function(){$('.sentence').removeClass('sentence--success')},500)
-				
-			// Re generateId
-			current_question_id=create_question_id()
-			// Add success class to the sentence.
-			setTimeout(show_question,500)
-		} else {
-			// = Counter iteration
-			count_fail++
-
-			// = notification
-			Materialize.toast(errorMsg, 4000)
-
-			$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
-
-			// Highlights the sentence
-			$('.sentence').addClass('shaky'),setTimeout(function(){$('.sentence').removeClass('shaky')},820);
-
-			inputEl.value=''
-
-			// if(sentences[ps.verb][inputVal]!==undefined){
-			// 	// wrongAnswer(ps.verb+' '+inputVal,sentences[ps.verb][inputVal][1]['m'])
-			// }
-		}
-		show_repetitions()
+		layout_update(inputVal===answer)
 	}
 }
 
-var show_repetitions = function() {
+function layout_update (output){
+	var successMsg='Right on!', 
+		errorMsg='Try again!',
+		option_id=options.map(e=>e[0]).indexOf(inputEl.value)
+	if(output===true){
+		count_success++
+		Materialize.toast(successMsg, 4000)
+		$('.assignment b').removeClass('prep--missed')
+		$('.sentence').addClass('sentence--success')
+		$('#definition').addClass('definition--success')
+		setTimeout(function(){$('.sentence').removeClass('sentence--success')},500)
+		current_question_id=create_question_id()
+		setTimeout(show_question,500)
+	} else {
+		count_fail++
+		Materialize.toast(errorMsg, 4000)
+		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
+		$('.sentence').addClass('shaky'),setTimeout(function(){$('.sentence').removeClass('shaky')},820);
+		inputEl.value=''
+	}
+	show_repetitions()
+
+}
+
+
+// Updates the repetition stats
+//******************************
+function show_repetitions() {
 	$('#repetition').text(' '+count_rep)
 	$('#success').text(' '+count_success)
 	$('#failure').text(' '+count_fail)
