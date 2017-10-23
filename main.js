@@ -8,6 +8,13 @@ var occured_questions_id=[],
 	current_question,
 	options
 
+var current = {
+	id,
+	question,
+	options,
+	lvl
+}
+
 // Sets the input field to Hiragana
 //**********************************
 wanakana.bind(inputEl); 
@@ -29,6 +36,7 @@ var show_question = function() {
 			$('#sentence_prt_1').text(current_question.question[0])
 			$('#sentence_prt_2').text(current_question.question[1])
 			show_options()
+			update_grasp_class()
 		} else {
 			current_question_id=create_question_id()
 			show_question(current_question_id)
@@ -36,7 +44,7 @@ var show_question = function() {
 	} else {
 		occured_questions_id=[] // Empty object.
 	}
-	return q_len
+	
 }
 
 // Sets the 'options' variable and displays options 
@@ -91,9 +99,20 @@ var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to
 			if(inputVal!==answer){
 				if(jlpt3[current_question_id].user_input[inputVal]){
 					jlpt3[current_question_id].user_input[inputVal]++
+					if(jlpt3[current_question_id].user_input[inputVal]>2){
+						Materialize.toast(
+							'You made that mistake &nbsp;<b>'
+							+jlpt3[current_question_id].user_input[inputVal]+
+							'</b>&nbsp; times with &nbsp;「<b>'
+							+inputVal+'</b>」, be careful ', 4000)
+					}
 				} else {
 					jlpt3[current_question_id].user_input[inputVal]=1
 				}
+			}
+			if(inputVal===answer){
+				$('#see-more_link').html('See more about <b>'+answer+'</b>')
+				$('#see-more_link').attr('href','http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-'+answer+'/')
 			}
 			localstorage_update()
 		}
@@ -107,7 +126,7 @@ function layout_update (output){
 	jlpt3[current_question_id].stats.count++
 	if(output===true){
 		count_success++
-		Materialize.toast(successMsg, 4000)
+		Materialize.toast(successMsg, 1000)
 		$('.assignment b').removeClass('prep--missed')
 		$('.sentence').addClass('sentence--success')
 		$('#definition').addClass('definition--success')
@@ -116,10 +135,9 @@ function layout_update (output){
 		setTimeout(function(){$('.sentence').removeClass('sentence--success')},500)
 		current_question_id=create_question_id()
 		setTimeout(show_question,500)
-
 	} else {
 		count_fail++
-		Materialize.toast(errorMsg, 4000)
+		Materialize.toast(errorMsg, 1000)
 		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
 		$('.sentence').addClass('shaky'),setTimeout(function(){$('.sentence').removeClass('shaky')},820);
 		jlpt3[current_question_id].stats.fail++
@@ -132,6 +150,17 @@ function layout_update (output){
 
 }
 
+// Updates question's grasp level
+//********************************
+var update_grasp_class = function() {
+	console.log(jlpt3[current_question_id])
+	var curr_grasp_lvl=jlpt3[current_question_id].grasp_level
+	if($('.sentence')[0].classList.length>1){
+		$('.sentence').removeClass($('.sentence')[0].classList[1])
+	}
+	$('.sentence').addClass('grasp--'+curr_grasp_lvl);
+}
+
 // Updates the repetition stats
 //******************************
 function show_repetitions() {
@@ -141,11 +170,9 @@ function show_repetitions() {
 }
 
 current_question_id=create_question_id()
+localstorage_sync()
+localstorage_update()
 show_question()
 show_options()
 show_repetitions()
-localstorage_sync()
-localstorage_update()
-
-
 
