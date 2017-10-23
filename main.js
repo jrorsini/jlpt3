@@ -8,7 +8,6 @@ var occured_questions_id=[],
 	current_question,
 	options
 
-
 // Sets the input field to Hiragana
 //**********************************
 wanakana.bind(inputEl); 
@@ -81,21 +80,23 @@ var option_match = function(option){ // Checks the input value, sees if it match
 var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to the answer.
 	var q=jlpt3[current_question_id] // ps stands for Phrasal Verbs
 		
-	if(option_match(inputVal)) // Check if preposition correctly inputted
-	{
-		var answer=options.map(e=>(e[1]===true)?e[0]:'').join('')
-		count_rep++
-		// Order of actions
-		// = crosslines missed preposition
-		layout_update(inputVal===answer)
-		if(inputVal!==answer){
-			if(jlpt3[current_question_id].user_input[inputVal]){
-				jlpt3[current_question_id].user_input[inputVal]++
-			} else {
-				jlpt3[current_question_id].user_input[inputVal]=1
+	if(e.keyCode===13){
+		if(option_match(inputVal)) // Check if preposition correctly inputted
+		{
+			var answer=options.map(e=>(e[1]===true)?e[0]:'').join('')
+			count_rep++
+			// Order of actions
+			// = crosslines missed preposition
+			layout_update(inputVal===answer)
+			if(inputVal!==answer){
+				if(jlpt3[current_question_id].user_input[inputVal]){
+					jlpt3[current_question_id].user_input[inputVal]++
+				} else {
+					jlpt3[current_question_id].user_input[inputVal]=1
+				}
 			}
+			localstorage_update()
 		}
-		localstorage_update()
 	}
 }
 
