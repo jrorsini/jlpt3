@@ -1,19 +1,16 @@
-var occured_questions_id=[],
+var 
+	// Collects ids that have been already shown.
+	occured=[],
+	// To retrieve the user input value.
 	inputEl= $('#option')[0],
-	q_len = Object.keys(jlpt3).length,
+	// Question's length
+	len = Object.keys(jlpt3).length,
 	count_rep=0,
 	count_success=0,
 	count_fail=0,
-	current_question_id,
-	current_question,
-	options
 
-var current = {
-	id,
-	question,
-	options,
-	lvl
-}
+// Current question's object
+var curr = {}
 
 // Sets the input field to Hiragana
 //**********************************
@@ -21,38 +18,36 @@ wanakana.bind(inputEl);
 
 // Creates question's ID
 //***********************
-var create_question_id = () => Math.floor(Math.random()*Object.keys(jlpt3).length)+1
-
+var create_question_id = function () {
+	return Math.floor(Math.random()*Object.keys(jlpt3).length)+1
+}
 // Dispkay sentence and add sentence in the occurred array
 //*********************************************************
-var show_question = function() {
-	current_question=jlpt3[current_question_id]
+var show_question = function () {
 	inputEl.value=''
-	if(occured_questions_id.length<q_len)
+	if(occured.length<len)
 	{
-		if(occured_questions_id.indexOf(current_question_id)===-1)
+		if(occured.indexOf(curr.id)===-1)
 		{
-			occured_questions_id.push(current_question_id)
-			$('#sentence_prt_1').text(current_question.question[0])
-			$('#sentence_prt_2').text(current_question.question[1])
+			occured.push(curr.id)
+			$('#sentence_prt_1').text(curr.question[0])
+			$('#sentence_prt_2').text(curr.question[1])
 			show_options()
 			update_grasp_class()
 		} else {
-			current_question_id=create_question_id()
-			show_question(current_question_id)
+			update_current()
+			show_question(curr.id)
 		}
 	} else {
-		occured_questions_id=[] // Empty object.
+		occured=[] // Empty object.
 	}
 	
 }
 
 // Sets the 'options' variable and displays options 
 //**************************************************
-var show_options = function() {
-	options=jlpt3[current_question_id].options
-	options_to_show=options.map(e=>e[0])
-	$('.assignment').html('<u>Choose between</u><br><b>'+options_to_show.join('</b> - <b>')+'</b>')
+var show_options = function () {
+	$('.assignment').html('<u>Choose between</u><br><b>'+curr.options.map(e=>e[0]).join('</b> - <b>')+'</b>')
 }
 
 
@@ -66,6 +61,8 @@ var localstorage_sync = function () {
 }
 
 
+// Set the the updated data set version to localstorage
+//******************************************************
 var localstorage_update = function () {
 	localStorage.setItem('jlpt3-grammar',JSON.stringify(jlpt3))
 	localstorage_sync()
@@ -74,7 +71,7 @@ var localstorage_update = function () {
 
 // Checks if the input matches with any options 
 //**********************************************
-var option_match = function(option){ // Checks the input value, sees if it match any of the prepostions.
+var option_match = function (option){ // Checks the input value, sees if it match any of the prepostions.
 	if(option===''){
 		return false
 	} else {
@@ -85,8 +82,8 @@ var option_match = function(option){ // Checks the input value, sees if it match
 	return false
 }
 
-var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to the answer.
-	var q=jlpt3[current_question_id] // ps stands for Phrasal Verbs
+var check_answer = function (e,inputVal=inputEl.value) { // Checks input value to the answer.
+	var q=jlpt3[curr.id] // ps stands for Phrasal Verbs
 		
 	if(e.keyCode===13){
 		if(option_match(inputVal)) // Check if preposition correctly inputted
@@ -97,17 +94,17 @@ var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to
 			// = crosslines missed preposition
 			layout_update(inputVal===answer)
 			if(inputVal!==answer){
-				if(jlpt3[current_question_id].user_input[inputVal]){
-					jlpt3[current_question_id].user_input[inputVal]++
-					if(jlpt3[current_question_id].user_input[inputVal]>2){
+				if(jlpt3[curr.id].user_input[inputVal]){
+					jlpt3[curr.id].user_input[inputVal]++
+					if(jlpt3[curr.id].user_input[inputVal]>2){
 						Materialize.toast(
 							'You made that mistake &nbsp;<b>'
-							+jlpt3[current_question_id].user_input[inputVal]+
+							+jlpt3[curr.id].user_input[inputVal]+
 							'</b>&nbsp; times with &nbsp;「<b>'
 							+inputVal+'</b>」, be careful ', 4000)
 					}
 				} else {
-					jlpt3[current_question_id].user_input[inputVal]=1
+					jlpt3[curr.id].user_input[inputVal]=1
 				}
 			}
 			if(inputVal===answer){
@@ -119,31 +116,31 @@ var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to
 	}
 }
 
-function layout_update (output){
+function layout_update (output) {
 	var successMsg='Right on!', 
 		errorMsg='Try again!',
 		option_id=options.map(e=>e[0]).indexOf(inputEl.value)
-	jlpt3[current_question_id].stats.count++
+	jlpt3[curr.id].stats.count++
 	if(output===true){
 		count_success++
 		Materialize.toast(successMsg, 1000)
 		$('.assignment b').removeClass('prep--missed')
 		$('.sentence').addClass('sentence--success')
 		$('#definition').addClass('definition--success')
-		jlpt3[current_question_id].stats.success++
-		jlpt3[current_question_id].grasp_level++
+		curr.stats.success++
+		curr.lvl++
 		setTimeout(function(){$('.sentence').removeClass('sentence--success')},500)
-		current_question_id=create_question_id()
+		curr.id=create_question_id()
 		setTimeout(show_question,500)
 	} else {
 		count_fail++
 		Materialize.toast(errorMsg, 1000)
 		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
 		$('.sentence').addClass('shaky'),setTimeout(function(){$('.sentence').removeClass('shaky')},820);
-		jlpt3[current_question_id].stats.fail++
+		curr.stats.fail++
 		inputEl.value=''
-		if(jlpt3[current_question_id].grasp_level>0){
-			jlpt3[current_question_id].grasp_level++
+		if(curr.lvl>0){
+			curr.lvl++
 		}
 	}
 	show_repetitions()
@@ -152,9 +149,9 @@ function layout_update (output){
 
 // Updates question's grasp level
 //********************************
-var update_grasp_class = function() {
-	console.log(jlpt3[current_question_id])
-	var curr_grasp_lvl=jlpt3[current_question_id].grasp_level
+var update_grasp_class = function () {
+	console.log(jlpt3[curr.id])
+	var curr_grasp_lvl=jlpt3[curr.id].grasp_level
 	if($('.sentence')[0].classList.length>1){
 		$('.sentence').removeClass($('.sentence')[0].classList[1])
 	}
@@ -163,13 +160,21 @@ var update_grasp_class = function() {
 
 // Updates the repetition stats
 //******************************
-function show_repetitions() {
+function show_repetitions () {
 	$('#repetition').text(' '+count_rep)
 	$('#success').text(' '+count_success)
 	$('#failure').text(' '+count_fail)
 }
 
-current_question_id=create_question_id()
+var update_current = function () {
+	curr.id=create_question_id()
+	curr.question=jlpt3[curr.id].question
+	curr.options=jlpt3[curr.id].options
+	curr.stats=jlpt3[curr.id].options
+	curr.lvl=jlpt3[curr.id].grasp_level
+}
+
+update_current()
 localstorage_sync()
 localstorage_update()
 show_question()
