@@ -49,15 +49,21 @@ var show_options = function() {
 	$('.assignment').html('<u>Choose between</u><br><b>'+options_to_show.join('</b> - <b>')+'</b>')
 }
 
-// var wrongAnswer = function(pv, m) {// PhrasalVerb and Meaning being passed to the function.
-// 	if($('.wrong_answer:visible').length===0){
-// 		var rightAnswerClasses='s5 offset-s1'
-// 		$('#definition').removeClass('s6 offset-s3').addClass(rightAnswerClasses)
-// 		setTimeout(function(){$('.wrong_answer').fadeIn()},200)
-// 	}
-// 	$('.wrong_answer span').text(pv)
-// 	$('.wrong_answer h5').text(m)
-// }
+
+// Checks if there's anything in localstorage and assign jlpt3 var to current state
+//**********************************************************************************
+var localstorage_sync = function () {
+	if(localStorage.getItem('jlpt3-grammar')===null){
+		localStorage.setItem('jlpt3-grammar',JSON.stringify(jlpt3))
+	} 
+	jlpt3=JSON.parse(localStorage.getItem('jlpt3-grammar'))
+}
+
+
+var localstorage_update = function () {
+	localStorage.setItem('jlpt3-grammar',JSON.stringify(jlpt3))
+	localstorage_sync()
+}
 
 
 // Checks if the input matches with any options 
@@ -83,6 +89,14 @@ var check_answer = function(e,inputVal=inputEl.value) { // Checks input value to
 		// Order of actions
 		// = crosslines missed preposition
 		layout_update(inputVal===answer)
+		if(inputVal!==answer){
+			if(jlpt3[current_question_id].user_input[inputVal]){
+				jlpt3[current_question_id].user_input[inputVal]++
+			} else {
+				jlpt3[current_question_id].user_input[inputVal]=1
+			}
+		}
+		localstorage_update()
 	}
 }
 
@@ -90,21 +104,29 @@ function layout_update (output){
 	var successMsg='Right on!', 
 		errorMsg='Try again!',
 		option_id=options.map(e=>e[0]).indexOf(inputEl.value)
+	jlpt3[current_question_id].stats.count++
 	if(output===true){
 		count_success++
 		Materialize.toast(successMsg, 4000)
 		$('.assignment b').removeClass('prep--missed')
 		$('.sentence').addClass('sentence--success')
 		$('#definition').addClass('definition--success')
+		jlpt3[current_question_id].stats.success++
+		jlpt3[current_question_id].grasp_level++
 		setTimeout(function(){$('.sentence').removeClass('sentence--success')},500)
 		current_question_id=create_question_id()
 		setTimeout(show_question,500)
+
 	} else {
 		count_fail++
 		Materialize.toast(errorMsg, 4000)
 		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
 		$('.sentence').addClass('shaky'),setTimeout(function(){$('.sentence').removeClass('shaky')},820);
+		jlpt3[current_question_id].stats.fail++
 		inputEl.value=''
+		if(jlpt3[current_question_id].grasp_level>0){
+			jlpt3[current_question_id].grasp_level++
+		}
 	}
 	show_repetitions()
 
@@ -123,3 +145,5 @@ current_question_id=create_question_id()
 show_question()
 show_options()
 show_repetitions()
+localstorage_sync()
+localstorage_update()
