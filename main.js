@@ -13,14 +13,13 @@ var occured_questions_id=[],
 //**********************************
 wanakana.bind(inputEl); 
 
-
 // Creates question's ID
 //***********************
 var create_question_id = () => Math.floor(Math.random()*Object.keys(jlpt3).length)+1
 
-// Displays question question and fill in occured sentences array
-//****************************************************************
-var show_question = function() { // Dispkay sentence and add sentence in the occurred array.
+// Dispkay sentence and add sentence in the occurred array
+//*********************************************************
+var show_question = function() {
 	current_question=jlpt3[current_question_id]
 	inputEl.value=''
 	if(occured_questions_id.length<q_len)
@@ -132,7 +131,6 @@ function layout_update (output){
 
 }
 
-
 // Updates the repetition stats
 //******************************
 function show_repetitions() {
@@ -147,3 +145,6 @@ show_options()
 show_repetitions()
 localstorage_sync()
 localstorage_update()
+
+
+
