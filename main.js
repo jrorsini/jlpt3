@@ -7,7 +7,7 @@ var
 	len = Object.keys(jlpt3).length,
 	count_rep=0,
 	count_success=0,
-	count_fail=0,
+	count_fail=0
 
 // Current question's object
 var curr = {}
