@@ -25,6 +25,7 @@ var create_question_id = function () {
 //*********************************************************
 var show_question = function () {
 	inputEl.value=''
+	update_current()
 	if(occured.length<len)
 	{
 		if(occured.indexOf(curr.id)===-1)
@@ -36,7 +37,7 @@ var show_question = function () {
 			update_grasp_class()
 		} else {
 			update_current()
-			show_question(curr.id)
+			show_question()
 		}
 	} else {
 		occured=[] // Empty object.
@@ -75,36 +76,35 @@ var option_match = function (option){ // Checks the input value, sees if it matc
 	if(option===''){
 		return false
 	} else {
-		for(var i=0,len=options.length;i<len;i++){
-			if(option.trim()===options[i][0]) { return true }
+		for(var i=0,len=curr.options.length;i<len;i++){
+			if(option.trim()===curr.options[i][0]) { return true }
 		}
 	}
 	return false
 }
 
-var check_answer = function (e,inputVal=inputEl.value) { // Checks input value to the answer.
-	var q=jlpt3[curr.id] // ps stands for Phrasal Verbs
-		
+
+// Checks if the user's input match with the answer
+//**************************************************
+var check_answer = function (e,inputVal=inputEl.value) { // Checks input value to the answer.		
 	if(e.keyCode===13){
 		if(option_match(inputVal)) // Check if preposition correctly inputted
 		{
-			var answer=options.map(e=>(e[1]===true)?e[0]:'').join('')
+			var answer=curr.options.map(e=>(e[1]===true)?e[0]:'').join('')
 			count_rep++
-			// Order of actions
-			// = crosslines missed preposition
 			layout_update(inputVal===answer)
 			if(inputVal!==answer){
-				if(jlpt3[curr.id].user_input[inputVal]){
-					jlpt3[curr.id].user_input[inputVal]++
-					if(jlpt3[curr.id].user_input[inputVal]>2){
+				if(curr.user_input[inputVal]){
+					curr.user_input[inputVal]++
+					if(curr.user_input[inputVal]>2){
 						Materialize.toast(
 							'You made that mistake &nbsp;<b>'
-							+jlpt3[curr.id].user_input[inputVal]+
+							+curr.user_input[inputVal]+
 							'</b>&nbsp; times with &nbsp;「<b>'
 							+inputVal+'</b>」, be careful ', 4000)
 					}
 				} else {
-					jlpt3[curr.id].user_input[inputVal]=1
+					curr.user_input[inputVal]=1
 				}
 			}
 			if(inputVal===answer){
@@ -119,8 +119,8 @@ var check_answer = function (e,inputVal=inputEl.value) { // Checks input value t
 function layout_update (output) {
 	var successMsg='Right on!', 
 		errorMsg='Try again!',
-		option_id=options.map(e=>e[0]).indexOf(inputEl.value)
-	jlpt3[curr.id].stats.count++
+		option_id=curr.options.map(e=>e[0]).indexOf(inputEl.value)
+	curr.stats.count++
 	if(output===true){
 		count_success++
 		Materialize.toast(successMsg, 1000)
@@ -150,31 +150,29 @@ function layout_update (output) {
 // Updates question's grasp level
 //********************************
 var update_grasp_class = function () {
-	console.log(jlpt3[curr.id])
-	var curr_grasp_lvl=jlpt3[curr.id].grasp_level
 	if($('.sentence')[0].classList.length>1){
 		$('.sentence').removeClass($('.sentence')[0].classList[1])
 	}
-	$('.sentence').addClass('grasp--'+curr_grasp_lvl);
+	$('.sentence').addClass('grasp--'+curr.lvl);
 }
 
 // Updates the repetition stats
 //******************************
-function show_repetitions () {
+var show_repetitions = function () {
 	$('#repetition').text(' '+count_rep)
 	$('#success').text(' '+count_success)
 	$('#failure').text(' '+count_fail)
 }
 
 var update_current = function () {
-	curr.id=create_question_id()
-	curr.question=jlpt3[curr.id].question
-	curr.options=jlpt3[curr.id].options
-	curr.stats=jlpt3[curr.id].options
-	curr.lvl=jlpt3[curr.id].grasp_level
+	curr.id 			= create_question_id()
+	curr.question 		= jlpt3[curr.id].question
+	curr.options 		= jlpt3[curr.id].options
+	curr.stats 			= jlpt3[curr.id].options
+	curr.user_input 	= jlpt3[curr.id].user_input
+	curr.lvl 			= jlpt3[curr.id].grasp_level
 }
 
-update_current()
 localstorage_sync()
 localstorage_update()
 show_question()

@@ -39,94 +39,94 @@
     transform: translate3d(8px, 0, 0); } }
 
 .grasp--1 {
-  color: #D22828 !important; }
+  color: #D22828; }
 
 .grasp--2 {
-  color: #D23328 !important; }
+  color: #D23328; }
 
 .grasp--3 {
-  color: #D24A28 !important; }
+  color: #D24A28; }
 
 .grasp--4 {
-  color: #D25528 !important; }
+  color: #D25528; }
 
 .grasp--5 {
-  color: #D26028 !important; }
+  color: #D26028; }
 
 .grasp--6 {
-  color: #D26C28 !important; }
+  color: #D26C28; }
 
 .grasp--7 {
-  color: #D27728 !important; }
+  color: #D27728; }
 
 .grasp--8 {
-  color: #D28228 !important; }
+  color: #D28228; }
 
 .grasp--9 {
-  color: #D28E28 !important; }
+  color: #D28E28; }
 
 .grasp--10 {
-  color: #D29928 !important; }
+  color: #D29928; }
 
 .grasp--11 {
-  color: #D2A428 !important; }
+  color: #D2A428; }
 
 .grasp--12 {
-  color: #D2B028 !important; }
+  color: #D2B028; }
 
 .grasp--13 {
-  color: #D2C628 !important; }
+  color: #D2C628; }
 
 .grasp--14 {
-  color: #D2D228 !important; }
+  color: #D2D228; }
 
 .grasp--15 {
-  color: #C6D228 !important; }
+  color: #C6D228; }
 
 .grasp--16 {
-  color: #BBD228 !important; }
+  color: #BBD228; }
 
 .grasp--17 {
-  color: #B0D228 !important; }
+  color: #B0D228; }
 
 .grasp--18 {
-  color: #A4D228 !important; }
+  color: #A4D228; }
 
 .grasp--19 {
-  color: #99D228 !important; }
+  color: #99D228; }
 
 .grasp--20 {
-  color: #8ED228 !important; }
+  color: #8ED228; }
 
 .grasp--21 {
-  color: #82D228 !important; }
+  color: #82D228; }
 
 .grasp--22 {
-  color: #77D228 !important; }
+  color: #77D228; }
 
 .grasp--23 {
-  color: #6BD228 !important; }
+  color: #6BD228; }
 
 .grasp--24 {
-  color: #60D228 !important; }
+  color: #60D228; }
 
 .grasp--25 {
-  color: #55D228 !important; }
+  color: #55D228; }
 
 .grasp--26 {
-  color: #4AD228 !important; }
+  color: #4AD228; }
 
 .grasp--27 {
-  color: #3ED228 !important; }
+  color: #3ED228; }
 
 .grasp--28 {
-  color: #33D228 !important; }
+  color: #33D228; }
 
 .grasp--29 {
-  color: #28D228 !important; }
+  color: #28D228; }
 
 .grasp--25 {
-  color: #55D228 !important; }
+  color: #55D228; }
 
 .assignment u {
   display: inline-block;
@@ -162,7 +162,7 @@
       border-bottom-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.4); }
 
 .shaky {
-  color: #f44336;
+  color: #f44336 !important;
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0); }
   .shaky b {
@@ -190,9 +190,9 @@ audio {
   text-align: center; }
 
 .sentence--success {
-  color: #4caf50; }
+  color: #4caf50 !important; }
   .sentence--success b {
-    color: #4caf50; }
+    color: #4caf50 !important; }
 
 .prep--missed {
   color: red;

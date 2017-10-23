@@ -24,7 +24,7 @@ $grasp-colors: #D22828 #D23328 #D24A28 #D25528 #D26028 #D26C28 #D27728 #D28228 #
 @each $grasp-color in $grasp-colors 
 	$i: index($grasp-colors, $grasp-color)
 	.grasp--#{$i} 
-		color: $grasp-color !important
+		color: $grasp-color
 
 
 .assignment
@@ -61,7 +61,7 @@ $grasp-colors: #D22828 #D23328 #D24A28 #D25528 #D26028 #D26C28 #D27728 #D28228 #
     	box-shadow: 0 1px 0 0 rgba(0,0,0,0.4)
 
 .shaky
-	color: #f44336
+	color: #f44336 !important
 	animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both
 	transform: translate3d(0, 0, 0)	
 	b
@@ -88,9 +88,9 @@ audio
 	text-align: center
 
 .sentence--success
-	color: #4caf50
+	color: #4caf50 !important
 	b 
-		color: #4caf50
+		color: #4caf50 !important
 
 .prep--missed 
 	color: red
