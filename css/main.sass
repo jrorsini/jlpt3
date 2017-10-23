@@ -18,6 +18,15 @@
 	40%, 60% 
 		transform: translate3d(8px, 0, 0)
 
+$grasp-colors: #D22828 #D23328 #D24A28 #D25528 #D26028 #D26C28 #D27728 #D28228 #D28E28 #D29928 #D2A428 #D2B028 #D2C628 #D2D228 #C6D228 #BBD228 #B0D228 #A4D228 #99D228 #8ED228 #82D228 #77D228 #6BD228 #60D228 #55D228 #4AD228 #3ED228 #33D228 #28D228 #55D228
+
+// Grasp color level set LOOP
+@each $grasp-color in $grasp-colors 
+	$i: index($grasp-colors, $grasp-color)
+	.grasp--#{$i} 
+		color: $grasp-color !important
+
+
 .assignment
 	u
 		display: inline-block
