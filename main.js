@@ -4,10 +4,13 @@ var
 	// To retrieve the user input value.
 	inputEl= $('#option')[0],
 	// Question's length
-	len = Object.keys(jlpt3).length,
-	count_rep=0,
-	count_success=0,
-	count_fail=0
+	len = Object.keys(jlpt3).length, 
+	// Stat's object
+	stats={
+		rep:0,
+		success:0,
+		fail:0
+	}
 
 // Current question's object
 var curr = {}
@@ -59,6 +62,11 @@ var localstorage_sync = function () {
 		localStorage.setItem('jlpt3-grammar',JSON.stringify(jlpt3))
 	} 
 	jlpt3=JSON.parse(localStorage.getItem('jlpt3-grammar'))
+
+	if(localStorage.getItem('jlpt3-grammar-stats')===null){
+		localStorage.setItem('jlpt3-grammar-stats',JSON.stringify(stats))
+	} 
+	stats=JSON.parse(localStorage.getItem('jlpt3-grammar-stats'))
 }
 
 
@@ -66,6 +74,7 @@ var localstorage_sync = function () {
 //******************************************************
 var localstorage_update = function () {
 	localStorage.setItem('jlpt3-grammar',JSON.stringify(jlpt3))
+	localStorage.setItem('jlpt3-grammar-stats',JSON.stringify(stats))
 	localstorage_sync()
 }
 
@@ -91,7 +100,7 @@ var check_answer = function (e,inputVal=inputEl.value) { // Checks input value t
 		if(option_match(inputVal)) // Check if preposition correctly inputted
 		{
 			var answer=curr.options.map(e=>(e[1]===true)?e[0]:'').join('')
-			count_rep++
+			stats.rep++
 			layout_update(inputVal===answer)
 			if(inputVal!==answer){
 				if(curr.user_input[inputVal]){
@@ -122,7 +131,7 @@ function layout_update (output) {
 		option_id=curr.options.map(e=>e[0]).indexOf(inputEl.value)
 	curr.stats.count++
 	if(output===true){
-		count_success++
+		stats.success++
 		Materialize.toast(successMsg, 1000)
 		$('.assignment b').removeClass('prep--missed')
 		$('.sentence').addClass('sentence--success')
@@ -133,7 +142,7 @@ function layout_update (output) {
 		curr.id=create_question_id()
 		setTimeout(show_question,500)
 	} else {
-		count_fail++
+		stats.fail++
 		Materialize.toast(errorMsg, 1000)
 		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
 		$('.sentence').addClass('shaky'),setTimeout(function(){$('.sentence').removeClass('shaky')},820);
@@ -159,9 +168,9 @@ var update_grasp_class = function () {
 // Updates the repetition stats
 //******************************
 var show_repetitions = function () {
-	$('#repetition').text(' '+count_rep)
-	$('#success').text(' '+count_success)
-	$('#failure').text(' '+count_fail)
+	$('#repetition').text(' '+stats.rep)
+	$('#success').text(' '+stats.success)
+	$('#failure').text(' '+stats.fail)
 }
 
 var update_current = function () {
