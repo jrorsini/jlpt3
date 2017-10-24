@@ -12,6 +12,7 @@ var
 		fail:0
 	}
 
+
 // Current question's object
 var curr = {}
 
