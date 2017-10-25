@@ -100,10 +100,9 @@ var check_answer = function (e,inputVal=inputEl.value) { // Checks input value t
 	if(e.keyCode===13){
 		if(option_match(inputVal)) // Check if preposition correctly inputted
 		{
-			var answer=curr.options.map(e=>(e[1]===true)?e[0]:'').join('')
 			stats.rep++
-			layout_update(inputVal===answer)
-			if(inputVal!==answer){
+			layout_update(inputVal===curr.answer)
+			if(inputVal!==curr.answer){
 				if(curr.user_input[inputVal]){
 					curr.user_input[inputVal]++
 					if(curr.user_input[inputVal]>2){
@@ -117,13 +116,25 @@ var check_answer = function (e,inputVal=inputEl.value) { // Checks input value t
 					curr.user_input[inputVal]=1
 				}
 			}
-			if(inputVal===answer){
-				$('#see-more_link').html('See more about <b>'+answer+'</b>')
-				$('#see-more_link').attr('href','http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-'+answer+'/')
+			if(inputVal===curr.answer && match_grammar_point()){
+				var g_point = match_grammar_point()
+				$('#see-more_link').html('See more about <b>'+g_point+'</b>')
+				$('#see-more_link').attr('href','http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-'+g_point+'/')
 			}
 			localstorage_update()
 		}
 	}
+}
+
+var match_grammar_point = function() {
+	var match_len=0,grammar_point;
+	for (var i = 0; i < jlpt3_grammar_list.length; i++) {
+		var re=RegExp(jlpt3_grammar_list[i],'g')
+		if(curr.answer.match(re)!==null && curr.answer.match(re).length>match_len){
+			grammar_point=jlpt3_grammar_list[i]
+		}
+	}
+	return match_len>0?grammar_point:false
 }
 
 function layout_update (output) {
@@ -181,6 +192,7 @@ var update_current = function () {
 	curr.stats 			= jlpt3[curr.id].options
 	curr.user_input 	= jlpt3[curr.id].user_input
 	curr.lvl 			= jlpt3[curr.id].grasp_level
+	curr.answer 		= curr.options.map(e=>(e[1]===true)?e[0]:'').join('')
 }
 
 localstorage_sync()
