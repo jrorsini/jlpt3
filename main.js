@@ -131,6 +131,7 @@ var match_grammar_point = function() {
 	for (var i = 0; i < jlpt3_grammar_list.length; i++) {
 		var re=RegExp(jlpt3_grammar_list[i],'g')
 		if(curr.answer.match(re)!==null && curr.answer.match(re).length>match_len){
+			match_len=curr.answer.match(re).length
 			grammar_point=jlpt3_grammar_list[i]
 		}
 	}
