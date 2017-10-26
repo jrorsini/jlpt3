@@ -118,8 +118,14 @@ var check_answer = function (e,inputVal=inputEl.value) { // Checks input value t
 			}
 			if(inputVal===curr.answer && match_grammar_point()){
 				var g_point = match_grammar_point()
-				$('#see-more_link').html('See more about <b>'+g_point+'</b>')
-				$('#see-more_link').attr('href','http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-'+g_point+'/')
+				$('#see-more').html(
+
+					curr.question[0]+'<b>'+curr.answer+'</b>'+curr.question[1]+
+					'<br><a target="_blank" id="see-more_link" href="http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-'
+					+g_point+
+					'/">See more about <b>'
+					+g_point+
+					'</b></a>')
 			}
 			localstorage_update()
 		}
