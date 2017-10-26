@@ -52,7 +52,11 @@ var show_question = function () {
 // Sets the 'options' variable and displays options 
 //**************************************************
 var show_options = function () {
-	$('.assignment').html('<u>Choose between</u><br><b>'+curr.options.map(e=>e[0]).join('</b> - <b>')+'</b>')
+	$('.assignment').html(
+		'<u>Choose between</u><br><b>'
+		+ curr.options.map(e=>e[0]).join('</b> - <b>') +
+		'</b>'
+	)
 }
 
 
@@ -119,14 +123,13 @@ var check_answer = function (e,inputVal=inputEl.value) { // Checks input value t
 			if(inputVal===curr.answer && match_grammar_point()){
 				var g_point = match_grammar_point()
 				$('#see-more').html(
-
-					curr.question[0]+'<b>'+curr.answer+'</b>'+curr.question[1]+
-					'<br><a target="_blank" id="see-more_link" href="http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-'
-					+g_point+
-					'/">See more about <b>'
-					+g_point+
-					'</b></a>')
+					`${curr.question[0]}<b>${curr.answer}</b>${curr.question[1]}
+					<br>
+					<a target="_blank" id="see-more_link" href="http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-${g_point}/">
+					See more about <b>${g_point}</b></a>`
+				)
 			}
+			
 			localstorage_update()
 		}
 	}
