@@ -16,11 +16,11 @@ var
 // Current question's object
 var curr = {}
 
-localstorage_sync()
-localstorage_update()
-show_question()
-show_options()
-show_repetitions()
+localstorageSync()
+localstorageUpdate()
+showQuestion()
+showOptions()
+showRepetitions()
 
 
 // Sets the input field to Hiragana
@@ -35,7 +35,7 @@ function create_question_id() {
 
 // Dispkay sentence and add sentence in the occurred array
 //*********************************************************
-function show_question() {
+function showQuestion() {
 	inputEl.value = '';
 	update_current()
 	if(occured.length < len) {
@@ -43,11 +43,11 @@ function show_question() {
 			occured.push(curr.id)
 			$('#sentence_prt_1').text(curr.question[0])
 			$('#sentence_prt_2').text(curr.question[1])
-			show_options()
+			showOptions()
 			update_grasp_class()
 		} else {
 			update_current()
-			show_question()
+			showQuestion()
 		}
 	} else {
 		occured = [] // Empty object.
@@ -56,7 +56,7 @@ function show_question() {
 
 // Sets the 'options' variable and displays options 
 //**************************************************
-function show_options() {
+function showOptions() {
 	$('.assignment').html(
 		'<u>Choose between</u><br><b>'
 		+ curr.options.map(e=>e[0]).join('</b> - <b>') +
@@ -66,7 +66,7 @@ function show_options() {
 
 // Checks if there's anything in localstorage and assign jlpt3 var to current state
 //**********************************************************************************
-function localstorage_sync() {
+function localstorageSync() {
 	if(localStorage.getItem('jlpt3-grammar') === null) {
 		localStorage.setItem('jlpt3-grammar', JSON.stringify(jlpt3))
 	} 
@@ -80,10 +80,10 @@ function localstorage_sync() {
 
 // Set the the updated data set version to localstorage
 //******************************************************
-function localstorage_update() {
+function localstorageUpdate() {
 	localStorage.setItem( 'jlpt3-grammar', JSON.stringify(jlpt3) )
 	localStorage.setItem( 'jlpt3-grammar-stats', JSON.stringify(stats) )
-	localstorage_sync()
+	localstorageSync()
 }
 
 // Checks if the input matches with any options 
@@ -129,7 +129,7 @@ function check_answer(e, inputVal = inputEl.value) { // Checks input value to th
 				)
 			}
 			
-			localstorage_update()
+			localstorageUpdate()
 		}
 	}
 }
@@ -144,7 +144,7 @@ function match_grammar_point() {
 			grammar_point = jlpt3_grammar_list[i]
 		}
 	}
-	
+
 	return match_len > 0 ? grammar_point : false
 }
 
@@ -165,7 +165,7 @@ function layout_update (output) {
 			$('.sentence').removeClass('sentence--success') 
 		}, 500)
 		curr.id = create_question_id()
-		setTimeout(show_question, 500)
+		setTimeout(showQuestion, 500)
 	} else {
 		stats.fail++
 		Materialize.toast(errorMsg, 1000)
@@ -179,7 +179,7 @@ function layout_update (output) {
 			curr.lvl++
 		}
 	}
-	show_repetitions()
+	showRepetitions()
 
 }
 
@@ -192,7 +192,7 @@ function update_grasp_class() {
 
 // Updates the repetition stats
 //******************************
-function show_repetitions() {
+function showRepetitions() {
 	$('#repetition').text(` ${stats.rep}`)
 	$('#success').text(` ${stats.success}`)
 	$('#failure').text(` ${stats.fail}`)
