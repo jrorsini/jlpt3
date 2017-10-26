@@ -124,8 +124,8 @@ function check_answer(e, inputVal = inputEl.value) { // Checks input value to th
 				$('#see-more').html(
 					`${curr.question[0]}<b>${curr.answer}</b>${curr.question[1]}
 					<br>
-					<a target="_blank" id="see-more_link" href="http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-${g_point}/">
-					See more about <b>${g_point}</b></a>`
+					<a target="_blank" id="see-more_link" href="${g_point[1]}">
+					See more about <b>${g_point[0]}</b></a>`
 				)
 			}
 			
@@ -135,10 +135,10 @@ function check_answer(e, inputVal = inputEl.value) { // Checks input value to th
 }
 
 function match_grammar_point() {
-	var match_len = 0,grammar_point;
+	var match_len = 0, grammar_point;
 
 	for (var i = 0; i < jlpt3_grammar_list.length; i++) {
-		var re = RegExp(jlpt3_grammar_list[i],'g')
+		var re = RegExp(jlpt3_grammar_list[i][0],'g')
 		if(curr.answer.match(re)!==null && curr.answer.match(re).length > match_len){
 			match_len = curr.answer.match(re).length
 			grammar_point = jlpt3_grammar_list[i]
