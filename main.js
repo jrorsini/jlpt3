@@ -56,10 +56,11 @@ function showQuestion() {
  */
 // 
 function showRepetitions() {
-
+	var percentage = Math.round(stats.success / stats.rep * 100)
 	$('#repetition').html(` ${stats.rep}`)
 	$('#success').html(` ${stats.success}`)
 	$('#failure').html(` ${stats.fail}`)
+	$('#percentage').html(` ${percentage}%`)
 
 }
 
