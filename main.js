@@ -39,17 +39,21 @@ function showQuestion() {
 	inputEl.value = '';
 	update_current()
 	if(occured.length < len) {
+
 		if(occured.indexOf(curr.id) === -1) {
+
 			occured.push(curr.id)
 			$('#sentence_prt_1').text(curr.question[0])
 			$('#sentence_prt_2').text(curr.question[1])
 			showOptions()
 			update_grasp_class()
 		} else {
+
 			update_current()
 			showQuestion()
 		}
 	} else {
+
 		occured = [] // Empty object.
 	}
 }
@@ -71,12 +75,16 @@ function showOptions() {
  */
 function localstorageSync() {
 	if(localStorage.getItem('jlpt3-grammar') === null) {
+
 		localStorage.setItem('jlpt3-grammar', JSON.stringify(jlpt3))
+
 	} 
 	jlpt3=JSON.parse(localStorage.getItem('jlpt3-grammar'))
 
 	if(localStorage.getItem('jlpt3-grammar-stats') === null) {
+
 		localStorage.setItem('jlpt3-grammar-stats', JSON.stringify(stats))
+
 	} 
 	stats=JSON.parse( localStorage.getItem('jlpt3-grammar-stats') )
 }
@@ -95,7 +103,9 @@ function localstorageUpdate() {
  */
 function optionMatch(option) { // Checks the input value, sees if it match any of the prepostions.
 	if(option !== '') {
+
 		for(var i = 0, len = curr.options.length; i < len; i++){
+			
 			if(option.trim() === curr.options[i][0]) { return true }
 		}
 	}
@@ -108,12 +118,17 @@ function optionMatch(option) { // Checks the input value, sees if it match any o
 function checkAnswer(e, inputVal = inputEl.value) { // Checks input value to the answer.		
 	if(e.keyCode === 13) {
 		if(optionMatch(inputVal)) {
+
 			stats.rep++
 			layout_update(inputVal === curr.answer)
 			if(inputVal !== curr.answer) {
+
 				if(curr.user_input[inputVal]) {
+
 					curr.user_input[inputVal]++
+
 					if(curr.user_input[inputVal] > 2) {
+
 						Materialize.toast(
 							`You made that mistake &nbsp;
 							<b>${curr.user_input[inputVal]}</b>&nbsp; 
@@ -123,12 +138,15 @@ function checkAnswer(e, inputVal = inputEl.value) { // Checks input value to the
 						)
 					}
 				} else {
+					
 					curr.user_input[inputVal] = 1
 				}
 			}
 
 			if(inputVal === curr.answer && match_grammar_point()){
+
 				var g_point = match_grammar_point()
+
 				$('#see-more').html(
 					`${curr.question[0]}<b>${curr.answer}</b>${curr.question[1]}
 					<br>
@@ -146,11 +164,15 @@ function match_grammar_point() {
 	var match_len = 0, grammar_point;
 
 	for (var i = 0; i < jlpt3_grammar_list.length; i++) {
+
 		var re = RegExp(jlpt3_grammar_list[i][0],'g')
+
 		if(curr.answer.match(re)!==null && curr.answer.match(re).length > match_len){
+
 			match_len = curr.answer.match(re).length
 			grammar_point = jlpt3_grammar_list[i]
 		}
+
 	}
 
 	return match_len > 0 ? grammar_point : false
@@ -162,19 +184,24 @@ function layout_update (output) {
 		option_id	=curr.options.map(e => e[0]).indexOf(inputEl.value)
 	curr.stats.count++
 	if(output === true) {
+
 		stats.success++
+
 		Materialize.toast(successMsg, 1000)
 		$('.assignment b').removeClass('prep--missed')
 		$('.sentence').addClass('sentence--success')
 		$('#definition').addClass('definition--success')
 		curr.stats.success++
 		curr.lvl++
+
 		setTimeout( function() {
 			$('.sentence').removeClass('sentence--success') 
 		}, 500)
+
 		curr.id = createQuestionId()
 		setTimeout(showQuestion, 500)
 	} else {
+
 		stats.fail++
 		Materialize.toast(errorMsg, 1000)
 		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
@@ -193,16 +220,20 @@ function layout_update (output) {
 // Updates question's grasp level
 //********************************
 function update_grasp_class() {
+
 	if ($('.sentence')[0].classList.length > 1) $('.sentence').removeClass( $('.sentence')[0].classList[1] );
 	$('.sentence').addClass(`grasp--${curr.lvl}`);
+
 }
 
 // Updates the repetition stats
 //******************************
 function showRepetitions() {
+
 	$('#repetition').text(` ${stats.rep}`)
 	$('#success').text(` ${stats.success}`)
 	$('#failure').text(` ${stats.fail}`)
+
 }
 
 function update_current() {
@@ -214,3 +245,4 @@ function update_current() {
 	curr.lvl 			= jlpt3[curr.id].grasp_level
 	curr.answer 		= curr.options.map(e=>(e[1] === true) ? e[0] : '').join('')
 }
+
