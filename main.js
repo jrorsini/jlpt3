@@ -26,13 +26,6 @@ showRepetitions()
 wanakana.bind(inputEl); 
 
 /**
- * createQuestionId() returns a random id for the questions
- */
-function createQuestionId() {
-	return Math.floor(Math.random() * Object.keys(jlpt3).length) + 1
-}
-
-/**
  * showQuestion() Displays sentence and add sentence in the occurred array
  */
 function showQuestion() {
@@ -58,6 +51,17 @@ function showQuestion() {
 	}
 }
 
+/**
+ * showRepetitions() Updates the repetition stats
+ */
+// 
+function showRepetitions() {
+
+	$('#repetition').html(` ${stats.rep}`)
+	$('#success').html(` ${stats.success}`)
+	$('#failure').html(` ${stats.fail}`)
+
+}
 
 /**
  * showOptions() Sets the 'options' variable and displays options 
@@ -68,6 +72,13 @@ function showOptions() {
 		+ curr.options.map(e=>e[0]).join('</b> - <b>') +
 		'</b>'
 	)
+}
+
+/**
+ * createQuestionId() returns a random id for the questions
+ */
+function createQuestionId() {
+	return Math.floor(Math.random() * Object.keys(jlpt3).length) + 1
 }
 
 /**
@@ -138,7 +149,7 @@ function checkAnswer(e, inputVal = inputEl.value) { // Checks input value to the
 						)
 					}
 				} else {
-					
+
 					curr.user_input[inputVal] = 1
 				}
 			}
@@ -179,9 +190,9 @@ function match_grammar_point() {
 }
 
 function layout_update (output) {
-	var successMsg 	='Right on!', 
-		errorMsg	='Try again!',
-		option_id	=curr.options.map(e => e[0]).indexOf(inputEl.value)
+	var successMsg 	= 'Right on!', 
+		errorMsg	= 'Try again!',
+		option_id	= curr.options.map(e => e[0]).indexOf(inputEl.value)
 	curr.stats.count++
 	if(output === true) {
 
@@ -223,16 +234,6 @@ function update_grasp_class() {
 
 	if ($('.sentence')[0].classList.length > 1) $('.sentence').removeClass( $('.sentence')[0].classList[1] );
 	$('.sentence').addClass(`grasp--${curr.lvl}`);
-
-}
-
-// Updates the repetition stats
-//******************************
-function showRepetitions() {
-
-	$('#repetition').text(` ${stats.rep}`)
-	$('#success').text(` ${stats.success}`)
-	$('#failure').text(` ${stats.fail}`)
 
 }
 
