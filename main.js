@@ -22,19 +22,19 @@ showQuestion()
 showOptions()
 showRepetitions()
 
-
-// Sets the input field to Hiragana
-//**********************************
+// Set input field to Hiragana characters
 wanakana.bind(inputEl); 
 
-// Creates question's ID
-//***********************
-function create_question_id() {
+/**
+ * createQuestionId() returns a random id for the questions
+ */
+function createQuestionId() {
 	return Math.floor(Math.random() * Object.keys(jlpt3).length) + 1
 }
 
-// Dispkay sentence and add sentence in the occurred array
-//*********************************************************
+/**
+ * showQuestion() Displays sentence and add sentence in the occurred array
+ */
 function showQuestion() {
 	inputEl.value = '';
 	update_current()
@@ -54,8 +54,10 @@ function showQuestion() {
 	}
 }
 
-// Sets the 'options' variable and displays options 
-//**************************************************
+
+/**
+ * showOptions() Sets the 'options' variable and displays options 
+ */
 function showOptions() {
 	$('.assignment').html(
 		'<u>Choose between</u><br><b>'
@@ -64,8 +66,9 @@ function showOptions() {
 	)
 }
 
-// Checks if there's anything in localstorage and assign jlpt3 var to current state
-//**********************************************************************************
+/**
+ * localstorageSync() Set localstorage with status and questions.
+ */
 function localstorageSync() {
 	if(localStorage.getItem('jlpt3-grammar') === null) {
 		localStorage.setItem('jlpt3-grammar', JSON.stringify(jlpt3))
@@ -78,17 +81,19 @@ function localstorageSync() {
 	stats=JSON.parse( localStorage.getItem('jlpt3-grammar-stats') )
 }
 
-// Set the the updated data set version to localstorage
-//******************************************************
+/**
+ * localstorageUpdate() Set the the updated data set version to localstorage
+ */
 function localstorageUpdate() {
 	localStorage.setItem( 'jlpt3-grammar', JSON.stringify(jlpt3) )
 	localStorage.setItem( 'jlpt3-grammar-stats', JSON.stringify(stats) )
 	localstorageSync()
 }
 
-// Checks if the input matches with any options 
-//**********************************************
-function option_match(option) { // Checks the input value, sees if it match any of the prepostions.
+/**
+ * optionMatch() Checks if the input matches with any options 
+ */
+function optionMatch(option) { // Checks the input value, sees if it match any of the prepostions.
 	if(option !== '') {
 		for(var i = 0, len = curr.options.length; i < len; i++){
 			if(option.trim() === curr.options[i][0]) { return true }
@@ -97,11 +102,12 @@ function option_match(option) { // Checks the input value, sees if it match any 
 	return false
 }
 
-// Checks if the user's input match with the answer
-//**************************************************
-function check_answer(e, inputVal = inputEl.value) { // Checks input value to the answer.		
+/**
+ * checkAnswer() Checks if the user's input match with the answer
+ */
+function checkAnswer(e, inputVal = inputEl.value) { // Checks input value to the answer.		
 	if(e.keyCode === 13) {
-		if(option_match(inputVal)) {
+		if(optionMatch(inputVal)) {
 			stats.rep++
 			layout_update(inputVal === curr.answer)
 			if(inputVal !== curr.answer) {
@@ -109,10 +115,12 @@ function check_answer(e, inputVal = inputEl.value) { // Checks input value to th
 					curr.user_input[inputVal]++
 					if(curr.user_input[inputVal] > 2) {
 						Materialize.toast(
-							'You made that mistake &nbsp;<b>'
-							+ curr.user_input[inputVal] +
-							'</b>&nbsp; times with &nbsp;「<b>'
-							+ inputVal +'</b>」, be careful ', 4000)
+							`You made that mistake &nbsp;
+							<b>${curr.user_input[inputVal]}</b>&nbsp; 
+							times with &nbsp;「
+							<b>${inputVal}</b>」, be careful`,
+							4000
+						)
 					}
 				} else {
 					curr.user_input[inputVal] = 1
@@ -164,7 +172,7 @@ function layout_update (output) {
 		setTimeout( function() {
 			$('.sentence').removeClass('sentence--success') 
 		}, 500)
-		curr.id = create_question_id()
+		curr.id = createQuestionId()
 		setTimeout(showQuestion, 500)
 	} else {
 		stats.fail++
@@ -180,7 +188,6 @@ function layout_update (output) {
 		}
 	}
 	showRepetitions()
-
 }
 
 // Updates question's grasp level
@@ -199,7 +206,7 @@ function showRepetitions() {
 }
 
 function update_current() {
-	curr.id 			= create_question_id()
+	curr.id 			= createQuestionId()
 	curr.question 		= jlpt3[curr.id].question
 	curr.options 		= jlpt3[curr.id].options
 	curr.stats 			= jlpt3[curr.id].options
