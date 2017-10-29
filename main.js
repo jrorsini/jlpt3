@@ -44,16 +44,15 @@ function getCurrentQuestion() {
 }
 
 
-
 /**
  * showQuestion() Displays sentence and add sentence in the occurred array
  */
-function showQuestion() {
+function showQuestion1() {
 	var curr = getCurrentQuestion()
 	showAnything('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
 }
 
-function showQuestion1() {
+function showQuestion() {
 	// inputEl.value = '';
 	update_current()
 	if(occured.length < len) {
