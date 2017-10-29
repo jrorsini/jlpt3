@@ -41,7 +41,6 @@ function showQuestion() {
 			showOptions()
 			update_grasp_class()
 		} else {
-
 			update_current()
 			showQuestion()
 		}

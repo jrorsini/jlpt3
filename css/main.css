@@ -128,6 +128,9 @@
 .grasp--25 {
   color: #55D228; }
 
+html {
+  color: #616161 !important; }
+
 .assignment u {
   display: inline-block;
   margin-bottom: 10px; }
@@ -135,6 +138,9 @@
 .assignment b {
   padding: 0 10px;
   font-size: 20px; }
+
+.assignment .btn-large {
+  margin-top: 10px; }
 
 .sentence {
   margin-top: 50px;
