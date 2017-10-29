@@ -36,8 +36,11 @@ function showQuestion() {
 		if(occured.indexOf(curr.id) === -1) {
 
 			occured.push(curr.id)
-			$('#sentence_prt_1').text(curr.question[0])
-			$('#sentence_prt_2').text(curr.question[1])
+			$('#sentence').html(
+				`<span>${curr.question[0]}</span>
+				<input type="text" id="option" onkeyup="checkAnswer(event)">
+				<span>${curr.question[1]}</span>`
+			)
 			showOptions()
 			update_grasp_class()
 		} else {

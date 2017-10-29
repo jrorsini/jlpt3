@@ -10,13 +10,15 @@
 <body>
 	<p class="assignment" style="text-align: center;">
 		<!-- JS used there! b tag-->
+		<input type="text" id="option" onkeyup="checkAnswer(event)"> 
 	</p>
 	<hr>
-	<p class="sentence" id="sentence">
-		<span id="sentence_prt_1"></span>  <!-- JS used there! -->
-		<input type="text" id="option" onkeyup="checkAnswer(event)">  <!-- JS used there! -->
-		<span id="sentence_prt_2"></span> <!-- JS used there! -->
-	</p>
+	<p class="sentence" id="sentence"> <!-- JS used there! --></p>
+	<!-- <p class="sentence" id="sentence">
+		<span id="sentence_prt_1"></span>  
+		<input type="text" id="option" onkeyup="checkAnswer(event)"> 
+		<span id="sentence_prt_2"></span> 
+	</p> -->
 	<audio class="audio" src=""></audio>
 	<p class="repetition_status" style="text-align: center;">
 		<i class="tiny material-icons">remove_red_eye</i><span id="repetition"></span> -
