@@ -29,11 +29,32 @@ function showAnything (elementName, content) {
 	$(elementName).html(content)
 }
 
+
+function getCurrentQuestion() {
+	update_current()
+	if(occured.length < len) {
+		if (occured.indexOf(curr.id) === -1) {
+			getCurrentQuestion()
+		}
+		return curr
+	} else {
+		occured = [] // Empty object.
+		getCurrentQuestion()
+	}
+}
+
+
+
 /**
  * showQuestion() Displays sentence and add sentence in the occurred array
  */
 function showQuestion() {
-	inputEl.value = '';
+	var curr = getCurrentQuestion()
+	showAnything('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
+}
+
+function showQuestion1() {
+	// inputEl.value = '';
 	update_current()
 	if(occured.length < len) {
 
@@ -194,7 +215,7 @@ function layout_update (output) {
 		option_id	= curr.options.map(e => e[0]).indexOf($('#option')[0].value)
 	curr.stats.count++
 	if(output === true) {
-		
+
 		Materialize.toast(successMsg, 1000)
 		$('.assignment b').removeClass('prep--missed')
 		$('.sentence').addClass('sentence--success')
