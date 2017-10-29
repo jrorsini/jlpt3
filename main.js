@@ -23,7 +23,11 @@ showOptions()
 showRepetitions()
 
 // Set input field to Hiragana characters
-wanakana.bind(inputEl); 
+wanakana.bind($('#option')[0]);
+
+function showAnything (elementName, content) {
+	$(elementName).html(content)
+}
 
 /**
  * showQuestion() Displays sentence and add sentence in the occurred array
@@ -36,11 +40,7 @@ function showQuestion() {
 		if(occured.indexOf(curr.id) === -1) {
 
 			occured.push(curr.id)
-			$('#sentence').html(
-				`<span>${curr.question[0]}</span>
-				<input type="text" id="option" onkeyup="checkAnswer(event)">
-				<span>${curr.question[1]}</span>`
-			)
+			showAnything('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
 			showOptions()
 			update_grasp_class()
 		} else {
@@ -59,22 +59,17 @@ function showQuestion() {
 // 
 function showRepetitions() {
 	var percentage = Math.round(stats.success / stats.rep * 100)
-	$('#repetition').html(` ${stats.rep}`)
-	$('#success').html(` ${stats.success}`)
-	$('#failure').html(` ${stats.fail}`)
-	$('#percentage').html(` ${percentage}%`)
-
+	showAnything('#repetition',` ${stats.rep}`)
+	showAnything('#success',` ${stats.success}`)
+	showAnything('#failure',` ${stats.fail}`)
+	showAnything('#percentage',` ${percentage}`)
 }
 
 /**
  * showOptions() Sets the 'options' variable and displays options 
  */
 function showOptions() {
-	$('.assignment').html(
-		'<u>Choose between</u><br><b>'
-		+ curr.options.map(e=>e[0]).join('</b> - <b>') +
-		'</b>'
-	)
+	showAnything('.assignment',`<u>Choose between</u><br><b>${curr.options.map(e=>e[0]).join('</b> - <b>')}</b>`)
 }
 
 /**
@@ -129,7 +124,7 @@ function optionMatch(option) { // Checks the input value, sees if it match any o
 /**
  * checkAnswer() Checks if the user's input match with the answer
  */
-function checkAnswer(e, inputVal = inputEl.value) { // Checks input value to the answer.		
+function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input value to the answer.		
 	if(e.keyCode === 13) {
 		if(optionMatch(inputVal)) {
 
@@ -161,7 +156,8 @@ function checkAnswer(e, inputVal = inputEl.value) { // Checks input value to the
 
 				var g_point = match_grammar_point()
 
-				$('#see-more').html(
+				showAnything(
+					'#see-more',
 					`${curr.question[0]}<b>${curr.answer}</b>${curr.question[1]}
 					<br>
 					<a target="_blank" id="see-more_link" href="${g_point[1]}">
@@ -195,12 +191,10 @@ function match_grammar_point() {
 function layout_update (output) {
 	var successMsg 	= 'Right on!', 
 		errorMsg	= 'Try again!',
-		option_id	= curr.options.map(e => e[0]).indexOf(inputEl.value)
+		option_id	= curr.options.map(e => e[0]).indexOf($('#option')[0].value)
 	curr.stats.count++
 	if(output === true) {
-
-		stats.success++
-
+		
 		Materialize.toast(successMsg, 1000)
 		$('.assignment b').removeClass('prep--missed')
 		$('.sentence').addClass('sentence--success')
@@ -223,7 +217,7 @@ function layout_update (output) {
 			$('.sentence').removeClass('shaky') 
 		}, 820);
 		curr.stats.fail++
-		inputEl.value = ''
+		$('#option')[0].value = ''
 		if(curr.lvl > 0){
 			curr.lvl++
 		}
@@ -235,7 +229,9 @@ function layout_update (output) {
 //********************************
 function update_grasp_class() {
 
-	if ($('.sentence')[0].classList.length > 1) $('.sentence').removeClass( $('.sentence')[0].classList[1] );
+	if ($('.sentence')[0].classList.length > 1) {
+		$('.sentence').removeClass( $('.sentence')[0].classList[1] );
+	}
 	$('.sentence').addClass(`grasp--${curr.lvl}`);
 
 }
