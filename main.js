@@ -23,7 +23,7 @@ showOptions()
 showRepetitions()
 
 // Set input field to Hiragana characters
-wanakana.bind($('#option')[0]);
+
 
 function showAnything (elementName, content) {
 	$(elementName).html(content)
@@ -71,6 +71,8 @@ function showQuestion() {
 
 		occured = [] // Empty object.
 	}
+	wanakana.bind($('#option')[0]);
+	$('#option')[0].focus()
 }
 
 /**
