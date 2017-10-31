@@ -16,11 +16,6 @@ var
 // Current question's object
 var curr = {}
 
-localstorageSync()
-localstorageUpdate()
-showQuestion()
-showOptions()
-showRepetitions()
 
 // Set input field to Hiragana characters
 
@@ -80,11 +75,11 @@ function showQuestion() {
  */
 // 
 function showRepetitions() {
-	var percentage = Math.round(stats.success / stats.rep * 100)
+	var percentage = stats.rep === 0 ? 0 : Math.round(stats.success / stats.rep * 100)
 	showAnything('#repetition',` ${stats.rep}`)
 	showAnything('#success',` ${stats.success}`)
 	showAnything('#failure',` ${stats.fail}`)
-	showAnything('#percentage',` ${percentage}`)
+	showAnything('#percentage',` ${percentage}%`)
 }
 
 /**
@@ -102,22 +97,18 @@ function createQuestionId() {
 }
 
 /**
- * localstorageSync() Set localstorage with status and questions.
+ * Sets status and questions into localstorage.
  */
-function localstorageSync() {
-	if(localStorage.getItem('jlpt3-grammar') === null) {
+function localstorageSetUp(name, object) {
 
-		localStorage.setItem('jlpt3-grammar', JSON.stringify(jlpt3))
+	if(localStorage.getItem(name) === null) {
 
-	} 
-	jlpt3=JSON.parse(localStorage.getItem('jlpt3-grammar'))
-
-	if(localStorage.getItem('jlpt3-grammar-stats') === null) {
-
-		localStorage.setItem('jlpt3-grammar-stats', JSON.stringify(stats))
+		localStorage.setItem(name, JSON.stringify(object))
 
 	} 
-	stats=JSON.parse( localStorage.getItem('jlpt3-grammar-stats') )
+
+	return JSON.parse( localStorage.getItem(name) )
+
 }
 
 /**
@@ -126,7 +117,8 @@ function localstorageSync() {
 function localstorageUpdate() {
 	localStorage.setItem( 'jlpt3-grammar', JSON.stringify(jlpt3) )
 	localStorage.setItem( 'jlpt3-grammar-stats', JSON.stringify(stats) )
-	localstorageSync()
+	jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
+	stats = localstorageSetUp('jlpt3-grammar-stats',stats)	
 }
 
 /**
@@ -152,6 +144,7 @@ function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input valu
 
 			stats.rep++
 			layout_update(inputVal === curr.answer)
+
 			if(inputVal !== curr.answer) {
 
 				if(curr.user_input[inputVal]) {
@@ -221,7 +214,7 @@ function layout_update (output) {
 		$('.assignment b').removeClass('prep--missed')
 		$('.sentence').addClass('sentence--success')
 		$('#definition').addClass('definition--success')
-		curr.stats.success++
+		stats.success++
 		curr.lvl++
 
 		setTimeout( function() {
@@ -265,6 +258,15 @@ function update_current() {
 	curr.stats 			= jlpt3[curr.id].options
 	curr.user_input 	= jlpt3[curr.id].user_input
 	curr.lvl 			= jlpt3[curr.id].grasp_level
-	curr.answer 		= curr.options.map(e=>(e[1] === true) ? e[0] : '').join('')
+	curr.answer 		= curr.options.map(e => ( e[1] === true) ? e[0] : '').join('')
 }
+
+jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
+stats = localstorageSetUp('jlpt3-grammar-stats',stats)
+showRepetitions()
+showQuestion()
+showOptions()
+
+
+
 
