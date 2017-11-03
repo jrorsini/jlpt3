@@ -185,6 +185,10 @@ function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input valu
 	}
 }
 
+/**
+ * Check if the answer matches a grammatical point.
+ * And returns it
+ */
 function match_grammar_point() {
 	var match_len = 0, grammar_point;
 
@@ -203,6 +207,10 @@ function match_grammar_point() {
 	return match_len > 0 ? grammar_point : false
 }
 
+/**
+ * Check if the answer matches a grammatical point.
+ * And returns it
+ */
 function layout_update (output) {
 	var successMsg 	= 'Right on!', 
 		errorMsg	= 'Try again!',
@@ -228,20 +236,23 @@ function layout_update (output) {
 		stats.fail++
 		Materialize.toast(errorMsg, 1000)
 		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
-		$('.sentence').addClass('shaky'),setTimeout( function() {
+		$('.sentence').addClass('shaky'), setTimeout( function() {
+
 			$('.sentence').removeClass('shaky') 
 		}, 820);
 		curr.stats.fail++
 		$('#option')[0].value = ''
 		if(curr.lvl > 0){
+
 			curr.lvl++
 		}
 	}
 	showRepetitions()
 }
 
-// Updates question's grasp level
-//********************************
+/**
+ * Updates question's grasp level
+ */
 function update_grasp_class() {
 
 	if ($('.sentence')[0].classList.length > 1) {
@@ -251,6 +262,9 @@ function update_grasp_class() {
 
 }
 
+/**
+ * Updates the current object.
+ */
 function update_current() {
 	curr.id 			= createQuestionId()
 	curr.question 		= jlpt3[curr.id].question
