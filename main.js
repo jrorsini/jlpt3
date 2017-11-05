@@ -41,6 +41,7 @@ function getCurrentQuestion() {
 	} else {
 		occured = [] // Empty object.
 		getCurrentQuestion()
+		showQuestion()
 	}
 }
 
