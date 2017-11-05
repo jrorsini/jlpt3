@@ -57,9 +57,9 @@ function showQuestion() {
 			occured.push(curr.id)
 			showAnythingInHTML('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
 			showOptions()
-			isNew()
 			update_grasp_class()
 		} else {
+
 			update_current()
 			showQuestion()
 		}
@@ -107,30 +107,6 @@ function createQuestionId() {
 	return Math.floor( Math.random() * Object.keys(jlpt3).length ) + 1
 }
 
-/**
- * Sets status and questions into localstorage.
- */
-function localstorageSetUp(name, object) {
-
-	if(localStorage.getItem(name) === null) {
-
-		localStorage.setItem(name, JSON.stringify(object))
-
-	} 
-
-	return JSON.parse( localStorage.getItem(name) )
-
-}
-
-/**
- * localstorageUpdate() Set the the updated data set version to localstorage
- */
-function localstorageUpdate() {
-	localStorage.setItem( 'jlpt3-grammar', JSON.stringify(jlpt3) )
-	localStorage.setItem( 'jlpt3-grammar-stats', JSON.stringify(stats) )
-	jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
-	stats = localstorageSetUp('jlpt3-grammar-stats',stats)	
-}
 
 /**
  * optionMatch() Checks if the input matches with any options 
@@ -286,6 +262,33 @@ function update_current() {
 	curr.answer 		= curr.options.map(e => ( e[1] === true) ? e[0] : '').join('')
 }
 
+
+/**
+ * Sets status and questions into localstorage.
+ */
+function localstorageSetUp(name, object) {
+
+	if(localStorage.getItem(name) === null) {
+
+		localStorage.setItem(name, JSON.stringify(object))
+
+	} 
+
+	return JSON.parse( localStorage.getItem(name) )
+
+}
+
+/**
+ * localstorageUpdate() Set the the updated data set version to localstorage
+ */
+function localstorageUpdate() {
+
+	localStorage.setItem( 'jlpt3-grammar', JSON.stringify(jlpt3) )
+	localStorage.setItem( 'jlpt3-grammar-stats', JSON.stringify(stats) )
+	
+	jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
+	stats = localstorageSetUp('jlpt3-grammar-stats',stats)	
+}
 
 
 
