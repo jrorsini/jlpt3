@@ -19,8 +19,14 @@ var curr = {}
 
 // Set input field to Hiragana characters
 
+jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
+stats = localstorageSetUp('jlpt3-grammar-stats',stats)
+showRepetitions()
+showQuestion()
+showOptions()
 
-function showAnything (elementName, content) {
+
+function showAnythingInHTML (elementName, content) {
 	$(elementName).html(content)
 }
 
@@ -38,13 +44,12 @@ function getCurrentQuestion() {
 	}
 }
 
-
 /**
  * showQuestion() Displays sentence and add sentence in the occurred array
  */
 function showQuestion1() {
 	var curr = getCurrentQuestion()
-	showAnything('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
+	showAnythingInHTML('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
 }
 
 function showQuestion() {
@@ -55,7 +60,7 @@ function showQuestion() {
 		if(occured.indexOf(curr.id) === -1) {
 
 			occured.push(curr.id)
-			showAnything('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
+			showAnythingInHTML('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
 			showOptions()
 			update_grasp_class()
 		} else {
@@ -76,24 +81,24 @@ function showQuestion() {
 // 
 function showRepetitions() {
 	var percentage = stats.rep === 0 ? 0 : Math.round(stats.success / stats.rep * 100)
-	showAnything('#repetition',` ${stats.rep}`)
-	showAnything('#success',` ${stats.success}`)
-	showAnything('#failure',` ${stats.fail}`)
-	showAnything('#percentage',` ${percentage}%`)
+	showAnythingInHTML('#repetition',` ${stats.rep}`)
+	showAnythingInHTML('#success',` ${stats.success}`)
+	showAnythingInHTML('#failure',` ${stats.fail}`)
+	showAnythingInHTML('#percentage',` ${percentage}%`)
 }
 
 /**
  * showOptions() Sets the 'options' variable and displays options 
  */
 function showOptions() {
-	showAnything('.assignment',`<u>Choose between</u><br><b>${curr.options.map(e=>e[0]).join('</b> - <b>')}</b>`)
+	showAnythingInHTML('.assignment',`<u>Choose between</u><br><b>${curr.options.map(e => e[0]).join('</b> - <b>')}</b>`)
 }
 
 /**
  * createQuestionId() returns a random id for the questions
  */
 function createQuestionId() {
-	return Math.floor(Math.random() * Object.keys(jlpt3).length) + 1
+	return Math.floor( Math.random() * Object.keys(jlpt3).length ) + 1
 }
 
 /**
@@ -171,7 +176,7 @@ function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input valu
 
 				var g_point = match_grammar_point()
 
-				showAnything(
+				showAnythingInHTML(
 					'#see-more',
 					`${curr.question[0]}<b>${curr.answer}</b>${curr.question[1]}
 					<br>
@@ -275,11 +280,6 @@ function update_current() {
 	curr.answer 		= curr.options.map(e => ( e[1] === true) ? e[0] : '').join('')
 }
 
-jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
-stats = localstorageSetUp('jlpt3-grammar-stats',stats)
-showRepetitions()
-showQuestion()
-showOptions()
 
 
 
