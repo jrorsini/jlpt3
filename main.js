@@ -47,13 +47,8 @@ function getCurrentQuestion() {
 /**
  * showQuestion() Displays sentence and add sentence in the occurred array
  */
-function showQuestion1() {
-	var curr = getCurrentQuestion()
-	showAnythingInHTML('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
-}
 
 function showQuestion() {
-	// inputEl.value = '';
 	update_current()
 	if(occured.length < len) {
 
@@ -62,6 +57,7 @@ function showQuestion() {
 			occured.push(curr.id)
 			showAnythingInHTML('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
 			showOptions()
+			isNew()
 			update_grasp_class()
 		} else {
 			update_current()
@@ -92,6 +88,16 @@ function showRepetitions() {
  */
 function showOptions() {
 	showAnythingInHTML('.assignment',`<u>Choose between</u><br><b>${curr.options.map(e => e[0]).join('</b> - <b>')}</b>`)
+}
+
+
+function isNew() {
+	console.log(curr)
+	if(curr.stats.length !== undefined) {
+		$('#new_icon').html('')
+	} else {
+		$('#new_icon').html('star_border')
+	}
 }
 
 /**
