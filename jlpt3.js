@@ -1,4 +1,4 @@
-var jlpt3={
+var jlpt3 = {
     "1": {
         "question":[
             "二度とあの部屋に入らないと約束しろ ",

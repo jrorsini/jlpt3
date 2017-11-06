@@ -33,7 +33,7 @@ function showAnythingInHTML (elementName, content) {
 
 function getCurrentQuestion() {
 	update_current()
-	if(occured.length < len) {
+	if(occured.length < len - 1) {
 		if (occured.indexOf(curr.id) === -1) {
 			getCurrentQuestion()
 		}
@@ -200,7 +200,7 @@ function match_grammar_point() {
  * And returns it
  */
 function layout_update (output) {
-	var successMsg 	= 'Right on!', 
+	var successMsg 	= 'Right on!',
 		errorMsg	= 'Try again!',
 		option_id	= curr.options.map(e => e[0]).indexOf($('#option')[0].value)
 	curr.stats.count++
