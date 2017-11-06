@@ -25,12 +25,6 @@ showRepetitions()
 showQuestion()
 showOptions()
 
-
-function showAnythingInHTML (elementName, content) {
-	$(elementName).html(content)
-}
-
-
 function getCurrentQuestion() {
 	update_current()
 	if(occured.length < len - 1) {
@@ -56,7 +50,7 @@ function showQuestion() {
 		if(occured.indexOf(curr.id) === -1) {
 
 			occured.push(curr.id)
-			showAnythingInHTML('#sentence',`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
+			$('#sentence').html(`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
 			showOptions()
 			update_grasp_class()
 		} else {
@@ -72,23 +66,32 @@ function showQuestion() {
 	$('#option')[0].focus()
 }
 
+
+/**
+ * resetRepetition() Reset Repetitions to 0
+ */
+
+function resetRepetitions() {
+
+}
+
 /**
  * showRepetitions() Updates the repetition stats
  */
 // 
 function showRepetitions() {
 	var percentage = stats.rep === 0 ? 0 : Math.round(stats.success / stats.rep * 100)
-	showAnythingInHTML('#repetition',` ${stats.rep}`)
-	showAnythingInHTML('#success',` ${stats.success}`)
-	showAnythingInHTML('#failure',` ${stats.fail}`)
-	showAnythingInHTML('#percentage',` ${percentage}%`)
+	$('#repetition').html(` ${stats.rep}`)
+	$('#success').html(` ${stats.success}`)
+	$('#failure').html(` ${stats.fail}`)
+	$('#percentage').html(` ${percentage}%`)
 }
 
 /**
  * showOptions() Sets the 'options' variable and displays options 
  */
 function showOptions() {
-	showAnythingInHTML('.assignment',`<u>Choose between</u><br><b>${curr.options.map(e => e[0]).join('</b> - <b>')}</b>`)
+	$('.assignment').html(`<u>Choose between</u><br><b>${curr.options.map(e => e[0]).join('</b> - <b>')}</b>`)
 }
 
 
@@ -159,8 +162,7 @@ function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input valu
 
 				var g_point = match_grammar_point()
 
-				showAnythingInHTML(
-					'#see-more',
+				$('#see-more').html(
 					`${curr.question[0]}<b>${curr.answer}</b>${curr.question[1]}
 					<br>
 					<a target="_blank" id="see-more_link" href="${g_point[1]}">
