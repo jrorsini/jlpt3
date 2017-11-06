@@ -1,4 +1,5 @@
 var 
+	localData = {}
 	// Collects ids that have been already shown.
 	occured = [],
 	// To retrieve the user input value.
@@ -25,22 +26,9 @@ showRepetitions()
 showQuestion()
 showOptions()
 
-function getCurrentQuestion() {
-	update_current()
-	if(occured.length < len - 1) {
-		if (occured.indexOf(curr.id) === -1) {
-			getCurrentQuestion()
-		}
-		return curr
-	} else {
-		occured = [] // Empty object.
-		getCurrentQuestion()
-		showQuestion()
-	}
-}
 
 /**
- * showQuestion() Displays sentence and add sentence in the occurred array
+ * Displays sentence and add sentence in the occurred array
  */
 
 function showQuestion() {
@@ -61,6 +49,8 @@ function showQuestion() {
 	} else {
 
 		occured = [] // Empty object.
+		update_current()
+		showQuestion()
 	}
 	wanakana.bind($('#option')[0]);
 	$('#option')[0].focus()
