@@ -16,16 +16,6 @@ var
 // Current question's object
 var curr = {}
 
-
-// Set input field to Hiragana characters
-
-jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
-stats = localstorageSetUp('jlpt3-grammar-stats',stats)
-showRepetitions()
-showQuestion()
-showOptions()
-
-
 /**
  * Displays sentence and add sentence in the occurred array
  */
@@ -275,9 +265,17 @@ function localstorageSetUp(name, object) {
  */
 function localstorageUpdate() {
 
-	localStorage.setItem( 'jlpt3-grammar', JSON.stringify(localData.jlpt3) )
+	localStorage.setItem( 'jlpt3-grammar', JSON.stringify(jlpt3) )
 	localStorage.setItem( 'jlpt3-grammar-stats', JSON.stringify(stats) )
 	
-	localData.jlpt3 = localstorageSetUp('jlpt3-grammar',localData.jlpt3)
+	jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
 	stats = localstorageSetUp('jlpt3-grammar-stats',stats)	
 }
+
+// Set input field to Hiragana characters
+
+jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
+stats = localstorageSetUp('jlpt3-grammar-stats',stats)
+showRepetitions()
+showQuestion()
+showOptions()
