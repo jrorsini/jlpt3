@@ -5,14 +5,13 @@ var
 	// To retrieve the user input value.
 	inputEl = $('#option')[0],
 	// Question's length
-	len = Object.keys(jlpt3).length;
+	len = Object.keys(jlpt3).length,
 	// Stat's object
-	localData.stats = {
+	stats = {
 		rep:0,
 		success:0,
 		fail:0
 	}
-
 
 // Current question's object
 var curr = {}
@@ -247,11 +246,11 @@ function update_grasp_class() {
  */
 function update_current() {
 	curr.id 			= createQuestionId()
-	curr.question 		= localData.jlpt3[curr.id].question
-	curr.options 		= localData.jlpt3[curr.id].options
-	curr.stats 			= localData.jlpt3[curr.id].options
-	curr.user_input 	= localData.jlpt3[curr.id].user_input
-	curr.lvl 			= localData.jlpt3[curr.id].grasp_level
+	curr.question 		= jlpt3[curr.id].question
+	curr.options 		= jlpt3[curr.id].options
+	curr.stats 			= jlpt3[curr.id].options
+	curr.user_input 	= jlpt3[curr.id].user_input
+	curr.lvl 			= jlpt3[curr.id].grasp_level
 	curr.answer 		= curr.options.map(e => ( e[1] === true) ? e[0] : '').join('')
 }
 
@@ -282,7 +281,3 @@ function localstorageUpdate() {
 	localData.jlpt3 = localstorageSetUp('jlpt3-grammar',localData.jlpt3)
 	stats = localstorageSetUp('jlpt3-grammar-stats',stats)	
 }
-
-
-
-
