@@ -47,7 +47,7 @@ function showQuestion() {
 
 
 /**
- * resetRepetition() Reset Repetitions to 0
+ * Reset Repetitions to 0
  */
 
 function resetRepetitions() {
@@ -55,7 +55,7 @@ function resetRepetitions() {
 }
 
 /**
- * showRepetitions() Updates the repetition stats
+ * Updates the repetition stats
  */
 // 
 function showRepetitions() {
@@ -67,7 +67,7 @@ function showRepetitions() {
 }
 
 /**
- * showOptions() Sets the 'options' variable and displays options 
+ * Sets the 'options' variable and displays options 
  */
 function showOptions() {
 	$('.assignment').html(`<u>Choose between</u><br><b>${curr.options.map(e => e[0]).join('</b> - <b>')}</b>`)
@@ -84,7 +84,7 @@ function isNew() {
 }
 
 /**
- * createQuestionId() returns a random id for the questions
+ * returns a random id for the questions
  */
 function createQuestionId() {
 	return Math.floor( Math.random() * Object.keys(jlpt3).length ) + 1
@@ -92,7 +92,7 @@ function createQuestionId() {
 
 
 /**
- * optionMatch() Checks if the input matches with any options 
+ * Checks if the input matches with any options 
  */
 function optionMatch(option) { // Checks the input value, sees if it match any of the prepostions.
 	if(option !== '') {
@@ -170,7 +170,6 @@ function match_grammar_point() {
 			match_len = curr.answer.match(re).length
 			grammar_point = jlpt3_grammar_list[i]
 		}
-
 	}
 
 	return match_len > 0 ? grammar_point : false
@@ -195,6 +194,7 @@ function layout_update (output) {
 		curr.lvl++
 
 		setTimeout( function() {
+
 			$('.sentence').removeClass('sentence--success') 
 		}, 500)
 
@@ -205,6 +205,7 @@ function layout_update (output) {
 		stats.fail++
 		Materialize.toast(errorMsg, 1000)
 		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
+		
 		$('.sentence').addClass('shaky'), setTimeout( function() {
 
 			$('.sentence').removeClass('shaky') 
@@ -225,16 +226,18 @@ function layout_update (output) {
 function update_grasp_class() {
 
 	if ($('.sentence')[0].classList.length > 1) {
+
 		$('.sentence').removeClass( $('.sentence')[0].classList[1] );
 	}
-	$('.sentence').addClass(`grasp--${curr.lvl}`);
 
+	$('.sentence').addClass(`grasp--${curr.lvl}`);
 }
 
 /**
  * Updates the current object.
  */
 function update_current() {
+
 	curr.id 			= createQuestionId()
 	curr.question 		= jlpt3[curr.id].question
 	curr.options 		= jlpt3[curr.id].options
@@ -253,11 +256,9 @@ function localstorageSetUp(name, object) {
 	if(localStorage.getItem(name) === null) {
 
 		localStorage.setItem(name, JSON.stringify(object))
-
 	} 
 
 	return JSON.parse( localStorage.getItem(name) )
-
 }
 
 /**
@@ -274,8 +275,7 @@ function localstorageUpdate() {
 
 // Set input field to Hiragana characters
 
-jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
-stats = localstorageSetUp('jlpt3-grammar-stats',stats)
+localstorageUpdate()
 showRepetitions()
 showQuestion()
 showOptions()
