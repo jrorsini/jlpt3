@@ -8,7 +8,6 @@ var
 	len = Object.keys(jlpt3).length,
 	// Stat's object
 	stats = {
-		rep:0,
 		success:0,
 		fail:0
 	}
@@ -59,8 +58,9 @@ function resetRepetitions() {
  */
 // 
 function showRepetitions() {
-	var percentage = stats.rep === 0 ? 0 : Math.round(stats.success / stats.rep * 100)
-	$('#repetition').html(` ${stats.rep}`)
+	let repetitions = stats.success + stats.fail,
+		percentage = repetitions === 0 ? 0 : Math.round(stats.success / repetitions * 100)
+	$('#repetition').html(` ${repetitions}`)
 	$('#success').html(` ${stats.success}`)
 	$('#failure').html(` ${stats.fail}`)
 	$('#percentage').html(` ${percentage}%`)
@@ -96,16 +96,12 @@ function createQuestionId() {
 function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input value to the answer.		
 	if(e.keyCode === 13 && optionMatch(inputVal)) {
 
-		stats.rep++
-		layoutUpdate(inputVal === curr.answer)
-
 		if(inputVal !== curr.answer) {
-
+			stats.fail++			
 			if(jlpt3[curr.id].user_input[inputVal]) {
 
 				jlpt3[curr.id].user_input[inputVal]++
 				jlpt3[curr.id].stats.fail++
-				stats.fail++
 
 				if(jlpt3[curr.id].user_input[inputVal] > 2) {
 
@@ -126,6 +122,8 @@ function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input valu
 			jlpt3[curr.id].stats.success++
 			jlpt3[curr.id].lvl++
 		}
+
+		layoutUpdate(inputVal === curr.answer)		
 
 		if(inputVal === curr.answer && match_grammar_point()){
 
@@ -205,8 +203,9 @@ function layoutUpdate (output) {
 
 		Materialize.toast(errorMsg, 1000)
 		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
+		$('.sentence').addClass('shaky')
 		
-		$('.sentence').addClass('shaky'), setTimeout( function() {
+		setTimeout( function() {
 
 			$('.sentence').removeClass('shaky') 
 		}, 820);
@@ -230,7 +229,7 @@ function updateGraspLevel() {
 		$('.sentence').removeClass( $('.sentence')[0].classList[1] );
 	}
 
-	$('.sentence').addClass(`grasp--${curr.lvl}`);
+	$('.sentence').addClass(`grasp--${jlpt3[curr.id].lvl}`);
 }
 
 /**
@@ -244,7 +243,7 @@ function updateCurrent() {
 	curr.stats 			= jlpt3[curr.id].options
 	curr.user_input 	= jlpt3[curr.id].user_input
 	curr.lvl 			= jlpt3[curr.id].grasp_level
-	curr.answer 		= curr.options.map(e => ( e[1] === true) ? e[0] : '').join('')
+	curr.answer 		= jlpt3[curr.id].options.map(e => ( e[1] === true) ? e[0] : '').join('')
 }
 
 
@@ -275,6 +274,8 @@ function localstorageUpdate() {
 
 // Set input field to Hiragana characters
 
+jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
+stats = localstorageSetUp('jlpt3-grammar-stats',stats)	
 localstorageUpdate()
 showRepetitions()
 showQuestion()
