@@ -21,7 +21,7 @@ var curr = {}
  */
 
 function showQuestion() {
-	update_current()
+	updateCurrent()
 	if(occured.length < len) {
 
 		if(occured.indexOf(curr.id) === -1) {
@@ -32,13 +32,13 @@ function showQuestion() {
 			updateGraspLevel()
 		} else {
 
-			update_current()
+			updateCurrent()
 			showQuestion()
 		}
 	} else {
 
 		occured = [] // Empty object.
-		update_current()
+		updateCurrent()
 		showQuestion()
 	}
 	wanakana.bind($('#option')[0]);
@@ -106,14 +106,14 @@ function optionMatch(option) { // Checks the input value, sees if it match any o
 }
 
 /**
- * checkAnswer() Checks if the user's input match with the answer
+ * Checks if the user's input match with the answer
  */
 function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input value to the answer.		
 	if(e.keyCode === 13) {
 		if(optionMatch(inputVal)) {
 
 			stats.rep++
-			layout_update(inputVal === curr.answer)
+			layoutUpdate(inputVal === curr.answer)
 
 			if(inputVal !== curr.answer) {
 
@@ -179,11 +179,11 @@ function match_grammar_point() {
  * Check if the answer matches a grammatical point.
  * And returns it
  */
-function layout_update (output) {
+function layoutUpdate (output) {
 	var successMsg 	= 'Right on!',
 		errorMsg	= 'Try again!',
-		option_id	= curr.options.map(e => e[0]).indexOf($('#option')[0].value)
-	curr.stats.count++
+		option_id	= jlpt3[curr.id].options.map(e => e[0]).indexOf($('#option')[0].value)
+	jlpt3[curr.id].stats.count++
 	if(output === true) {
 
 		Materialize.toast(successMsg, 1000)
@@ -191,14 +191,15 @@ function layout_update (output) {
 		$('.sentence').addClass('sentence--success')
 		$('#definition').addClass('definition--success')
 		stats.success++
-		curr.lvl++
+		jlpt3[curr.id].stats.success++
+		jlpt3[curr.id].lvl++
 
 		setTimeout( function() {
 
 			$('.sentence').removeClass('sentence--success') 
 		}, 500)
 
-		curr.id = createQuestionId()
+		jlpt3[curr.id].id = createQuestionId()
 		setTimeout(showQuestion, 500)
 	} else {
 
@@ -210,11 +211,11 @@ function layout_update (output) {
 
 			$('.sentence').removeClass('shaky') 
 		}, 820);
-		curr.stats.fail++
+		jlpt3[curr.id].stats.fail++
 		$('#option')[0].value = ''
-		if(curr.lvl > 0){
+		if(jlpt3[curr.id].lvl > 0){
 
-			curr.lvl++
+			jlpt3[curr.id].lvl++
 		}
 	}
 	showRepetitions()
@@ -236,7 +237,7 @@ function updateGraspLevel() {
 /**
  * Updates the current object.
  */
-function update_current() {
+function updateCurrent() {
 
 	curr.id 			= createQuestionId()
 	curr.question 		= jlpt3[curr.id].question
