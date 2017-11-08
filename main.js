@@ -1,5 +1,4 @@
 var 
-	localData = {}
 	// Collects ids that have been already shown.
 	occured = [],
 	// To retrieve the user input value.
@@ -245,7 +244,6 @@ function updateCurrent() {
 	curr.lvl 			= jlpt3[curr.id].grasp_level
 	curr.answer 		= jlpt3[curr.id].options.map(e => ( e[1] === true) ? e[0] : '').join('')
 }
-
 
 /**
  * Sets status and questions into localstorage.
