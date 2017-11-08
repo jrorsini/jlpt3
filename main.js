@@ -90,6 +90,58 @@ function createQuestionId() {
 	return Math.floor( Math.random() * Object.keys(jlpt3).length ) + 1
 }
 
+/**
+ * Checks if the user's input match with the answer
+ */
+function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input value to the answer.		
+	if(e.keyCode === 13 && optionMatch(inputVal)) {
+
+		stats.rep++
+		layoutUpdate(inputVal === curr.answer)
+
+		if(inputVal !== curr.answer) {
+
+			if(jlpt3[curr.id].user_input[inputVal]) {
+
+				jlpt3[curr.id].user_input[inputVal]++
+				jlpt3[curr.id].stats.fail++
+				stats.fail++
+
+				if(jlpt3[curr.id].user_input[inputVal] > 2) {
+
+					Materialize.toast(
+						`You made that mistake &nbsp;
+						<b>${jlpt3[curr.id].user_input[inputVal]}</b>&nbsp; 
+						times with &nbsp;「
+						<b>${inputVal}</b>」, be careful`,
+						4000
+					)
+				}
+			} else {
+
+				jlpt3[curr.id].user_input[inputVal] = 1
+			}
+		} else {
+			stats.success++
+			jlpt3[curr.id].stats.success++
+			jlpt3[curr.id].lvl++
+		}
+
+		if(inputVal === curr.answer && match_grammar_point()){
+
+			var g_point = match_grammar_point()
+
+			$('#see-more').html(
+				`${curr.question[0]}<b>${curr.answer}</b>${curr.question[1]}
+				<br>
+				<a target="_blank" id="see-more_link" href="${g_point[1]}">
+				See more about <b>${g_point[0]}</b></a>`
+			)
+		}
+		
+		localstorageUpdate()
+	}
+}
 
 /**
  * Checks if the input matches with any options 
@@ -103,55 +155,6 @@ function optionMatch(option) { // Checks the input value, sees if it match any o
 		}
 	}
 	return false
-}
-
-/**
- * Checks if the user's input match with the answer
- */
-function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input value to the answer.		
-	if(e.keyCode === 13) {
-		if(optionMatch(inputVal)) {
-
-			stats.rep++
-			layoutUpdate(inputVal === curr.answer)
-
-			if(inputVal !== curr.answer) {
-
-				if(curr.user_input[inputVal]) {
-
-					curr.user_input[inputVal]++
-
-					if(curr.user_input[inputVal] > 2) {
-
-						Materialize.toast(
-							`You made that mistake &nbsp;
-							<b>${curr.user_input[inputVal]}</b>&nbsp; 
-							times with &nbsp;「
-							<b>${inputVal}</b>」, be careful`,
-							4000
-						)
-					}
-				} else {
-
-					curr.user_input[inputVal] = 1
-				}
-			}
-
-			if(inputVal === curr.answer && match_grammar_point()){
-
-				var g_point = match_grammar_point()
-
-				$('#see-more').html(
-					`${curr.question[0]}<b>${curr.answer}</b>${curr.question[1]}
-					<br>
-					<a target="_blank" id="see-more_link" href="${g_point[1]}">
-					See more about <b>${g_point[0]}</b></a>`
-				)
-			}
-			
-			localstorageUpdate()
-		}
-	}
 }
 
 /**
@@ -190,9 +193,6 @@ function layoutUpdate (output) {
 		$('.assignment b').removeClass('prep--missed')
 		$('.sentence').addClass('sentence--success')
 		$('#definition').addClass('definition--success')
-		stats.success++
-		jlpt3[curr.id].stats.success++
-		jlpt3[curr.id].lvl++
 
 		setTimeout( function() {
 
@@ -203,7 +203,6 @@ function layoutUpdate (output) {
 		setTimeout(showQuestion, 500)
 	} else {
 
-		stats.fail++
 		Materialize.toast(errorMsg, 1000)
 		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
 		
@@ -211,7 +210,7 @@ function layoutUpdate (output) {
 
 			$('.sentence').removeClass('shaky') 
 		}, 820);
-		jlpt3[curr.id].stats.fail++
+		
 		$('#option')[0].value = ''
 		if(jlpt3[curr.id].lvl > 0){
 
