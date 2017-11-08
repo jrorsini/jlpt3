@@ -29,7 +29,7 @@ function showQuestion() {
 			occured.push(curr.id)
 			$('#sentence').html(`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
 			showOptions()
-			update_grasp_class()
+			updateGraspLevel()
 		} else {
 
 			update_current()
@@ -223,7 +223,7 @@ function layout_update (output) {
 /**
  * Updates question's grasp level
  */
-function update_grasp_class() {
+function updateGraspLevel() {
 
 	if ($('.sentence')[0].classList.length > 1) {
 
