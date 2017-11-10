@@ -2,17 +2,26 @@ let view = {
 	options: 'options there...',
 	question: ["二度とあの部屋に入らないと約束しろ ","言われたけど、僕は約束しなかった。"],
 	graspLevel: 'The grasp Level',
-	stats: {
-		success: 0,
-		fail:0
-	},
+	stats: {right: 0, wrong:0},
 	showQuestion: function() {
 		let applicableElement = $('#sentence');
-		$('#sentence').html(`<span>${this.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${this.question[1]}</span>`)
+		applicableElement.html(`<span>${this.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${this.question[1]}</span>`)
+	},
+	showRepetitions: function() {
+		let repetitions = this.stats.right + this.stats.wrong,
+			percentage = repetitions === 0 ? 0 : Math.round(this.stats.right / repetitions * 100)
+		$('#repetition').html(` ${repetitions}`)
+		$('#success').html(` ${this.stats.right}`)
+		$('#failure').html(` ${this.stats.wrong}`)
+		$('#percentage').html(` ${percentage}%`)
 	}
 };
 
 var user = {
+	getQuestion:jlpt3[this.createQuestionId()],
+	createQuestionId: function() {
+		return Math.floor( Math.random() * Object.keys(jlpt3).length ) + 1
+	}
 	
 }
 
