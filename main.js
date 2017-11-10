@@ -1,6 +1,19 @@
 let view = {
+	options: 'options there...',
+	question: ["二度とあの部屋に入らないと約束しろ ","言われたけど、僕は約束しなかった。"],
+	graspLevel: 'The grasp Level',
+	stats: {
+		success: 0,
+		fail:0
+	},
+	showQuestion: function() {
+		let applicableElement = $('#sentence');
+		$('#sentence').html(`<span>${this.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${this.question[1]}</span>`)
+	}
+};
 
-
+var user = {
+	
 }
 
 var 
