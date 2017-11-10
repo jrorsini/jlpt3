@@ -3,18 +3,44 @@ let view = {
 	question: ["二度とあの部屋に入らないと約束しろ ","言われたけど、僕は約束しなかった。"],
 	graspLevel: 'The grasp Level',
 	stats: {right: 0, wrong:0},
+	/**
+	 * Displays sentence and add sentence in the occurred array
+	 */
 	showQuestion: function() {
+
 		let applicableElement = $('#sentence');
+
 		applicableElement.html(`<span>${this.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${this.question[1]}</span>`)
 	},
+	/**
+	 * Updates the repetition stats
+	 */
 	showRepetitions: function() {
+
 		let repetitions = this.stats.right + this.stats.wrong,
 			percentage = repetitions === 0 ? 0 : Math.round(this.stats.right / repetitions * 100)
+
 		$('#repetition').html(` ${repetitions}`)
 		$('#success').html(` ${this.stats.right}`)
 		$('#failure').html(` ${this.stats.wrong}`)
 		$('#percentage').html(` ${percentage}%`)
+	},
+	/**
+	 * Reset Repetitions to 0
+	 */
+	resetRepetitions: function() {
+		this.stats.right = 0
+		this.stats.fail = 0
+		this.showRepetitions()
+	},
+	/**
+	 * Attaches a function to an element
+	 */
+	addEventListener: function(element, type, func) {
+		element.addEventListener(type, func)
 	}
+
+
 };
 
 var user = {
@@ -68,15 +94,6 @@ function showQuestion() {
 	}
 	wanakana.bind($('#option')[0]);
 	$('#option')[0].focus()
-}
-
-
-/**
- * Reset Repetitions to 0
- */
-
-function resetRepetitions() {
-
 }
 
 /**
