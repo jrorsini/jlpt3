@@ -1,3 +1,8 @@
+let view = {
+
+
+}
+
 var 
 	// Collects ids that have been already shown.
 	occured = [],
