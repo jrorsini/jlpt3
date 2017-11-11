@@ -1,8 +1,55 @@
+var test = {
+	value: "Hello",
+	getValue: function() {
+		return this.value
+	}
+}
+
+console.log(test.getValue)
+
+let current = {
+	occured:[],	
+	question: null,
+	options: null,
+	stats: null,
+	userInput: null,
+	lvl: null,
+	answer: null,
+	/**
+	 * create id for the question and checks if it's already in there
+	 */
+	createQuestionId: function(fillInFunc) {
+		var objectLen = Object.keys(jlpt3).length,
+			id = Math.floor( Math.random() * objectLen ) + 1
+
+		while(this.occured.indexOf(id) !== -1) {
+			id = Math.floor( Math.random() * objectLen ) + 1
+		}
+
+		this.occured.push(id)
+
+		if (this.occured.length === objectLen) {
+
+			this.occured = []
+		}
+		return id
+	},
+	/**
+	 * Updates the current object.
+	 */
+	fillIn: function() {
+		let id = this.createQuestionId()
+		view.question = jlpt3[id].question,
+		view.options = jlpt3[id].options,
+		view.stats = jlpt3[id].stats,
+		view.userInput = jlpt3[id].user_input,
+		view.graspLevel = jlpt3[id].grasp_level,
+		view.answer = jlpt3[id].options.map(e => ( e[1] === true) ? e[0] : '').join('')
+	}	
+}
+
 let view = {
-	options: 'options there...',
-	question: ["二度とあの部屋に入らないと約束しろ ","言われたけど、僕は約束しなかった。"],
-	graspLevel: 'The grasp Level',
-	stats: {right: 0, wrong:0},
+	userStats: {right: 0, wrong:0},
 	/**
 	 * Displays sentence and add sentence in the occurred array
 	 */
@@ -12,44 +59,41 @@ let view = {
 
 		applicableElement.html(`<span>${this.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${this.question[1]}</span>`)
 	},
+
+	/**
+	 * Sets the 'options' variable and displays options 
+	 */
+	showOptions: function() {
+		$('.assignment').html(`<u>Choose between</u><br><b>${this.options.map(e => e[0]).join('</b> - <b>')}</b>`)
+	},
 	/**
 	 * Updates the repetition stats
 	 */
 	showRepetitions: function() {
 
-		let repetitions = this.stats.right + this.stats.wrong,
-			percentage = repetitions === 0 ? 0 : Math.round(this.stats.right / repetitions * 100)
+		let repetitions = this.userStats.right + this.userStats.wrong,
+			percentage = repetitions === 0 ? 0 : Math.round(this.userStats.right / repetitions * 100)
 
 		$('#repetition').html(` ${repetitions}`)
-		$('#success').html(` ${this.stats.right}`)
-		$('#failure').html(` ${this.stats.wrong}`)
+		$('#success').html(` ${this.userStats.right}`)
+		$('#failure').html(` ${this.userStats.wrong}`)
 		$('#percentage').html(` ${percentage}%`)
 	},
 	/**
 	 * Reset Repetitions to 0
 	 */
 	resetRepetitions: function() {
-		this.stats.right = 0
-		this.stats.fail = 0
+		this.userStats.right = 0
+		this.userStats.fail = 0
 		this.showRepetitions()
 	},
 	/**
 	 * Attaches a function to an element
 	 */
-	addEventListener: function(element, type, func) {
+	attachEvent: function(element, type, func) {
 		element.addEventListener(type, func)
 	}
-
-
 };
-
-var user = {
-	getQuestion:jlpt3[this.createQuestionId()],
-	createQuestionId: function() {
-		return Math.floor( Math.random() * Object.keys(jlpt3).length ) + 1
-	}
-	
-}
 
 var 
 	// Collects ids that have been already shown.
@@ -71,50 +115,37 @@ var curr = {}
  * Displays sentence and add sentence in the occurred array
  */
 
-function showQuestion() {
-	updateCurrent()
-	if(occured.length < len) {
+// function showQuestion() {
+// 	updateCurrent()
+// 	if(occured.length < len) {
 
-		if(occured.indexOf(curr.id) === -1) {
+// 		if(occured.indexOf(curr.id) === -1) {
 
-			occured.push(curr.id)
-			$('#sentence').html(`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
-			showOptions()
-			updateGraspLevel()
-		} else {
+// 			occured.push(curr.id)
+// 			$('#sentence').html(`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
+// 			showOptions()
+// 			updateGraspLevel()
+// 		} else {
 
-			updateCurrent()
-			showQuestion()
-		}
-	} else {
+// 			updateCurrent()
+// 			showQuestion()
+// 		}
+// 	} else {
 
-		occured = [] // Empty object.
-		updateCurrent()
-		showQuestion()
-	}
-	wanakana.bind($('#option')[0]);
-	$('#option')[0].focus()
-}
-
-/**
- * Updates the repetition stats
- */
-// 
-function showRepetitions() {
-	let repetitions = stats.success + stats.fail,
-		percentage = repetitions === 0 ? 0 : Math.round(stats.success / repetitions * 100)
-	$('#repetition').html(` ${repetitions}`)
-	$('#success').html(` ${stats.success}`)
-	$('#failure').html(` ${stats.fail}`)
-	$('#percentage').html(` ${percentage}%`)
-}
+// 		occured = [] // Empty object.
+// 		updateCurrent()
+// 		showQuestion()
+// 	}
+// 	wanakana.bind($('#option')[0]);
+// 	$('#option')[0].focus()
+// }
 
 /**
  * Sets the 'options' variable and displays options 
  */
-function showOptions() {
-	$('.assignment').html(`<u>Choose between</u><br><b>${curr.options.map(e => e[0]).join('</b> - <b>')}</b>`)
-}
+// function showOptions() {
+// 	$('.assignment').html(`<u>Choose between</u><br><b>${curr.options.map(e => e[0]).join('</b> - <b>')}</b>`)
+// }
 
 
 function isNew() {
@@ -129,9 +160,9 @@ function isNew() {
 /**
  * returns a random id for the questions
  */
-function createQuestionId() {
-	return Math.floor( Math.random() * Object.keys(jlpt3).length ) + 1
-}
+// function createQuestionId() {
+// 	return Math.floor( Math.random() * Object.keys(jlpt3).length ) + 1
+// }
 
 /**
  * Checks if the user's input match with the answer
@@ -259,7 +290,7 @@ function layoutUpdate (output) {
 			jlpt3[curr.id].lvl++
 		}
 	}
-	showRepetitions()
+	view.showRepetitions()
 }
 
 /**
@@ -278,16 +309,6 @@ function updateGraspLevel() {
 /**
  * Updates the current object.
  */
-function updateCurrent() {
-
-	curr.id 			= createQuestionId()
-	curr.question 		= jlpt3[curr.id].question
-	curr.options 		= jlpt3[curr.id].options
-	curr.stats 			= jlpt3[curr.id].options
-	curr.user_input 	= jlpt3[curr.id].user_input
-	curr.lvl 			= jlpt3[curr.id].grasp_level
-	curr.answer 		= jlpt3[curr.id].options.map(e => ( e[1] === true) ? e[0] : '').join('')
-}
 
 /**
  * Sets status and questions into localstorage.
@@ -319,6 +340,7 @@ function localstorageUpdate() {
 jlpt3 = localstorageSetUp('jlpt3-grammar',jlpt3)
 stats = localstorageSetUp('jlpt3-grammar-stats',stats)	
 localstorageUpdate()
-showRepetitions()
-showQuestion()
-showOptions()
+current.fillIn()
+view.showRepetitions()
+view.showQuestion()
+view.showOptions()

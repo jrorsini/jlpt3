@@ -1550,9 +1550,9 @@ var jlpt3 = {
     //     "user_input": {},
     //     "grasp_level": 0
     // }
-}
+};
 
-var jlpt3_grammar_list=[
+var jlpt3_grammar_list = [
     ["あまり","http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-%e3%81%82%e3%81%be%e3%82%8a-amari/"],
     ["あまりに","http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-%e3%81%82%e3%81%be%e3%82%8a%e3%81%ab-amari-ni/"],
     ["ば～ほど","http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-%e3%81%b0%e3%81%bb%e3%81%a9-bahodo/"],
@@ -1676,7 +1676,7 @@ var jlpt3_grammar_list=[
     ["ようとしない","http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-%e3%82%88%e3%81%86%e3%81%a8%e3%81%97%e3%81%aa%e3%81%84-you-to-shinai/"],
     ["ずに","http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-%e3%81%9a%e3%81%ab-zuni/"],
     ["ずにはいられない","http://japanesetest4you.com/flashcard/learn-jlpt-n3-grammar-%e3%81%9a%e3%81%ab%e3%81%af%e3%81%84%e3%82%89%e3%82%8c%e3%81%aa%e3%81%84-zuniwa-irarenai/"]
-]
+];
 
 
 
