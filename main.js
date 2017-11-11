@@ -33,7 +33,7 @@ let current = {
 		view.userInput = jlpt3[id].user_input,
 		view.graspLevel = jlpt3[id].grasp_level,
 		view.answer = jlpt3[id].options.map(e => ( e[1] === true) ? e[0] : '').join('')
-	}	
+	}
 }
 
 let view = {
@@ -47,7 +47,7 @@ let view = {
 
 		applicableElement.html(`<span>${this.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${this.question[1]}</span>`)
 		this.updateGraspLevel()
-		wanakana.bind($('#option')[0]);		
+		wanakana.bind($('#sentence')[0]);		
 	},
 
 	/**
@@ -74,7 +74,7 @@ let view = {
 	 * Reset Repetitions to 0
 	 */
 	resetRepetitions: function() {
-		
+		console.log('test')
 		this.userStats.right = 0
 		this.userStats.fail = 0
 		this.showRepetitions()
@@ -96,6 +96,20 @@ let view = {
 		}
 	
 		$('.sentence').addClass(`grasp--${this.graspLevel}`);
+	},
+
+	/**
+	 * Checks if the input matches with any options 
+	 */
+	optionMatch: function(userInput) { // Checks the input value, sees if it match any of the prepostions.
+		if(userInput !== '') {
+
+			for(var i = 0, len = this.options.length; i < len; i++){
+				
+				if(userInput.trim() === this.options[i][0]) { return true }
+			}
+		}
+		return false
 	}
 	
 };
@@ -126,20 +140,20 @@ function isNew() {
  * Checks if the user's input match with the answer
  */
 function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input value to the answer.		
-	if(e.keyCode === 13 && optionMatch(inputVal)) {
+	if(e.keyCode === 13 && view.optionMatch(inputVal)) {
 
-		if(inputVal !== curr.answer) {
-			stats.fail++			
-			if(jlpt3[curr.id].user_input[inputVal]) {
+		if(inputVal !== view.answer) {
+			view.userStats.fail++			
+			if(view.userInput[inputVal]) {
 
-				jlpt3[curr.id].user_input[inputVal]++
-				jlpt3[curr.id].stats.fail++
+				view.userInput[inputVal]++
+				view.stats.fail++
 
-				if(jlpt3[curr.id].user_input[inputVal] > 2) {
+				if(view.userInput[inputVal] > 2) {
 
 					Materialize.toast(
 						`You made that mistake &nbsp;
-						<b>${jlpt3[curr.id].user_input[inputVal]}</b>&nbsp; 
+						<b>${view.userInput[inputVal]}</b>&nbsp; 
 						times with &nbsp;「
 						<b>${inputVal}</b>」, be careful`,
 						4000
@@ -147,22 +161,22 @@ function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input valu
 				}
 			} else {
 
-				jlpt3[curr.id].user_input[inputVal] = 1
+				view.userInput[inputVal] = 1
 			}
 		} else {
-			stats.success++
-			jlpt3[curr.id].stats.success++
-			jlpt3[curr.id].lvl++
+			view.userStats.right++
+			view.stats.success++
+			view.lvl++
 		}
 
-		layoutUpdate(inputVal === curr.answer)		
+		layoutUpdate(inputVal === view.answer)		
 
-		if(inputVal === curr.answer && match_grammar_point()){
+		if(inputVal === view.answer && match_grammar_point()){
 
 			var g_point = match_grammar_point()
 
 			$('#see-more').html(
-				`${curr.question[0]}<b>${curr.answer}</b>${curr.question[1]}
+				`${view.question[0]}<b>${view.answer}</b>${view.question[1]}
 				<br>
 				<a target="_blank" id="see-more_link" href="${g_point[1]}">
 				See more about <b>${g_point[0]}</b></a>`
@@ -173,19 +187,7 @@ function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input valu
 	}
 }
 
-/**
- * Checks if the input matches with any options 
- */
-function optionMatch(option) { // Checks the input value, sees if it match any of the prepostions.
-	if(option !== '') {
 
-		for(var i = 0, len = curr.options.length; i < len; i++){
-			
-			if(option.trim() === curr.options[i][0]) { return true }
-		}
-	}
-	return false
-}
 
 /**
  * Check if the answer matches a grammatical point.
@@ -198,9 +200,9 @@ function match_grammar_point() {
 
 		var re = RegExp(jlpt3_grammar_list[i][0],'g')
 
-		if(curr.answer.match(re)!==null && curr.answer.match(re).length > match_len){
+		if(view.answer.match(re)!==null && view.answer.match(re).length > match_len){
 
-			match_len = curr.answer.match(re).length
+			match_len = view.answer.match(re).length
 			grammar_point = jlpt3_grammar_list[i]
 		}
 	}
@@ -215,8 +217,8 @@ function match_grammar_point() {
 function layoutUpdate (output) {
 	var successMsg 	= 'Right on!',
 		errorMsg	= 'Try again!',
-		option_id	= jlpt3[curr.id].options.map(e => e[0]).indexOf($('#option')[0].value)
-	jlpt3[curr.id].stats.count++
+		option_id	= view.options.map(e => e[0]).indexOf($('#option')[0].value)
+	view.stats.count++
 	if(output === true) {
 
 		Materialize.toast(successMsg, 1000)
@@ -229,8 +231,6 @@ function layoutUpdate (output) {
 			$('.sentence').removeClass('sentence--success') 
 		}, 500)
 
-		jlpt3[curr.id].id = createQuestionId()
-		setTimeout(showQuestion, 500)
 	} else {
 
 		Materialize.toast(errorMsg, 1000)
@@ -286,3 +286,5 @@ current.fillIn()
 view.showRepetitions()
 view.showQuestion()
 view.showOptions()
+
+// view.attachEvent($('#repResetIcon')[0],'click',view.resetRepetitions)
