@@ -1,28 +1,15 @@
-var test = {
-	value: "Hello",
-	getValue: function() {
-		return this.value
-	}
-}
-
-console.log(test.getValue)
-
 let current = {
 	occured:[],	
-	question: null,
-	options: null,
-	stats: null,
-	userInput: null,
-	lvl: null,
-	answer: null,
 	/**
 	 * create id for the question and checks if it's already in there
 	 */
 	createQuestionId: function(fillInFunc) {
+
 		var objectLen = Object.keys(jlpt3).length,
 			id = Math.floor( Math.random() * objectLen ) + 1
 
 		while(this.occured.indexOf(id) !== -1) {
+
 			id = Math.floor( Math.random() * objectLen ) + 1
 		}
 
@@ -38,6 +25,7 @@ let current = {
 	 * Updates the current object.
 	 */
 	fillIn: function() {
+		
 		let id = this.createQuestionId()
 		view.question = jlpt3[id].question,
 		view.options = jlpt3[id].options,
@@ -58,12 +46,15 @@ let view = {
 		let applicableElement = $('#sentence');
 
 		applicableElement.html(`<span>${this.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${this.question[1]}</span>`)
+		this.updateGraspLevel()
+		wanakana.bind($('#option')[0]);		
 	},
 
 	/**
 	 * Sets the 'options' variable and displays options 
 	 */
 	showOptions: function() {
+
 		$('.assignment').html(`<u>Choose between</u><br><b>${this.options.map(e => e[0]).join('</b> - <b>')}</b>`)
 	},
 	/**
@@ -83,6 +74,7 @@ let view = {
 	 * Reset Repetitions to 0
 	 */
 	resetRepetitions: function() {
+		
 		this.userStats.right = 0
 		this.userStats.fail = 0
 		this.showRepetitions()
@@ -92,7 +84,20 @@ let view = {
 	 */
 	attachEvent: function(element, type, func) {
 		element.addEventListener(type, func)
+	},
+	/**
+	 * Updates question's grasp level
+	 */
+	updateGraspLevel: function () {
+	
+		if ($('.sentence')[0].classList.length > 1) {
+	
+			$('.sentence').removeClass( $('.sentence')[0].classList[1] );
+		}
+	
+		$('.sentence').addClass(`grasp--${this.graspLevel}`);
 	}
+	
 };
 
 var 
@@ -108,46 +113,6 @@ var
 		fail:0
 	}
 
-// Current question's object
-var curr = {}
-
-/**
- * Displays sentence and add sentence in the occurred array
- */
-
-// function showQuestion() {
-// 	updateCurrent()
-// 	if(occured.length < len) {
-
-// 		if(occured.indexOf(curr.id) === -1) {
-
-// 			occured.push(curr.id)
-// 			$('#sentence').html(`<span>${curr.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${curr.question[1]}</span>`)
-// 			showOptions()
-// 			updateGraspLevel()
-// 		} else {
-
-// 			updateCurrent()
-// 			showQuestion()
-// 		}
-// 	} else {
-
-// 		occured = [] // Empty object.
-// 		updateCurrent()
-// 		showQuestion()
-// 	}
-// 	wanakana.bind($('#option')[0]);
-// 	$('#option')[0].focus()
-// }
-
-/**
- * Sets the 'options' variable and displays options 
- */
-// function showOptions() {
-// 	$('.assignment').html(`<u>Choose between</u><br><b>${curr.options.map(e => e[0]).join('</b> - <b>')}</b>`)
-// }
-
-
 function isNew() {
 	console.log(curr)
 	if(curr.stats.length !== undefined) {
@@ -156,13 +121,6 @@ function isNew() {
 		$('#new_icon').html('star_border')
 	}
 }
-
-/**
- * returns a random id for the questions
- */
-// function createQuestionId() {
-// 	return Math.floor( Math.random() * Object.keys(jlpt3).length ) + 1
-// }
 
 /**
  * Checks if the user's input match with the answer
@@ -293,22 +251,6 @@ function layoutUpdate (output) {
 	view.showRepetitions()
 }
 
-/**
- * Updates question's grasp level
- */
-function updateGraspLevel() {
-
-	if ($('.sentence')[0].classList.length > 1) {
-
-		$('.sentence').removeClass( $('.sentence')[0].classList[1] );
-	}
-
-	$('.sentence').addClass(`grasp--${jlpt3[curr.id].lvl}`);
-}
-
-/**
- * Updates the current object.
- */
 
 /**
  * Sets status and questions into localstorage.
