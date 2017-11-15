@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JLPT3</title>
+	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="node_modules/materialize-css/dist/css/materialize.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+	<i id="new_icon" class="material-icons amber-text"></i>
+	<p class="sentence" id="sentence"> <!-- JS used there! --></p>
+
+	<p class="repetition_status" style="text-align: center;">
+
+		<i id="repResetIcon" class="tiny material-icons text-darken-1">replay</i>
+		<i class="tiny material-icons">remove_red_eye</i>
+		<span id="repetition"></span> -
+		
+		<i class="tiny material-icons green-text">done</i>
+		<span id="success" class="green-text"></span> - 
+		
+		<i class="tiny material-icons red-text text-darken-1">close</i>
+		<span id="failure" class="red-text text-darken-1"></span> - 
+		
+		<i class="tiny material-icons green-text">equalizer</i>
+		<span id="percentage"></span>
+
+
+	</p>
+	<p style="text-align: center;" id="see-more">
+		<a target="_blank" id="see-more_link" href=""></a>
+	</p>
+</body>
+	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="node_modules/materialize-css/dist/js/materialize.min.js"></script>
+	<script type="text/javascript" src="wanakana.min.js"></script>
+	<script type="text/javascript" src="commonPhrases.js"></script>
+	<script type="text/javascript" src="common-phrases.js"></script>
+</html>
+
+<!-- 
+Pre List
+
+-->
