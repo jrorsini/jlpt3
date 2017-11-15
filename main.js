@@ -47,7 +47,9 @@ let view = {
 
 		applicableElement.html(`<span>${this.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${this.question[1]}</span>`)
 		this.updateGraspLevel()
-		wanakana.bind($('#sentence')[0]);		
+		wanakana.bind($('#sentence')[0]);	
+		
+		
 	},
 
 	/**

@@ -44,7 +44,9 @@ let view = {
 
 		applicableElement.html(`<span>${this.english}</span><input type="text" id="option" onkeyup="checkAnswer(event)">`)
 		this.updateGraspLevel()
-		wanakana.bind($('#sentence')[0]);		
+		wanakana.bind($('#sentence')[0]);
+		
+		console.log(wanakana.toHiragana(view.romaji[0].replace(/\s/g,'')))		
     },
 	/**
 	 * Updates the repetition stats
@@ -143,8 +145,8 @@ function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input valu
 					Materialize.toast(
 						`You made that mistake &nbsp;
 						<b>${view.userInput[inputVal]}</b>&nbsp; 
-						times with &nbsp;Åu
-						<b>${inputVal}</b>Åv, be careful`,
+						times with &nbsp;ÔøΩu
+						<b>${inputVal}</b>ÔøΩv, be careful`,
 						4000
 					)
 				}
