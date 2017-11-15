@@ -27,12 +27,9 @@ let current = {
 	fillIn: function() {
 		
 		let id = this.createQuestionId()
-		view.question = commonPhrases[id].question,
-		view.options = commonPhrases[id].options,
-		view.stats = commonPhrases[id].stats,
-		view.userInput = commonPhrases[id].user_input,
-		view.graspLevel = commonPhrases[id].grasp_level,
-		view.answer = commonPhrases[id].options.map(e => ( e[1] === true) ? e[0] : '').join('')
+		view.english = commonPhrases[id].english,
+		view.japanese = commonPhrases[id].japanese,
+		view.romaji = commonPhrases[id].romaji
 	}
 }
 
@@ -45,18 +42,10 @@ let view = {
 
 		let applicableElement = $('#sentence');
 
-		applicableElement.html(`<span>${this.question[0]}</span><input type="text" id="option" onkeyup="checkAnswer(event)"><span>${this.question[1]}</span>`)
+		applicableElement.html(`<span>${this.english}</span><input type="text" id="option" onkeyup="checkAnswer(event)">`)
 		this.updateGraspLevel()
 		wanakana.bind($('#sentence')[0]);		
-	},
-
-	/**
-	 * Sets the 'options' variable and displays options 
-	 */
-	showOptions: function() {
-
-		$('.assignment').html(`<u>Choose between</u><br><b>${this.options.map(e => e[0]).join('</b> - <b>')}</b>`)
-	},
+    },
 	/**
 	 * Updates the repetition stats
 	 */
@@ -285,6 +274,5 @@ localstorageUpdate()
 current.fillIn()
 view.showRepetitions()
 view.showQuestion()
-view.showOptions()
 
 // view.attachEvent($('#repResetIcon')[0],'click',view.resetRepetitions)

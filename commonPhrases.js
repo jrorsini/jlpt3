@@ -2,8 +2,8 @@ var commonPhrases = [
     {
         "english": "Are you sure?",
         "japanese": [
-            "–{“–‚É?",
-            "Šm‚©‚©?"
+            "æœ¬å½“ã«?",
+            "ç¢ºã‹ã‹?"
         ],
         "romaji": [
             "hontou ni.",
@@ -11,10 +11,10 @@ var commonPhrases = [
         ]
     },
     {
-        "english": "No, thatfs not possible.",
+        "english": "No, that's not possible.",
         "japanese": [
-            "‚Ü‚³‚©A‚ ‚è‚¦‚È‚¢‚æ.",
-            "‚Ü‚³‚©A‚»‚ñ‚È‚±‚Æ‚ ‚è‚Á‚±‚È‚¢."
+            "ã¾ã•ã‹ã€ã‚ã‚Šãˆãªã„ã‚ˆ.",
+            "ã¾ã•ã‹ã€ãã‚“ãªã“ã¨ã‚ã‚Šã£ã“ãªã„."
         ],
         "romaji": [
             "masaka, arienai yo.",
@@ -22,9 +22,9 @@ var commonPhrases = [
         ]
     },
     {
-        "english": "Donft be ridiculous.",
+        "english": "Don't be ridiculous.",
         "japanese": [
-            "ç’k‚Í‚¨‚æ‚µ‚È‚³‚¢."
+            "å†—è«‡ã¯ãŠã‚ˆã—ãªã•ã„."
         ],
         "romaji": [
             "joudan wa oyoshi nasai."
@@ -33,25 +33,25 @@ var commonPhrases = [
     {
         "english": "It seem quite unlikely.",
         "japanese": [
-            "‚»‚Ì‰Â”\«‚Í‚«‚í‚ß‚Ä’á‚¢."
+            "ãã®å¯èƒ½æ€§ã¯ãã‚ã‚ã¦ä½ã„."
         ],
         "romaji": [
             "sono kanousei wa kiwamete hikui."
         ]
     },
     {
-        "english": "You sure you werenft dreaming?",
+        "english": "You sure you weren't dreaming?",
         "japanese": [
-            "–²‚Å‚àŒ©‚½‚ñ‚¶‚á‚È‚¢‚Ì‚©?"
+            "å¤¢ã§ã‚‚è¦‹ãŸã‚“ã˜ã‚ƒãªã„ã®ã‹?"
         ],
         "romaji": [
             "yume demo mitan janai no ka."
         ]
     },
     {
-        "english": "Thatfs hardly something to joke about.",
+        "english": "That's hardly something to joke about.",
         "japanese": [
-            "‚»‚ñ‚È‚±‚Æ‚ğAç’k‚É‚àŒ¾‚Á‚Ä‚Í‚¢‚¯‚È‚¢‚í."
+            "ãã‚“ãªã“ã¨ã‚’ã€å†—è«‡ã«ã‚‚è¨€ã£ã¦ã¯ã„ã‘ãªã„ã‚."
         ],
         "romaji": [
             "sonna koto o, joudan ni mo itte wa ikenai wa."
@@ -60,7 +60,7 @@ var commonPhrases = [
     {
         "english": "Had it really happened?",
         "japanese": [
-            "–{“–‚É‹N‚±‚Á‚½‚±‚Æ‚¾‚ë‚¤‚©?"
+            "æœ¬å½“ã«èµ·ã“ã£ãŸã“ã¨ã ã‚ã†ã‹?"
         ],
         "romaji": [
             "hontou ni okotta koto darou ka."
@@ -69,25 +69,25 @@ var commonPhrases = [
     {
         "english": "Is that even possible?",
         "japanese": [
-            "‚»‚ñ‚È‚±‚Æ‚ª‚ ‚è‚¤‚é‚¾‚ë‚¤‚©?"
+            "ãã‚“ãªã“ã¨ãŒã‚ã‚Šã†ã‚‹ã ã‚ã†ã‹?"
         ],
         "romaji": [
             "sonna koto ga ariuru darou ka."
         ]
     },
     {
-        "english": "Ifm not sure this is going to work.",
+        "english": "I'm not sure this is going to work.",
         "japanese": [
-            "‚»‚ñ‚È‚É‚¤‚Ü‚­‚¢‚­‚Æ‚Ív‚¦‚È‚¢‚¯‚Ç."
+            "ãã‚“ãªã«ã†ã¾ãã„ãã¨ã¯æ€ãˆãªã„ã‘ã©."
         ],
         "romaji": [
             "sonna ni umaku iku to wa omoenai kedo."
         ]
     },
     {
-        "english": "AdvertisementAre you sure youfve thought this through?",
+        "english": "AdvertisementAre you sure you've thought this through?",
         "japanese": [
-            "‚Ù‚ñ‚Æ‚ÉA‚±‚Ì‚±‚ÆA‚¿‚á‚ñ‚Æl‚¦‚½‚Ì?"
+            "ã»ã‚“ã¨ã«ã€ã“ã®ã“ã¨ã€ã¡ã‚ƒã‚“ã¨è€ƒãˆãŸã®?"
         ],
         "romaji": [
             "honto ni, kono koto, chanto kangaeta no."
@@ -96,7 +96,7 @@ var commonPhrases = [
     {
         "english": "Did you really say that?",
         "japanese": [
-            "–{“–‚É‚»‚¤Œ¾‚Á‚½‚Ì?"
+            "æœ¬å½“ã«ãã†è¨€ã£ãŸã®?"
         ],
         "romaji": [
             "hontou ni sou itta no."
@@ -105,16 +105,16 @@ var commonPhrases = [
     {
         "english": "Are you sure this is the right way?",
         "japanese": [
-            "‚±‚Ì“¹‚ÅŠÔˆá‚¢‚È‚¢‚©‚¢?"
+            "ã“ã®é“ã§é–“é•ã„ãªã„ã‹ã„?"
         ],
         "romaji": [
             "kono michi de machigai nai kai."
         ]
     },
     {
-        "english": "Ifm not sure if thatfs a compliment.",
+        "english": "I'm not sure if that's a compliment.",
         "japanese": [
-            "‚»‚ê‚Á‚Ä–J‚ß‚ç‚ê‚Ä‚¢‚é‚Ì‚©‚µ‚ç."
+            "ãã‚Œã£ã¦è¤’ã‚ã‚‰ã‚Œã¦ã„ã‚‹ã®ã‹ã—ã‚‰."
         ],
         "romaji": [
             "sore tte homerarete iru no kashira."
@@ -123,16 +123,16 @@ var commonPhrases = [
     {
         "english": "Nothing else can have happened, can it?",
         "japanese": [
-            "‚Ü‚½‰½‚©‹N‚±‚é‚È‚ñ‚ÄA‚ ‚è‚¦‚È‚¢‚æ‚Ë?"
+            "ã¾ãŸä½•ã‹èµ·ã“ã‚‹ãªã‚“ã¦ã€ã‚ã‚Šãˆãªã„ã‚ˆã­?"
         ],
         "romaji": [
             "mata nanika okoru nante, arienai yo ne."
         ]
     },
     {
-        "english": "But wefre not sure if thatfs true.",
+        "english": "But we're not sure if that's true.",
         "japanese": [
-            "‚¾‚¯‚ÇA‚Ù‚ñ‚Æ‚¤‚©‚Ç‚¤‚©A„‚½‚¿‚É‚Í‚í‚©‚ç‚È‚¢‚Ì‚æ."
+            "ã ã‘ã©ã€ã»ã‚“ã¨ã†ã‹ã©ã†ã‹ã€ç§ãŸã¡ã«ã¯ã‚ã‹ã‚‰ãªã„ã®ã‚ˆ."
         ],
         "romaji": [
             "da kedo, hontou ka dou ka, watashi tachi ni wa wakaranai no yo."
@@ -141,34 +141,34 @@ var commonPhrases = [
     {
         "english": "I have some doubt about his reliability.",
         "japanese": [
-            "”Ş‚ªM—Š‚Å‚«‚é‚©‚Ç‚¤‚©A­‚µS”z‚È‚Æ‚±‚ë‚ª‚ ‚é."
+            "å½¼ãŒä¿¡é ¼ã§ãã‚‹ã‹ã©ã†ã‹ã€å°‘ã—å¿ƒé…ãªã¨ã“ã‚ãŒã‚ã‚‹."
         ],
         "romaji": [
             "kare ga shinrai dekiru ka dou ka, sukoshi shinpai na tokoro ga aru."
         ]
     },
     {
-        "english": "Surely thatfs a little bit of an overstatement?",
+        "english": "Surely that's a little bit of an overstatement?",
         "japanese": [
-            "‚Ü‚³‚©A‚»‚ê‚Í‚¿‚å‚Á‚Æ‘å‚°‚³‚¶‚á‚È‚¢‚©?"
+            "ã¾ã•ã‹ã€ãã‚Œã¯ã¡ã‚‡ã£ã¨å¤§ã’ã•ã˜ã‚ƒãªã„ã‹?"
         ],
         "romaji": [
             "masaka, sore wa chotto oogesa ja nai ka."
         ]
     },
     {
-        "english": "Youfre not actually disappointed, are you?",
+        "english": "You're not actually disappointed, are you?",
         "japanese": [
-            "‚Ü‚³‚©A‚ª‚Á‚©‚è‚µ‚Ä‚é‚ñ‚¶‚á‚È‚¢‚¾‚ë‚¤‚È?"
+            "ã¾ã•ã‹ã€ãŒã£ã‹ã‚Šã—ã¦ã‚‹ã‚“ã˜ã‚ƒãªã„ã ã‚ã†ãª?"
         ],
         "romaji": [
             "masaka, gakkari shiterun janai darou na."
         ]
     },
     {
-        "english": "Itfs hard to know what to believe these days.",
+        "english": "It's hard to know what to believe these days.",
         "japanese": [
-            "Å‹ß‚ÍA‰½‚ğM‚¶‚½‚ç‚¢‚¢‚©’m‚é‚Ì‚ª“ï‚µ‚¢."
+            "æœ€è¿‘ã¯ã€ä½•ã‚’ä¿¡ã˜ãŸã‚‰ã„ã„ã‹çŸ¥ã‚‹ã®ãŒé›£ã—ã„."
         ],
         "romaji": [
             "saikin wa, nani o shinjitara ii ka shiru no ga muzukashii."
@@ -177,7 +177,7 @@ var commonPhrases = [
     {
         "english": "Are you sure about this?",
         "japanese": [
-            "‚ËA‚Ù‚ñ‚Æ‚É‚»‚¤‚È‚Ì?"
+            "ã­ã€ã»ã‚“ã¨ã«ãã†ãªã®?"
         ],
         "romaji": [
             "ne, honto ni sou na no."
@@ -186,7 +186,7 @@ var commonPhrases = [
     {
         "english": "That sounds fishy.",
         "japanese": [
-            "‚¤‚³‚ñ‚­‚³‚¢‚È‚ ."
+            "ã†ã•ã‚“ãã•ã„ãªã‚."
         ],
         "romaji": [
             "usankusai naa."
@@ -195,7 +195,7 @@ var commonPhrases = [
     {
         "english": "Nonsense!",
         "japanese": [
-            "ƒiƒ“ƒZƒ“ƒX!"
+            "ãƒŠãƒ³ã‚»ãƒ³ã‚¹!"
         ],
         "romaji": [
             "nansensu."
