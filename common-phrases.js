@@ -42,7 +42,7 @@ let view = {
 
 		let applicableElement = $('#sentence');
 
-		applicableElement.html(`<span>${this.english}</span><input type="text" id="option" onkeyup="checkAnswer(event)">`)
+		applicableElement.html(`<span>${this.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="checkAnswer(event)">`)
 		this.updateGraspLevel()
 		wanakana.bind($('#sentence')[0]);		
     },
