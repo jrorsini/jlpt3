@@ -261,17 +261,17 @@ function localstorageSetUp(name, object) {
  */
 function localstorageUpdate() {
 
-	localStorage.setItem( 'jlpt3-grammar', JSON.stringify(commonPhrases) )
-	localStorage.setItem( 'jlpt3-grammar-stats', JSON.stringify(stats) )
+	localStorage.setItem( 'common-phrases', JSON.stringify(commonPhrases) )
+	localStorage.setItem( 'common-phrases-stats', JSON.stringify(stats) )
 	
-	commonPhrases = localstorageSetUp('jlpt3-grammar',commonPhrases)
-	stats = localstorageSetUp('jlpt3-grammar-stats',stats)	
+	commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
+	stats = localstorageSetUp('common-phrases-stats',stats)	
 }
 
 // Set input field to Hiragana characters
 
-commonPhrases = localstorageSetUp('jlpt3-grammar',commonPhrases)
-stats = localstorageSetUp('jlpt3-grammar-stats',stats)	
+commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
+stats = localstorageSetUp('common-phrases-stats',stats)	
 localstorageUpdate()
 current.fillIn()
 view.showRepetitions()
