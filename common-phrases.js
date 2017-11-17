@@ -44,9 +44,7 @@ let view = {
 
 		applicableElement.html(`<span>${this.english}</span><input type="text" id="option" onkeyup="checkAnswer(event)">`)
 		this.updateGraspLevel()
-		wanakana.bind($('#sentence')[0]);
-		
-		console.log(wanakana.toHiragana(view.romaji[0].replace(/\s/g,'')))		
+		wanakana.bind($('#sentence')[0]);		
     },
 	/**
 	 * Updates the repetition stats
@@ -130,51 +128,15 @@ function isNew() {
 /**
  * Checks if the user's input match with the answer
  */
-function checkAnswer(e, inputVal = $('#option')[0].value) { // Checks input value to the answer.		
-	if(e.keyCode === 13 && view.optionMatch(inputVal)) {
-
-		if(inputVal !== view.answer) {
-			view.userStats.fail++			
-			if(view.userInput[inputVal]) {
-
-				view.userInput[inputVal]++
-				view.stats.fail++
-
-				if(view.userInput[inputVal] > 2) {
-
-					Materialize.toast(
-						`You made that mistake &nbsp;
-						<b>${view.userInput[inputVal]}</b>&nbsp; 
-						times with &nbsp;�u
-						<b>${inputVal}</b>�v, be careful`,
-						4000
-					)
-				}
-			} else {
-
-				view.userInput[inputVal] = 1
-			}
+function checkAnswer(e) { // Checks input value to the answer.		
+	var answer = wanakana.toHiragana(view.romaji[0].replace(/\s/g,''))
+	var inputVal = $('#option')[0].value
+	if(e.keyCode === 13) {
+		if(inputVal === answer) {
+			console.log('Right Answer')
 		} else {
-			view.userStats.right++
-			view.stats.success++
-			view.lvl++
+			console.log('Wrong Answer')
 		}
-
-		layoutUpdate(inputVal === view.answer)		
-
-		if(inputVal === view.answer && match_grammar_point()){
-
-			var g_point = match_grammar_point()
-
-			$('#see-more').html(
-				`${view.question[0]}<b>${view.answer}</b>${view.question[1]}
-				<br>
-				<a target="_blank" id="see-more_link" href="${g_point[1]}">
-				See more about <b>${g_point[0]}</b></a>`
-			)
-		}
-		
-		localstorageUpdate()
 	}
 }
 
@@ -200,48 +162,6 @@ function match_grammar_point() {
 
 	return match_len > 0 ? grammar_point : false
 }
-
-/**
- * Check if the answer matches a grammatical point.
- * And returns it
- */
-function layoutUpdate (output) {
-	var successMsg 	= 'Right on!',
-		errorMsg	= 'Try again!',
-		option_id	= view.options.map(e => e[0]).indexOf($('#option')[0].value)
-	view.stats.count++
-	if(output === true) {
-
-		Materialize.toast(successMsg, 1000)
-		$('.assignment b').removeClass('prep--missed')
-		$('.sentence').addClass('sentence--success')
-		$('#definition').addClass('definition--success')
-
-		setTimeout( function() {
-
-			$('.sentence').removeClass('sentence--success') 
-		}, 500)
-
-	} else {
-
-		Materialize.toast(errorMsg, 1000)
-		$('.assignment b').eq(option_id).removeClass('prep--missed').addClass('prep--missed')
-		$('.sentence').addClass('shaky')
-		
-		setTimeout( function() {
-
-			$('.sentence').removeClass('shaky') 
-		}, 820);
-		
-		$('#option')[0].value = ''
-		if(commonPhrases[curr.id].lvl > 0){
-
-			commonPhrases[curr.id].lvl++
-		}
-	}
-	view.showRepetitions()
-}
-
 
 /**
  * Sets status and questions into localstorage.
@@ -273,8 +193,12 @@ function localstorageUpdate() {
 commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
 stats = localstorageSetUp('common-phrases-stats',stats)	
 localstorageUpdate()
+current.createQuestionId()
 current.fillIn()
 view.showRepetitions()
 view.showQuestion()
+
+var test = wanakana.toHiragana(view.romaji[0].replace(/\s/g,''))
+console.log(test)
 
 // view.attachEvent($('#repResetIcon')[0],'click',view.resetRepetitions)
