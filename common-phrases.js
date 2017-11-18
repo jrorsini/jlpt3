@@ -44,7 +44,8 @@ let view = {
 
 		applicableElement.html(`<span>${this.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="checkAnswer(event)">`)
 		this.updateGraspLevel()
-		wanakana.bind($('#sentence')[0]);		
+		wanakana.bind($('#sentence')[0]);	
+		$('#option').focus()	
     },
 	/**
 	 * Updates the repetition stats
@@ -86,20 +87,6 @@ let view = {
 	
 		$('.sentence').addClass(`grasp--${this.graspLevel}`);
 	},
-
-	/**
-	 * Checks if the input matches with any options 
-	 */
-	optionMatch: function(userInput) { // Checks the input value, sees if it match any of the prepostions.
-		if(userInput !== '') {
-
-			for(var i = 0, len = this.options.length; i < len; i++){
-				
-				if(userInput.trim() === this.options[i][0]) { return true }
-			}
-		}
-		return false
-	}
 	
 };
 
@@ -130,20 +117,24 @@ function isNew() {
  */
 function checkAnswer(e) { // Checks input value to the answer.
 
-	var answer = wanakana.toHiragana(view.romaji[0].replace(/\swa\s/g,' ha ').replace(/\s/g,''))
+	var answer = view.romaji.map(e => {
+		e = e.split(''), e.pop()
+		return wanakana.toHiragana(e.join('').replace(/\swa[\s\,]/g,' ha ').replace(/\so[\s\,]/g,' wo ').replace(/\s/g,''))
+	})
 	var inputVal = $('#option')[0].value
-	var reload = [current.createQuestionId, current.fillInView, view.showQuestion]
 
 	if(e.keyCode === 13) {
 		console.log(answer)
 		console.log(view.japanese)
-		if(inputVal === answer) {
+		console.log()
+		if(answer.indexOf(inputVal) !== -1) {
 			console.log('Right Answer')
 			current.createQuestionId()
 			current.fillInView()
 			view.showQuestion()
+			$('#tempAnswer').text('?')
 		} else {
-			$('#tempAnswer').text(view.japanese)
+			$('#tempAnswer').text(view.japanese.join(' / '))
 			console.log('Wrong Answer')
 		}
 	}
