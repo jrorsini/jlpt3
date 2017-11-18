@@ -3,9 +3,9 @@ let current = {
 	/**
 	 * create id for the question and checks if it's already in there
 	 */
-	createQuestionId: function(fillInFunc) {
+	createQuestionId: function() {
 
-		var objectLen = Object.keys(commonPhrases).length,
+		var objectLen = Object.keys(commonPhrases).length - 1,
 			id = Math.floor( Math.random() * objectLen ) + 1
 
 		while(this.occured.indexOf(id) !== -1) {
@@ -24,7 +24,7 @@ let current = {
 	/**
 	 * Updates the current object.
 	 */
-	fillIn: function() {
+	fillInView: function() {
 		
 		let id = this.createQuestionId()
 		view.english = commonPhrases[id].english,
@@ -128,13 +128,22 @@ function isNew() {
 /**
  * Checks if the user's input match with the answer
  */
-function checkAnswer(e) { // Checks input value to the answer.		
-	var answer = wanakana.toHiragana(view.romaji[0].replace(/\s/g,''))
+function checkAnswer(e) { // Checks input value to the answer.
+
+	var answer = wanakana.toHiragana(view.romaji[0].replace(/\swa\s/g,' ha ').replace(/\s/g,''))
 	var inputVal = $('#option')[0].value
+	var reload = [current.createQuestionId, current.fillInView, view.showQuestion]
+
 	if(e.keyCode === 13) {
+		console.log(answer)
+		console.log(view.japanese)
 		if(inputVal === answer) {
 			console.log('Right Answer')
+			current.createQuestionId()
+			current.fillInView()
+			view.showQuestion()
 		} else {
+			$('#tempAnswer').text(view.japanese)
 			console.log('Wrong Answer')
 		}
 	}
@@ -194,11 +203,8 @@ commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
 stats = localstorageSetUp('common-phrases-stats',stats)	
 localstorageUpdate()
 current.createQuestionId()
-current.fillIn()
-view.showRepetitions()
+current.fillInView()
 view.showQuestion()
-
-var test = wanakana.toHiragana(view.romaji[0].replace(/\s/g,''))
-console.log(test)
+view.showRepetitions()
 
 // view.attachEvent($('#repResetIcon')[0],'click',view.resetRepetitions)

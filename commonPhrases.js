@@ -85,7 +85,7 @@ var commonPhrases = [
         ]
     },
     {
-        "english": "AdvertisementAre you sure you've thought this through?",
+        "english": "Are you sure you've thought this through?",
         "japanese": [
             "ほんとに、このこと、ちゃんと考えたの?"
         ],
