@@ -1,3 +1,27 @@
+
+commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
+stats = localstorageSetUp('common-phrases-stats',stats)	
+localstorageUpdate()
+current.createQuestionId()
+current.fillInView()
+view.showQuestion()
+view.showRepetitions()
+
+
+/**
+ * Displays sentence and add sentence in the occurred array
+ */
+function showQuestion() {
+
+	let applicableElement = $('#sentence');
+
+	applicableElement.html(`
+		<span>${view.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="checkAnswer(event)">
+	`)
+	wanakana.bind($('#sentence')[0]);	
+	$('#option').focus()	
+}
+
 let current = {
 	occured:[],	
 	/**
@@ -35,18 +59,6 @@ let current = {
 
 let view = {
 	userStats: {right: 0, wrong:0},
-	/**
-	 * Displays sentence and add sentence in the occurred array
-	 */
-	showQuestion: function() {
-
-		let applicableElement = $('#sentence');
-
-		applicableElement.html(`<span>${this.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="checkAnswer(event)">`)
-		this.updateGraspLevel()
-		wanakana.bind($('#sentence')[0]);	
-		$('#option').focus()	
-    },
 	/**
 	 * Updates the repetition stats
 	 */
@@ -190,12 +202,5 @@ function localstorageUpdate() {
 
 // Set input field to Hiragana characters
 
-commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
-stats = localstorageSetUp('common-phrases-stats',stats)	
-localstorageUpdate()
-current.createQuestionId()
-current.fillInView()
-view.showQuestion()
-view.showRepetitions()
 
 // view.attachEvent($('#repResetIcon')[0],'click',view.resetRepetitions)
