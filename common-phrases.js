@@ -1,20 +1,26 @@
+/**
+ * Set the question's status
+ */
+commonPhrases.map(function(e) {
+	e.stats={right: 0, wrong: 0} 
+	return e
+})
+
 let occured = [];
 
 /**
  * Dynamic key generation function.
  */
-function getKey(k) {
-	return k;
-}
+function getKey(k) {return k;}
 
 /**
  * Displays sentence and add sentence in the occurred array
  */
-const getQ = function showQuestion() {
+const getQ = function showCurrentQuestion() {
 
 	let applicableElement = $('#sentence');
 
-	applicableElement.html(`<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="checkAnswer(event)">`)
+	applicableElement.html(`<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="check(event)">`)
 	wanakana.bind(applicableElement[0]);	
 	$('#option').focus()	
 }
@@ -44,7 +50,7 @@ var getId = function generatesRandomQuestionId() {
 /**
  * Updates the current object.
  */
-function fillInCurrent() {
+const fill = function fillInCurrentObject() {
 	
 	let id = getId()
 
@@ -53,21 +59,27 @@ function fillInCurrent() {
 	current.romaji = commonPhrases[id].romaji
 }
 
+const reload = function createNewIdFillCurrentObjectShowQuestion() {
+	getId(), fill(), getQ()
+}
+
 const current = {}
 
+const userStats = {right: 0, wrong:0}
+
 const view = {
-	[getKey('userStats')]: {right: 0, wrong:0},
+	// [getKey('userStats')]: {right: 0, wrong:0},
 	/**
 	 * Updates the repetition stats
 	 */
 	showRepetitions() {
 
-		let repetitions = this.userStats.right + this.userStats.wrong,
-			percentage = repetitions === 0 ? 0 : Math.round(this.userStats.right / repetitions * 100)
+		let repetitions = userStats.right + userStats.wrong,
+			percentage = repetitions === 0 ? 0 : Math.round(userStats.right / repetitions * 100)
 
 		$('#repetition').html(` ${repetitions}`)
-		$('#success').html(` ${this.userStats.right}`)
-		$('#failure').html(` ${this.userStats.wrong}`)
+		$('#success').html(` ${userStats.right}`)
+		$('#failure').html(` ${userStats.wrong}`)
 		$('#percentage').html(` ${percentage}%`)
 	},
 	/**
@@ -75,8 +87,8 @@ const view = {
 	 */
 	resetRepetitions() {
 		console.log('test')
-		this.userStats.right = 0
-		this.userStats.fail = 0
+		userStats.right = 0
+		userStats.fail = 0
 		this.showRepetitions()
 	},
 	/**
@@ -111,30 +123,33 @@ function isNew() {
 /**
  * Checks if the user's input match with the answer
  */
-function checkAnswer(e) { // Checks input value to the answer.
+const check = function checkAnswer(e) { // Checks input value to the answer.
 
 	const answer = current.romaji.map(e => {
 		e = e.split(''), e.pop()
-		return wanakana.toHiragana(e.join('').replace(/\swa[\s\,]/g,' ha ').replace(/\so[\s\,]/g,' wo ').replace(/\s/g,''))
+		return wanakana.toHiragana(e.join('').replace(/\swa(\s|\,)/g,' ha ').replace(/\so(\s|\,)/g,' wo ').replace(/\s/g,''))
 	})
 	const inputVal = $('#option')[0].value
 
 	if(e.keyCode === 13) {
-		console.log(answer)
-		console.log(current.japanese)
-		console.log()
 		if(answer.indexOf(inputVal) !== -1) {
-			console.log('Right Answer')
-			getId()
-			fillInCurrent()
-			getQ()
-			$('#tempAnswer').text('?')
+			alert('Right Answer')
+			// update
+			userStats.right++
+			reload()
+			$('#tempAnswer').text('Hint?')
 		} else {
+			// Show hint
 			$('#tempAnswer').text(current.japanese.join(' / '))
-			console.log('Wrong Answer')
+			// Update mistaken answer
+			userStats.wrong++
+			alert('Wrong Answer')
 		}
+		// Refresh repetition's status
+		view.showRepetitions()
 	}
 }
+
 
 /**
  * Sets status and questions into localstorage.
@@ -171,6 +186,6 @@ function localstorageUpdate() {
 // stats = localstorageSetUp('common-phrases-stats',stats)	
 // localstorageUpdate()
 getId()
-fillInCurrent()
+fill()
 getQ()
 view.showRepetitions()
