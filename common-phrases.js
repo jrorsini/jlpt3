@@ -1,7 +1,7 @@
 let occured = [];
 
 /**
- * Displays sentence and add sentence in the occurred array
+ * Dynamic key generation function.
  */
 function getKey(k) {
 	return k;
@@ -10,22 +10,19 @@ function getKey(k) {
 /**
  * Displays sentence and add sentence in the occurred array
  */
-function showQuestion() {
+const getQ = function showQuestion() {
 
 	let applicableElement = $('#sentence');
 
-	applicableElement.html(`
-		<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="checkAnswer(event)">
-	`)
+	applicableElement.html(`<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="checkAnswer(event)">`)
 	wanakana.bind(applicableElement[0]);	
 	$('#option').focus()	
 }
 
-
 /**
  * create id for the question and checks if it's already in there
  */
-function createQuestionId() {
+var getId = function generatesRandomQuestionId() {
 
 	const objectLen = Object.keys(commonPhrases).length - 1
 	let id = Math.floor( Math.random() * objectLen ) + 1
@@ -49,7 +46,7 @@ function createQuestionId() {
  */
 function fillInCurrent() {
 	
-	let id = createQuestionId()
+	let id = getId()
 
 	current.english = commonPhrases[id].english,
 	current.japanese = commonPhrases[id].japanese,
@@ -91,7 +88,7 @@ const view = {
 	/**
 	 * Updates question's grasp level
 	 */
-	updateGraspLevel () {
+	updateGraspLevel() {
 	
 		if ($('.sentence')[0].classList.length > 1) {
 	
@@ -104,7 +101,6 @@ const view = {
 }
 
 function isNew() {
-	console.log(curr)
 	if(curr.stats.length !== undefined) {
 		$('#new_icon').html('')
 	} else {
@@ -129,38 +125,15 @@ function checkAnswer(e) { // Checks input value to the answer.
 		console.log()
 		if(answer.indexOf(inputVal) !== -1) {
 			console.log('Right Answer')
-			createQuestionId()
+			getId()
 			fillInCurrent()
-			showQuestion()
+			getQ()
 			$('#tempAnswer').text('?')
 		} else {
 			$('#tempAnswer').text(current.japanese.join(' / '))
 			console.log('Wrong Answer')
 		}
 	}
-}
-
-
-
-/**
- * Check if the answer matches a grammatical point.
- * And returns it
- */
-function match_grammar_point() {
-	let match_len = 0, grammar_point;
-
-	for (let i = 0; i < jlpt3_grammar_list.length; i++) {
-
-		let re = RegExp(jlpt3_grammar_list[i][0],'g')
-
-		if(view.answer.match(re)!==null && view.answer.match(re).length > match_len){
-
-			match_len = view.answer.match(re).length
-			grammar_point = jlpt3_grammar_list[i]
-		}
-	}
-
-	return match_len > 0 ? grammar_point : false
 }
 
 /**
@@ -197,7 +170,7 @@ function localstorageUpdate() {
 // commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
 // stats = localstorageSetUp('common-phrases-stats',stats)	
 // localstorageUpdate()
-createQuestionId()
+getId()
 fillInCurrent()
-showQuestion()
+getQ()
 view.showRepetitions()
