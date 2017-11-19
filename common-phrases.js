@@ -220,4 +220,4 @@ getQ()
 view.showRepetitions()
 
 $('.modal').modal();
-load()
+$('#statsBtn').click(load)
