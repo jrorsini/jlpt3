@@ -76,12 +76,12 @@ const view = {
 	 */
 	showRepetitions() {
 
-		let repetitions = userStats.right + userStats.wrong,
-			percentage = repetitions === 0 ? 0 : Math.round(userStats.right / repetitions * 100)
+		let repetitions = db_commonStats.right + db_commonStats.wrong,
+			percentage = repetitions === 0 ? 0 : Math.round(db_commonStats.right / repetitions * 100)
 
 		$('#repetition').html(` ${repetitions}`)
-		$('#success').html(` ${userStats.right}`)
-		$('#failure').html(` ${userStats.wrong}`)
+		$('#success').html(` ${db_commonStats.right}`)
+		$('#failure').html(` ${db_commonStats.wrong}`)
 		$('#percentage').html(` ${percentage}%`)
 	},
 	/**
@@ -89,8 +89,8 @@ const view = {
 	 */
 	resetRepetitions() {
 		console.log('test')
-		userStats.right = 0
-		userStats.fail = 0
+		db_commonStats.right = 0
+		db_commonStats.fail = 0
 		this.showRepetitions()
 	},
 	/**
@@ -135,38 +135,29 @@ const check = function checkAnswer(e) { // Checks input value to the answer.
 
 	if(e.keyCode === 13) {
 		if(answer.indexOf(inputVal) !== -1) {
-			alert('Right Answer')
+			console.log('Right Answer')
 			// update
-			userStats.right++
+			db_commonStats.right++
 			reload()
 			$('#tempAnswer').text('Hint?')
 		} else {
 			// Show hint
 			$('#tempAnswer').text(current.japanese.join(' / '))
 			// Update mistaken answer
-			userStats.wrong++
-			alert('Wrong Answer')
+			db_commonStats.wrong++
+			console.log('Wrong Answer')
 		}
+		sync()
 		// Refresh repetition's status
 		view.showRepetitions()
 	}
 }
 
 
+
 /**
- * Sets status and questions into localstorage.
+ * When wanting to check localstorage data in a proper json format.
  */
-const set = function localstorageSetUp(name, object) {
-
-	
-
-	if(localStorage.getItem(name) === null) {
-
-		localStorage.setItem(name, JSON.stringify(object))
-	} 
-
-	return JSON.parse( localStorage.getItem(name) )
-}
 
 const fromDb = function getProperFormatDbInLocalStorage(dbName) {
 	if(localStorage.getItem(dbName) === null) {
@@ -177,26 +168,36 @@ const fromDb = function getProperFormatDbInLocalStorage(dbName) {
 }
 
 /**
- * localstorageUpdate() Set the the updated data set version to localstorage
+ * Sets status and questions into localstorage.
+ */
+const set = function localstorageSetUp(name, object) {
+
+	if(localStorage.getItem(name) === null) {
+
+		localStorage.setItem(name, JSON.stringify(object))
+	} 
+
+	return JSON.parse( localStorage.getItem(name) )
+}
+
+
+/**
+ * Set the the updated data set version to localstorage
  */
 const sync = function localstorageUpdate() {
 
-	localStorage.setItem( 'common_phrases', JSON.stringify(commonPhrases) )
-	localStorage.setItem( 'common_phrases_stats', JSON.stringify(stats) )
+	localStorage.setItem( 'common_phrases', JSON.stringify(db_commonQuestions) )
+	localStorage.setItem( 'common_phrases_stats', JSON.stringify(db_commonStats) )
 	
-	commonPhrases = localstorageSetUp('common_phrases',commonPhrases)
-	stats = localstorageSetUp('common_phrases_stats',stats)	
+	db_commonQuestions = set('common_phrases',commonPhrases)
+	db_commonStats = set('common_phrases_stats',userStats)	
 }
 
-// Set input field to Hiragana characters
+// $('#repResetIcon').click(view.resetRepetitions)
 
-
-// view.attachEvent($('#repResetIcon')[0],'click',view.resetRepetitions)
-
-
-// commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
-// stats = localstorageSetUp('common-phrases-stats',stats)	
-// localstorageUpdate()
+db_commonQuestions = set('common-phrases',commonPhrases)
+db_commonStats = set('common-phrases-stats',userStats)	
+sync()
 getId()
 fill()
 getQ()
