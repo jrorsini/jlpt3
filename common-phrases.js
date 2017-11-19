@@ -1,3 +1,7 @@
+let occured = [],
+	db_commonQuestions,
+	db_commonStats
+
 /**
  * Set the question's status
  */
@@ -5,8 +9,6 @@ commonPhrases.map(function(e) {
 	e.stats={right: 0, wrong: 0} 
 	return e
 })
-
-let occured = [];
 
 /**
  * Dynamic key generation function.
@@ -154,7 +156,9 @@ const check = function checkAnswer(e) { // Checks input value to the answer.
 /**
  * Sets status and questions into localstorage.
  */
-function localstorageSetUp(name, object) {
+const set = function localstorageSetUp(name, object) {
+
+	
 
 	if(localStorage.getItem(name) === null) {
 
@@ -164,16 +168,24 @@ function localstorageSetUp(name, object) {
 	return JSON.parse( localStorage.getItem(name) )
 }
 
+const fromDb = function getProperFormatDbInLocalStorage(dbName) {
+	if(localStorage.getItem(dbName) === null) {
+		console.log('Not db found, maybe if you try : ' + Object.keys(localStorage).join(', '))
+	} else {
+		return JSON.parse( localStorage.getItem(dbName) )		
+	}
+}
+
 /**
  * localstorageUpdate() Set the the updated data set version to localstorage
  */
-function localstorageUpdate() {
+const sync = function localstorageUpdate() {
 
-	localStorage.setItem( 'common-phrases', JSON.stringify(commonPhrases) )
-	localStorage.setItem( 'common-phrases-stats', JSON.stringify(stats) )
+	localStorage.setItem( 'common_phrases', JSON.stringify(commonPhrases) )
+	localStorage.setItem( 'common_phrases_stats', JSON.stringify(stats) )
 	
-	commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
-	stats = localstorageSetUp('common-phrases-stats',stats)	
+	commonPhrases = localstorageSetUp('common_phrases',commonPhrases)
+	stats = localstorageSetUp('common_phrases_stats',stats)	
 }
 
 // Set input field to Hiragana characters
