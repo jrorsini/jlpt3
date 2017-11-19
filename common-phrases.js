@@ -1,12 +1,4 @@
-
-commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
-stats = localstorageSetUp('common-phrases-stats',stats)	
-localstorageUpdate()
-current.createQuestionId()
-current.fillInView()
-view.showQuestion()
-view.showRepetitions()
-
+let occured = [];
 
 /**
  * Displays sentence and add sentence in the occurred array
@@ -16,46 +8,48 @@ function showQuestion() {
 	let applicableElement = $('#sentence');
 
 	applicableElement.html(`
-		<span>${view.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="checkAnswer(event)">
+		<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="checkAnswer(event)">
 	`)
-	wanakana.bind($('#sentence')[0]);	
+	wanakana.bind(applicableElement[0]);	
 	$('#option').focus()	
 }
 
-let current = {
-	occured:[],	
-	/**
-	 * create id for the question and checks if it's already in there
-	 */
-	createQuestionId: function() {
 
-		var objectLen = Object.keys(commonPhrases).length - 1,
-			id = Math.floor( Math.random() * objectLen ) + 1
+/**
+ * create id for the question and checks if it's already in there
+ */
+function createQuestionId() {
 
-		while(this.occured.indexOf(id) !== -1) {
+	const objectLen = Object.keys(commonPhrases).length - 1
+	let id = Math.floor( Math.random() * objectLen ) + 1
 
-			id = Math.floor( Math.random() * objectLen ) + 1
-		}
+	while(occured.indexOf(id) !== -1) {
 
-		this.occured.push(id)
-
-		if (this.occured.length === objectLen) {
-
-			this.occured = []
-		}
-		return id
-	},
-	/**
-	 * Updates the current object.
-	 */
-	fillInView: function() {
-		
-		let id = this.createQuestionId()
-		view.english = commonPhrases[id].english,
-		view.japanese = commonPhrases[id].japanese,
-		view.romaji = commonPhrases[id].romaji
+		id = Math.floor( Math.random() * objectLen ) + 1
 	}
+
+	occured.push(id)
+
+	if (occured.length === objectLen) {
+
+		occured = []
+	}
+	return id
 }
+
+/**
+ * Updates the current object.
+ */
+function fillInCurrent() {
+	
+	let id = createQuestionId()
+
+	current.english = commonPhrases[id].english,
+	current.japanese = commonPhrases[id].japanese,
+	current.romaji = commonPhrases[id].romaji
+}
+
+let current = {}
 
 let view = {
 	userStats: {right: 0, wrong:0},
@@ -100,20 +94,7 @@ let view = {
 		$('.sentence').addClass(`grasp--${this.graspLevel}`);
 	},
 	
-};
-
-var 
-	// Collects ids that have been already shown.
-	occured = [],
-	// To retrieve the user input value.
-	inputEl = $('#option')[0],
-	// Question's length
-	len = Object.keys(commonPhrases).length,
-	// Stat's object
-	stats = {
-		success:0,
-		fail:0
-	}
+}
 
 function isNew() {
 	console.log(curr)
@@ -129,24 +110,24 @@ function isNew() {
  */
 function checkAnswer(e) { // Checks input value to the answer.
 
-	var answer = view.romaji.map(e => {
+	const answer = current.romaji.map(e => {
 		e = e.split(''), e.pop()
 		return wanakana.toHiragana(e.join('').replace(/\swa[\s\,]/g,' ha ').replace(/\so[\s\,]/g,' wo ').replace(/\s/g,''))
 	})
-	var inputVal = $('#option')[0].value
+	const inputVal = $('#option')[0].value
 
 	if(e.keyCode === 13) {
 		console.log(answer)
-		console.log(view.japanese)
+		console.log(current.japanese)
 		console.log()
 		if(answer.indexOf(inputVal) !== -1) {
 			console.log('Right Answer')
-			current.createQuestionId()
-			current.fillInView()
-			view.showQuestion()
+			createQuestionId()
+			fillInCurrent()
+			showQuestion()
 			$('#tempAnswer').text('?')
 		} else {
-			$('#tempAnswer').text(view.japanese.join(' / '))
+			$('#tempAnswer').text(current.japanese.join(' / '))
 			console.log('Wrong Answer')
 		}
 	}
@@ -159,11 +140,11 @@ function checkAnswer(e) { // Checks input value to the answer.
  * And returns it
  */
 function match_grammar_point() {
-	var match_len = 0, grammar_point;
+	let match_len = 0, grammar_point;
 
-	for (var i = 0; i < jlpt3_grammar_list.length; i++) {
+	for (let i = 0; i < jlpt3_grammar_list.length; i++) {
 
-		var re = RegExp(jlpt3_grammar_list[i][0],'g')
+		let re = RegExp(jlpt3_grammar_list[i][0],'g')
 
 		if(view.answer.match(re)!==null && view.answer.match(re).length > match_len){
 
@@ -204,3 +185,12 @@ function localstorageUpdate() {
 
 
 // view.attachEvent($('#repResetIcon')[0],'click',view.resetRepetitions)
+
+
+// commonPhrases = localstorageSetUp('common-phrases',commonPhrases)
+// stats = localstorageSetUp('common-phrases-stats',stats)	
+// localstorageUpdate()
+createQuestionId()
+fillInCurrent()
+showQuestion()
+view.showRepetitions()
