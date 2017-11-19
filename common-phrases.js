@@ -72,7 +72,6 @@ const current = {}
 const userStats = {right: 0, wrong:0}
 
 const view = {
-	// [getKey('userStats')]: {right: 0, wrong:0},
 	/**
 	 * Updates the repetition stats
 	 */
@@ -196,7 +195,21 @@ const sync = function localstorageUpdate() {
 	db_commonStats = set('common_phrases_stats',userStats)	
 }
 
-// $('#repResetIcon').click(view.resetRepetitions)
+
+/**
+ * Lists all user's status
+ */
+const load = function listsAllCommonPhrasesWithStatus() {
+	let len = db_commonQuestions.length
+
+	db_commonQuestions = db_commonQuestions.sort(function(a, b) {
+		return (b.stats.right + b.stats.wrong) - (a.stats.right + a.stats.wrong)
+	})
+	for(let i = 0; i < len; i++) {
+		$('#statsList').append(`<tr><td><b>${db_commonQuestions[i].english}</b></td><td>${db_commonQuestions[i].japanese.join(' / ')}</td><td class="green-text">${db_commonQuestions[i].stats.right}</td><td class="red-text">${db_commonQuestions[i].stats.wrong}</td></tr>`)
+	}
+}
+
 
 db_commonQuestions = set('common_phrases',commonPhrases)
 db_commonStats = set('common_phrases_stats',userStats)	
@@ -205,3 +218,6 @@ getId()
 fill()
 getQ()
 view.showRepetitions()
+
+$('.modal').modal();
+load()
