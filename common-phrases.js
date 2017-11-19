@@ -3,6 +3,13 @@ let occured = [];
 /**
  * Displays sentence and add sentence in the occurred array
  */
+function getKey(k) {
+	return k;
+}
+
+/**
+ * Displays sentence and add sentence in the occurred array
+ */
 function showQuestion() {
 
 	let applicableElement = $('#sentence');
@@ -49,9 +56,9 @@ function fillInCurrent() {
 	current.romaji = commonPhrases[id].romaji
 }
 
-let current = {}
+const current = {}
 
-let view = {
+const view = {
 	userStats: {right: 0, wrong:0},
 	/**
 	 * Updates the repetition stats
