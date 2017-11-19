@@ -59,11 +59,11 @@ function fillInCurrent() {
 const current = {}
 
 const view = {
-	userStats: {right: 0, wrong:0},
+	[getKey('userStats')]: {right: 0, wrong:0},
 	/**
 	 * Updates the repetition stats
 	 */
-	showRepetitions: function() {
+	showRepetitions() {
 
 		let repetitions = this.userStats.right + this.userStats.wrong,
 			percentage = repetitions === 0 ? 0 : Math.round(this.userStats.right / repetitions * 100)
@@ -76,7 +76,7 @@ const view = {
 	/**
 	 * Reset Repetitions to 0
 	 */
-	resetRepetitions: function() {
+	resetRepetitions() {
 		console.log('test')
 		this.userStats.right = 0
 		this.userStats.fail = 0
@@ -85,13 +85,13 @@ const view = {
 	/**
 	 * Attaches a function to an element
 	 */
-	attachEvent: function(element, type, func) {
+	attachEvent(element, type, func) {
 		element.addEventListener(type, func)
 	},
 	/**
 	 * Updates question's grasp level
 	 */
-	updateGraspLevel: function () {
+	updateGraspLevel () {
 	
 		if ($('.sentence')[0].classList.length > 1) {
 	
