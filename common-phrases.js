@@ -57,7 +57,7 @@ var getId = function generatesRandomQuestionId() {
 const fill = function fillInCurrentObject() {
 	
 	let id = getId()
-
+	current.id = id
 	current.english = commonPhrases[id].english,
 	current.japanese = commonPhrases[id].japanese,
 	current.romaji = commonPhrases[id].romaji
@@ -139,6 +139,7 @@ const check = function checkAnswer(e) { // Checks input value to the answer.
 		if(answer.indexOf(inputVal) !== -1) {
 			console.log('Right Answer')
 			// update
+			db_commonQuestions[current.id].stats.right++
 			db_commonStats.right++
 			reload()
 			$('#tempAnswer').text('Hint?')
@@ -146,6 +147,7 @@ const check = function checkAnswer(e) { // Checks input value to the answer.
 			// Show hint
 			$('#tempAnswer').text(current.japanese.join(' / '))
 			// Update mistaken answer
+			db_commonQuestions[current.id].stats.wrong++
 			db_commonStats.wrong++
 			console.log('Wrong Answer')
 		}
