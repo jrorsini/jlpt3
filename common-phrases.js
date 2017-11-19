@@ -23,7 +23,9 @@ const getQ = function showCurrentQuestion() {
 	let applicableElement = $('#sentence');
 
 	applicableElement.html(`<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="check(event)">`)
-	wanakana.bind(applicableElement[0]);	
+	if(applicableElement[0]){
+		wanakana.bind(applicableElement[0]);			
+	}
 	$('#option').focus()	
 }
 
@@ -161,7 +163,7 @@ const check = function checkAnswer(e) { // Checks input value to the answer.
 
 const fromDb = function getProperFormatDbInLocalStorage(dbName) {
 	if(localStorage.getItem(dbName) === null) {
-		console.log('Not db found, maybe if you try : ' + Object.keys(localStorage).join(', '))
+		console.log(`Not db found, maybe if you try : ${Object.keys(localStorage).join(', ')}`)
 	} else {
 		return JSON.parse( localStorage.getItem(dbName) )		
 	}
@@ -180,7 +182,6 @@ const set = function localstorageSetUp(name, object) {
 	return JSON.parse( localStorage.getItem(name) )
 }
 
-
 /**
  * Set the the updated data set version to localstorage
  */
@@ -195,8 +196,8 @@ const sync = function localstorageUpdate() {
 
 // $('#repResetIcon').click(view.resetRepetitions)
 
-db_commonQuestions = set('common-phrases',commonPhrases)
-db_commonStats = set('common-phrases-stats',userStats)	
+db_commonQuestions = set('common_phrases',commonPhrases)
+db_commonStats = set('common_phrases_stats',userStats)	
 sync()
 getId()
 fill()

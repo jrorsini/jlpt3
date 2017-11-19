@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JLPT3</title>
+	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="node_modules/materialize-css/dist/css/materialize.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>English</th>
+                <th>Japanese</th>
+                <th>Right</th>
+                <th>Wrong</th>
+            </tr>
+        </thead>
+
+        <tbody id=statsList>
+            
+        </tbody>
+    </table>
+</body>
+	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="node_modules/materialize-css/dist/js/materialize.min.js"></script>
+	<script type="text/javascript" src="wanakana.min.js"></script>
+	<script type="text/javascript" src="commonPhrases.js"></script>
+    <script type="text/javascript" src="common-phrases.js"></script>
+    <script>
+        const load = function listsAllCommonPhrasesWithStatus() {
+            let len = db_commonQuestions.length
+            for(let i = 0; i < len; i++) {
+                $('#statsList').append(`<tr><td><b>${db_commonQuestions[i].english}</b></td><td>${db_commonQuestions[i].japanese.join(' / ')}</td><td class="green-text">${db_commonQuestions[i].stats.right}</td><td class="red-text">${db_commonQuestions[i].stats.wrong}</td></tr>`)
+            }
+        }
+        load()
+    </script>
+</html>
+
+<!-- 
+Pre List
+
+-->
