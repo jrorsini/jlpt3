@@ -129,15 +129,6 @@ var
 		fail:0
 	}
 
-function isNew() {
-	console.log(curr)
-	if(curr.stats.length !== undefined) {
-		$('#new_icon').html('')
-	} else {
-		$('#new_icon').html('star_border')
-	}
-}
-
 /**
  * Checks if the user's input match with the answer
  */
