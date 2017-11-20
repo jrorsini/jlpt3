@@ -34,6 +34,13 @@
 	 
 	<div id="modal1" class="modal">
 		<div class="modal-content">
+			<div class="input-field col s12">
+				<select>
+					<option value="option_repetion" disabled selected>Repetition</option>
+					<option value="option_wrong">Wrong</option>
+					<option value="option_right">Right</option>
+				</select>
+			</div>
 			<table>
 				<thead>
 					<tr>
@@ -59,6 +66,11 @@
 	<script type="text/javascript" src="wanakana.min.js"></script>
 	<script type="text/javascript" src="commonPhrases.js"></script>
 	<script type="text/javascript" src="common-phrases.js"></script>
+	<script>
+		 $('select').material_select();
+		 $('.modal').modal();
+
+	</script>
 </html>
 
 <!-- 

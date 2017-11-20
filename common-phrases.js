@@ -219,5 +219,4 @@ fill()
 getQ()
 view.showRepetitions()
 
-$('.modal').modal();
 $('#statsBtn').click(load)
