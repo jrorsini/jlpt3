@@ -21,6 +21,9 @@ function getKey(k) {return k;}
 const getQ = function showCurrentQuestion() {
 
 	let applicableElement = $('#sentence');
+	if(current.right + current.wrong === 0) {
+		$('#newIcon').text('star')
+	}
 
 	applicableElement.html(`<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="check(event)">`)
 	if(applicableElement[0]){
@@ -32,7 +35,7 @@ const getQ = function showCurrentQuestion() {
 /**
  * create id for the question and checks if it's already in there
  */
-var getId = function generatesRandomQuestionId() {
+const getId = function generatesRandomQuestionId() {
 
 	const objectLen = Object.keys(commonPhrases).length - 1
 	let id = Math.floor( Math.random() * objectLen ) + 1
@@ -61,6 +64,8 @@ const fill = function fillInCurrentObject() {
 	current.english = commonPhrases[id].english,
 	current.japanese = commonPhrases[id].japanese,
 	current.romaji = commonPhrases[id].romaji
+	current.right = commonPhrases[id].stats.right
+	current.wrong = commonPhrases[id].stats.wrong
 }
 
 const reload = function createNewIdFillCurrentObjectShowQuestion() {
@@ -200,14 +205,9 @@ const sync = function localstorageUpdate() {
  * Lists all user's status
  */
 const load = function listsAllCommonPhrasesWithStatus() {
-	let len = db_commonQuestions.length
-	$("#statsList").empty()	
 	db_commonQuestions = db_commonQuestions.sort(function(a, b) {
 		return (b.stats.right + b.stats.wrong) - (a.stats.right + a.stats.wrong)
 	})
-	for(let i = 0; i < len; i++) {
-		$('#statsList').append(`<tr><td><b>${db_commonQuestions[i].english}</b></td><td>${db_commonQuestions[i].japanese.join(' / ')}</td><td class="green-text" style="text-align: center">${db_commonQuestions[i].stats.right}</td><td class="red-text" style="text-align: center">${db_commonQuestions[i].stats.wrong}</td></tr>`)
-	}
 }
 
 /**
@@ -215,22 +215,32 @@ const load = function listsAllCommonPhrasesWithStatus() {
  */
 
 const slct_right = function listsCommonPhrasesByRightAnswer() {
-	let len = db_commonQuestions.length	
-	$("#statsList").empty()
 	db_commonQuestions = db_commonQuestions.sort(function(a, b) {
 		return b.stats.right - a.stats.right
 	})
-	for(let i = 0; i < len; i++) {
-		$('#statsList').append(`<tr><td><b>${db_commonQuestions[i].english}</b></td><td>${db_commonQuestions[i].japanese.join(' / ')}</td><td class="green-text" style="text-align: center">${db_commonQuestions[i].stats.right}</td><td class="red-text" style="text-align: center">${db_commonQuestions[i].stats.wrong}</td></tr>`)
-	}
+}
+
+/**
+ * Lists all common phrase by wrong answers.
+ */
+
+const slct_wrong = function listsCommonPhrasesByRightAnswer() {
+	db_commonQuestions = db_commonQuestions.sort(function(a, b) {
+		return b.stats.wrong - a.stats.wrong
+	})
 }
 
 $('#commonPhrasesSort').change(function(){
+	let len = db_commonQuestions.length		
+	$("#statsList").empty()	
 	if(this.value === 'option_right') {
 		slct_right()
 	}
 	if(this.value === 'option_repetion') {
 		load()
+	}
+	for(let i = 0; i < len; i++) {
+		$('#statsList').append(`<tr><td><b>${db_commonQuestions[i].english}</b></td><td>${db_commonQuestions[i].japanese.join(' / ')}</td><td class="green-text" style="text-align: center">${db_commonQuestions[i].stats.right}</td><td class="red-text" style="text-align: center">${db_commonQuestions[i].stats.wrong}</td></tr>`)
 	}
 })
 
