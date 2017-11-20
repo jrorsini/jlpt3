@@ -10,6 +10,7 @@
 <body>
 	<i id="new_icon" class="material-icons amber-text"></i>
 	<p id="tempAnswer" style="text-align:center">Hint?</p>
+	<i id="newIcon" class="material-icons teal-text" style="display: block;text-align: center;"></i>	
 	<p class="sentence" id="sentence"> <!-- JS used there! --></p>
 
 	<p class="repetition_status" style="text-align: center;">
@@ -34,6 +35,14 @@
 	 
 	<div id="modal1" class="modal">
 		<div class="modal-content">
+			<div class="input-field col s12">
+				<select id="commonPhrasesSort">
+					<option value="" disabled selected>Choose your option</option>
+					<option value="option_repetion">Repetition</option>
+					<option value="option_wrong">Wrong</option>
+					<option value="option_right">Right</option>
+				</select>
+			</div>
 			<table>
 				<thead>
 					<tr>
@@ -59,6 +68,11 @@
 	<script type="text/javascript" src="wanakana.min.js"></script>
 	<script type="text/javascript" src="commonPhrases.js"></script>
 	<script type="text/javascript" src="common-phrases.js"></script>
+	<script>
+		 $('select').material_select();
+		 $('.modal').modal();
+
+	</script>
 </html>
 
 <!-- 
