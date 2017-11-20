@@ -201,14 +201,38 @@ const sync = function localstorageUpdate() {
  */
 const load = function listsAllCommonPhrasesWithStatus() {
 	let len = db_commonQuestions.length
-
+	$("#statsList").empty()	
 	db_commonQuestions = db_commonQuestions.sort(function(a, b) {
 		return (b.stats.right + b.stats.wrong) - (a.stats.right + a.stats.wrong)
 	})
 	for(let i = 0; i < len; i++) {
-		$('#statsList').append(`<tr><td><b>${db_commonQuestions[i].english}</b></td><td>${db_commonQuestions[i].japanese.join(' / ')}</td><td class="green-text">${db_commonQuestions[i].stats.right}</td><td class="red-text">${db_commonQuestions[i].stats.wrong}</td></tr>`)
+		$('#statsList').append(`<tr><td><b>${db_commonQuestions[i].english}</b></td><td>${db_commonQuestions[i].japanese.join(' / ')}</td><td class="green-text" style="text-align: center">${db_commonQuestions[i].stats.right}</td><td class="red-text" style="text-align: center">${db_commonQuestions[i].stats.wrong}</td></tr>`)
 	}
 }
+
+/**
+ * Lists all common phrase by right answers.
+ */
+
+const slct_right = function listsCommonPhrasesByRightAnswer() {
+	let len = db_commonQuestions.length	
+	$("#statsList").empty()
+	db_commonQuestions = db_commonQuestions.sort(function(a, b) {
+		return b.stats.right - a.stats.right
+	})
+	for(let i = 0; i < len; i++) {
+		$('#statsList').append(`<tr><td><b>${db_commonQuestions[i].english}</b></td><td>${db_commonQuestions[i].japanese.join(' / ')}</td><td class="green-text" style="text-align: center">${db_commonQuestions[i].stats.right}</td><td class="red-text" style="text-align: center">${db_commonQuestions[i].stats.wrong}</td></tr>`)
+	}
+}
+
+$('#commonPhrasesSort').change(function(){
+	if(this.value === 'option_right') {
+		slct_right()
+	}
+	if(this.value === 'option_repetion') {
+		load()
+	}
+})
 
 
 db_commonQuestions = set('common_phrases',commonPhrases)
