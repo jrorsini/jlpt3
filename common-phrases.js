@@ -8,7 +8,27 @@ let occured = [],
 commonPhrases.map(function(e) {
 	e.stats={right: 0, wrong: 0} 
 	return e
-})
+});
+
+/**
+ * Fill the question's list based off span.
+ */
+function fillQuestionStackWithIds(span) {
+	let objLen = questionsId.length,id;
+	span = span - questionStackId.length
+	for(var i = 0; i < span; i++) {
+		id = Math.floor( Math.random() * objLen ) + 1;
+	
+		while(questionStackId.indexOf(id) !== -1) {
+
+			id = Math.floor( Math.random() * objLen ) + 1
+		}
+	
+		questionStackId.push(id)
+	}
+	
+	return questionStackId
+}
 
 /**
  * Dynamic key generation function.
