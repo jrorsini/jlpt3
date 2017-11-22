@@ -13,21 +13,33 @@ commonPhrases.map(function(e) {
 /**
  * Fill the question's list based off span.
  */
-function fillQuestionStackWithIds(span) {
-	let objLen = questionsId.length,id;
-	span = span - questionStackId.length
-	for(var i = 0; i < span; i++) {
-		id = Math.floor( Math.random() * objLen ) + 1;
-	
-		while(questionStackId.indexOf(id) !== -1) {
 
-			id = Math.floor( Math.random() * objLen ) + 1
-		}
+function fillQuestionStackWithIds() {
+	let occuredIds = [],
+			questionStackId = [],
+			objLen = questionsId.length,
+			id;
 	
-		questionStackId.push(id)
+	function fillIt(span) {
+		span = span - questionStackId.length
+		for(var i = 0; i < span; i++) {
+			id = Math.floor( Math.random() * objLen ) + 1;
+			while(occuredIds.indexOf(id) !== -1) {
+
+				id = Math.floor( Math.random() * objLen ) + 1
+			}
+			occuredIds.push(id)
+			
+			questionStackId.push(questionsId[id])
+		}
+		questionStackId = questionStackId;
+		return {
+			questionStackId:questionStackId,
+			occuredIds: occuredIds
+		}
 	}
 	
-	return questionStackId
+	return fillIt
 }
 
 /**
