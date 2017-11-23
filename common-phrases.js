@@ -1,25 +1,35 @@
-let occured = [],
-	db_commonQuestions,
-	db_commonStats
-
-/**
- * Set the question's status
- */
-commonPhrases.map(function(e) {
-	e.stats={right: 0, wrong: 0} 
-	return e
-});
+let db_commonQuestions,
+	db_commonStats;
 
 /**
  * Fill the question's list based off span.
  */
-
 function fillQuestionStackWithIds() {
-	let occuredIds = [],
-			questionStackId = [],
-			objLen = questionsId.length,
-			id;
+	let span = 5,
+		questionStackId = [],
+		len = commonPhrases.length,
+		id,
+		occuredIds
 	
+	function expandSpanBy(spanExpand) {
+		span = span + spanExpand
+		return span
+	}
+
+	function fillStack() {
+		for(var i = 0; i < span; i++) {
+			id = Math.floor( Math.random() * len ) + 1;
+			while(occuredIds.indexOf(id) !== -1) {
+
+				id = Math.floor( Math.random() * len ) + 1
+			}
+
+			occuredIds.push(id)
+			
+			questionStackId.push(questionsId[id])
+		}
+	}
+
 	function fillIt(span) {
 		span = span - questionStackId.length
 		for(var i = 0; i < span; i++) {
@@ -58,7 +68,9 @@ const getQ = function showCurrentQuestion() {
 	}
 
 	applicableElement.html(`<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="check(event)">`)
+	
 	if(applicableElement[0]){
+
 		wanakana.bind(applicableElement[0]);			
 	}
 	$('#option').focus()	
@@ -67,31 +79,49 @@ const getQ = function showCurrentQuestion() {
 /**
  * create id for the question and checks if it's already in there
  */
-const getId = function generatesRandomQuestionId() {
 
-	const objectLen = Object.keys(commonPhrases).length - 1
-	let id = Math.floor( Math.random() * objectLen ) + 1
+function generatesRandomQuestionId() {
+	let occured = [],
+		len = Object.keys(commonPhrases).length - 1,
+		id;
 
-	while(occured.indexOf(id) !== -1) {
-
-		id = Math.floor( Math.random() * objectLen ) + 1
+	function GenerateRandomNumber() {
+		
+		return Math.ceil(Math.random() * len)
 	}
 
-	occured.push(id)
+	function setId() {
+		
+		id = GenerateRandomNumber()
 
-	if (occured.length === objectLen) {
+		while(occured.indexOf(id) !== -1) {
+			id = GenerateRandomNumber()
+		}
+		
+		occured.push(id)
+		
+		if (occured.length === len) {
 
-		occured = []
+			occured = []
+		}
+
+		return {
+			id: id,
+			occured: occured
+		}
 	}
-	return id
+	
+	return  setId
 }
+
+let getId = generatesRandomQuestionId()
 
 /**
  * Updates the current object.
  */
 const fill = function fillInCurrentObject() {
 	
-	let id = getId()
+	let id = getId().id
 	current.id = id
 	current.english = commonPhrases[id].english,
 	current.japanese = commonPhrases[id].japanese,

@@ -1,4 +1,4 @@
-var commonPhrases = [
+let commonPhrases = [
     {
         "english": "Are you sure?",
         "japanese": [
@@ -202,3 +202,12 @@ var commonPhrases = [
         ]
     }
 ]
+
+
+/**
+ * Set the question's status
+ */
+commonPhrases.map(function(e) {
+	e.stats={right: 0, wrong: 0} 
+	return e
+});
