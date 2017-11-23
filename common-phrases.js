@@ -4,53 +4,45 @@ let db_commonQuestions,
 /**
  * Fill the question's list based off span.
  */
-function fillQuestionStackWithIds() {
+function questionStackMethods() {
 	let span = 5,
-		questionStackId = [],
-		len = commonPhrases.length,
-		id,
-		occuredIds
+		questionStack = [],
+		occuredIds = [],		
+		Objlen = commonPhrases.length,
+		id
 	
-	function expandSpanBy(spanExpand) {
+	function expandStackSpanBy(spanExpand) {
 		span = span + spanExpand
+		fillStack()
 		return span
 	}
 
 	function fillStack() {
-		for(var i = 0; i < span; i++) {
-			id = Math.floor( Math.random() * len ) + 1;
+		var len = span - questionStack.length
+		for(var i = 0; i < len; i++) {
+			id = Math.floor( Math.random() * Objlen );
 			while(occuredIds.indexOf(id) !== -1) {
 
-				id = Math.floor( Math.random() * len ) + 1
+				id = Math.floor( Math.random() * Objlen)
 			}
 
 			occuredIds.push(id)
 			
-			questionStackId.push(questionsId[id])
+			questionStack.push(commonPhrases[id])
 		}
+		console.log(span)
+		return questionStack
 	}
 
-	function fillIt(span) {
-		span = span - questionStackId.length
-		for(var i = 0; i < span; i++) {
-			id = Math.floor( Math.random() * objLen ) + 1;
-			while(occuredIds.indexOf(id) !== -1) {
+	fillStack()
 
-				id = Math.floor( Math.random() * objLen ) + 1
-			}
-			occuredIds.push(id)
-			
-			questionStackId.push(questionsId[id])
-		}
-		questionStackId = questionStackId;
-		return {
-			questionStackId:questionStackId,
-			occuredIds: occuredIds
-		}
+	return {
+		expand: expandStackSpanBy,
+		questionStack: questionStack
 	}
-	
-	return fillIt
 }
+
+let tempFunc = questionStackMethods()
 
 /**
  * Dynamic key generation function.
