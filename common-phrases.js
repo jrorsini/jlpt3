@@ -30,7 +30,6 @@ function questionStackMethods() {
 			
 			questionStack.push(commonPhrases[id])
 		}
-		console.log(span)
 		return questionStack
 	}
 
@@ -42,7 +41,7 @@ function questionStackMethods() {
 	}
 }
 
-let tempFunc = questionStackMethods()
+let stack = questionStackMethods().questionStack
 
 /**
  * Dynamic key generation function.
@@ -74,7 +73,7 @@ const getQ = function showCurrentQuestion() {
 
 function generatesRandomQuestionId() {
 	let occured = [],
-		len = Object.keys(commonPhrases).length - 1,
+		len = Object.keys(stack).length - 1,
 		id;
 
 	function GenerateRandomNumber() {
@@ -115,11 +114,11 @@ const fill = function fillInCurrentObject() {
 	
 	let id = getId().id
 	current.id = id
-	current.english = commonPhrases[id].english,
-	current.japanese = commonPhrases[id].japanese,
-	current.romaji = commonPhrases[id].romaji
-	current.right = commonPhrases[id].stats.right
-	current.wrong = commonPhrases[id].stats.wrong
+	current.english = stack[id].english,
+	current.japanese = stack[id].japanese,
+	current.romaji = stack[id].romaji
+	current.right = stack[id].stats.right
+	current.wrong = stack[id].stats.wrong
 }
 
 const reload = function createNewIdFillCurrentObjectShowQuestion() {
