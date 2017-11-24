@@ -1,25 +1,25 @@
+// Variable declarations
 let db_commonQuestions,
-	db_commonStats;
+	db_commonStats,
+	stack,
+	getId
 
 /**
  * Fill the question's list based off span.
  */
 function questionStackMethods() {
-	let span = 5,
-		questionStack = [],
-		occuredIds = [],		
-		Objlen = commonPhrases.length,
-		id
+	let stackSpan = 5, questionStack = [], occuredIds = [], Objlen = commonPhrases.length, id;
 	
 	function expandStackSpanBy(spanExpand) {
-		span = span + spanExpand
+		stackSpan += spanExpand
 		fillStack()
-		return span
 	}
 
 	function fillStack() {
-		var len = span - questionStack.length
-		for(var i = 0; i < len; i++) {
+
+		let len = stackSpan - questionStack.length
+
+		for(let i = 0; i < len; i++) {
 			id = Math.floor( Math.random() * Objlen );
 			while(occuredIds.indexOf(id) !== -1) {
 
@@ -41,12 +41,7 @@ function questionStackMethods() {
 	}
 }
 
-let stack = questionStackMethods().questionStack
-
-/**
- * Dynamic key generation function.
- */
-function getKey(k) {return k;}
+let foo = questionStackMethods()
 
 /**
  * Displays sentence and add sentence in the occurred array
@@ -105,8 +100,6 @@ function generatesRandomQuestionId() {
 	return  setId
 }
 
-let getId = generatesRandomQuestionId()
-
 /**
  * Updates the current object.
  */
@@ -124,10 +117,6 @@ const fill = function fillInCurrentObject() {
 const reload = function createNewIdFillCurrentObjectShowQuestion() {
 	getId(), fill(), getQ()
 }
-
-const current = {}
-
-const userStats = {right: 0, wrong:0}
 
 const view = {
 	/**
@@ -173,14 +162,6 @@ const view = {
 	
 }
 
-function isNew() {
-	if(curr.stats.length !== undefined) {
-		$('#new_icon').html('')
-	} else {
-		$('#new_icon').html('star_border')
-	}
-}
-
 /**
  * Checks if the user's input match with the answer
  */
@@ -213,8 +194,6 @@ const check = function checkAnswer(e) { // Checks input value to the answer.
 		view.showRepetitions()
 	}
 }
-
-
 
 /**
  * When wanting to check localstorage data in a proper json format.
@@ -298,12 +277,20 @@ $('#commonPhrasesSort').change(function(){
 })
 
 
+const current = {}
+const userStats = {right: 0, wrong:0}
+
+stack = questionStackMethods().questionStack
+getId = generatesRandomQuestionId()
+
 db_commonQuestions = set('common_phrases',commonPhrases)
 db_commonStats = set('common_phrases_stats',userStats)	
+
 sync()
 getId()
 fill()
 getQ()
+
 view.showRepetitions()
 
 $('#statsBtn').click(load)
