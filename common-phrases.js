@@ -283,6 +283,7 @@ const userStats = {right: 0, wrong:0}
 stack = questionStackMethods().questionStack
 getId = generatesRandomQuestionId()
 
+stack = foo
 db_commonQuestions = set('common_phrases',commonPhrases)
 db_commonStats = set('common_phrases_stats',userStats)	
 
