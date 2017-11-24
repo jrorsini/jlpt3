@@ -41,8 +41,6 @@ function questionStackMethods() {
 	}
 }
 
-let foo = questionStackMethods()
-
 /**
  * Displays sentence and add sentence in the occurred array
  */
@@ -280,10 +278,10 @@ $('#commonPhrasesSort').change(function(){
 const current = {}
 const userStats = {right: 0, wrong:0}
 
-stack = questionStackMethods().questionStack
+let stackObj = questionStackMethods();
+stack = stackObj.questionStack
 getId = generatesRandomQuestionId()
 
-stack = foo
 db_commonQuestions = set('common_phrases',commonPhrases)
 db_commonStats = set('common_phrases_stats',userStats)	
 
