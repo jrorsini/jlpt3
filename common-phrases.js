@@ -1,116 +1,6 @@
 // Variable declarations
 let db_commonQuestions,
-	db_commonStats,
-	stack,
-	getId
-
-/**
- * Fill the question's list based off span.
- */
-function questionStackMethods() {
-	let stackSpan = 5, questionStack = [], occuredIds = [], Objlen = commonPhrases.length, id;
-	
-	function expandStackSpanBy(spanExpand) {
-		stackSpan += spanExpand
-		fillStack()
-	}
-
-	function fillStack() {
-
-		let len = stackSpan - questionStack.length
-
-		for(let i = 0; i < len; i++) {
-			id = Math.floor( Math.random() * Objlen );
-			while(occuredIds.indexOf(id) !== -1) {
-
-				id = Math.floor( Math.random() * Objlen)
-			}
-
-			occuredIds.push(id)
-			
-			questionStack.push(commonPhrases[id])
-		}
-		return questionStack
-	}
-
-	fillStack()
-
-	return {
-		expand: expandStackSpanBy,
-		questionStack: questionStack
-	}
-}
-
-/**
- * Displays sentence and add sentence in the occurred array
- */
-const getQ = function showCurrentQuestion() {
-
-	let applicableElement = $('#sentence');
-	if(current.right + current.wrong === 0) {
-		$('#newIcon').text('star')
-	}
-
-	applicableElement.html(`<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="check(event)">`)
-	
-	if(applicableElement[0]){
-
-		wanakana.bind(applicableElement[0]);			
-	}
-	$('#option').focus()	
-}
-
-/**
- * create id for the question and checks if it's already in there
- */
-
-function generatesRandomQuestionId() {
-	let occured = [],
-		len = Object.keys(stack).length - 1,
-		id;
-
-	function GenerateRandomNumber() {
-		
-		return Math.ceil(Math.random() * len)
-	}
-
-	function setId() {
-		
-		id = GenerateRandomNumber()
-
-		while(occured.indexOf(id) !== -1) {
-			id = GenerateRandomNumber()
-		}
-		
-		occured.push(id)
-		
-		if (occured.length === len) {
-
-			occured = []
-		}
-
-		return {
-			id: id,
-			occured: occured
-		}
-	}
-	
-	return  setId
-}
-
-/**
- * Updates the current object.
- */
-const fill = function fillInCurrentObject() {
-	
-	let id = getId().id
-	current.id = id
-	current.english = stack[id].english,
-	current.japanese = stack[id].japanese,
-	current.romaji = stack[id].romaji
-	current.right = stack[id].stats.right
-	current.wrong = stack[id].stats.wrong
-}
+	db_commonStats
 
 const reload = function createNewIdFillCurrentObjectShowQuestion() {
 	getId(), fill(), getQ()
@@ -275,20 +165,129 @@ $('#commonPhrasesSort').change(function(){
 })
 
 
-const current = {}
 const userStats = {right: 0, wrong:0}
 
-let stackObj = questionStackMethods();
-stack = stackObj.questionStack
-getId = generatesRandomQuestionId()
 
-db_commonQuestions = set('common_phrases',commonPhrases)
+// db_commonQuestions = set('common_phrases',commonPhrases)
 db_commonStats = set('common_phrases_stats',userStats)	
 
-sync()
-getId()
-fill()
-getQ()
+
+/**
+ * Displays sentence and add sentence in the occurred array
+ */
+let q = function showCurrentQuestion() {
+	let applicableElement = $('#sentence');
+	let current
+	let stack
+
+	/**
+	 * create id for the question and checks if it's already in there
+	 */
+
+	function generatesRandomQuestionId() {
+		let occured = [],
+			len = Object.keys(stack).length - 1,
+			id;
+
+		function GenerateRandomNumber() {
+			
+			return Math.ceil(Math.random() * len)
+		}
+
+		function setId() {
+			
+			id = GenerateRandomNumber()
+
+			while(occured.indexOf(id) !== -1) id = GenerateRandomNumber()
+
+			occured.push(id)
+
+			if (occured.length === len) occured = []
+
+			return {
+				id: id,
+				occured: occured
+			}
+		}
+		
+		return  setId
+	}
+
+	/**
+	 * Fill the question's list based off span.
+	 */
+	function questionStackMethods() {
+		let stackSpan = 5
+		let questionStack = [] 
+		let occuredIds = [] 
+		let Objlen = commonPhrases.length
+		let id
+		
+		function expandStackSpanBy(spanExpand) {
+			stackSpan += spanExpand
+			fillStack()
+		}
+
+		function fillStack() {
+
+			let len = stackSpan - questionStack.length
+
+			for(let i = 0; i < len; i++) {
+				id = Math.floor( Math.random() * Objlen );
+				while(occuredIds.indexOf(id) !== -1) {
+
+					id = Math.floor( Math.random() * Objlen)
+				}
+
+				occuredIds.push(id)
+				
+				questionStack.push(commonPhrases[id])
+			}
+			return questionStack
+		}
+
+		fillStack()
+
+		return { 'expand': expandStackSpanBy, 'questionStack': questionStack }
+	}
+
+	/**
+	 * Updates the current object.
+	 */
+	function fillInCurrentObject() {
+		
+		let id = generatesRandomQuestionId()().id
+		let slct = stack[id]
+		let currentObjct = {} 
+			
+		currentObjct.id = id
+		currentObjct.english = slct.english,
+		currentObjct.japanese = slct.japanese,
+		currentObjct.romaji = slct.romaji
+		currentObjct.right = slct.stats.right
+		currentObjct.wrong = slct.stats.wrong
+		currentObjct.graspLevel = slct.stats.right - slct.stats.wrong < 1 ? 0 : slct.stats.right - slct.stats.wrong
+	
+		return currentObjct
+	}
+
+	stack = questionStackMethods().questionStack
+	current = fillInCurrentObject()
+
+
+	if(current.right + current.wrong === 0) $('#newIcon').text('star')
+
+	applicableElement.html(`<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="check(event)">`)
+	
+	if(applicableElement[0]) wanakana.bind(applicableElement[0]);			
+
+	$('#option').focus()	
+
+	return { 'stack': stack, 'current': current }
+}
+
+// sync()
+q()
 
 view.showRepetitions()
 
