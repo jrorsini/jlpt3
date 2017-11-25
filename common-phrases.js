@@ -1,6 +1,7 @@
 // Variable declarations
 let db_commonQuestions,
-	db_commonStats
+	db_commonStats,
+	question
 
 const reload = function createNewIdFillCurrentObjectShowQuestion() {
 	getId(), fill(), getQ()
@@ -54,7 +55,7 @@ const view = {
  * Checks if the user's input match with the answer
  */
 const check = function checkAnswer(e) { // Checks input value to the answer.
-
+	let current = question.current
 	const answer = current.romaji.map(e => {
 		e = e.split(''), e.pop()
 		return wanakana.toHiragana(e.join('').replace(/\swa(\s|\,)/g,' ha ').replace(/\so(\s|\,)/g,' wo ').replace(/\s/g,''))
@@ -65,21 +66,22 @@ const check = function checkAnswer(e) { // Checks input value to the answer.
 		if(answer.indexOf(inputVal) !== -1) {
 			console.log('Right Answer')
 			// update
-			db_commonQuestions[current.id].stats.right++
 			db_commonStats.right++
-			reload()
+			q()
 			$('#tempAnswer').text('Hint?')
 		} else {
+			console.log('Wrong Answer')
 			// Show hint
 			$('#tempAnswer').text(current.japanese.join(' / '))
 			// Update mistaken answer
-			db_commonQuestions[current.id].stats.wrong++
 			db_commonStats.wrong++
-			console.log('Wrong Answer')
 		}
-		sync()
 		// Refresh repetition's status
 		view.showRepetitions()
+	}
+
+	return {
+		'answer':answer
 	}
 }
 
@@ -257,25 +259,18 @@ let q = function showCurrentQuestion() {
 	function fillInCurrentObject() {
 		
 		let id = generatesRandomQuestionId()().id
-		let slct = stack[id]
-		let currentObjct = {} 
-			
-		currentObjct.id = id
-		currentObjct.english = slct.english,
-		currentObjct.japanese = slct.japanese,
-		currentObjct.romaji = slct.romaji
-		currentObjct.right = slct.stats.right
-		currentObjct.wrong = slct.stats.wrong
-		currentObjct.graspLevel = slct.stats.right - slct.stats.wrong < 1 ? 0 : slct.stats.right - slct.stats.wrong
+		let current = stack[id]
+
+		current['graspLevel'] = current.stats.right - current.stats.wrong < 1 ? 0 : current.stats.right - current.stats.wrong
 	
-		return currentObjct
+		return current
 	}
 
 	stack = questionStackMethods().questionStack
 	current = fillInCurrentObject()
 
 
-	if(current.right + current.wrong === 0) $('#newIcon').text('star')
+	if(current['stats']['right'] + current['stats']['wrong'] === 0) $('#newIcon').text('star')
 
 	applicableElement.html(`<span>${current.english}</span><input type="text" id="option" class="commonPhrasesInput" onkeyup="check(event)">`)
 	
@@ -287,7 +282,7 @@ let q = function showCurrentQuestion() {
 }
 
 // sync()
-q()
+question = q()
 
 view.showRepetitions()
 
